@@ -96,12 +96,6 @@
                 </svg>
             </a>
 
-            <!-- Admin Link (Discrete) -->
-            <a href="{{ route('admin.dashboard') }}" class="hidden 2xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-sans uppercase tracking-wider font-semibold bg-[#0E1520]/5 hover:bg-[#0E1520] text-[#0E1520] hover:text-[#D4E845] border border-[#0E1520]/15 transition-all" title="Admin Command Center">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Admin</span>
-            </a>
-
             <!-- Schedule a Visit Primary Button Desktop -->
             <button type="button" onclick="openSiteVisitModal()" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] shadow-sm hover:shadow transition-all whitespace-nowrap">
                 <svg class="w-3.5 h-3.5 text-[#0E1520]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,9 +128,7 @@
         <a href="{{ route('gallery') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_gallery') }}</a>
         <a href="{{ route('tools') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_calculator') }}</a>
         <a href="{{ route('nri') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_nri') }}</a>
-        <a href="{{ route('contact') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_contact') }}</a>
-        <a href="{{ route('admin.dashboard') }}" class="block text-sm font-mono font-bold text-amber-700 py-1.5">⚡ ADMIN COMMAND CENTER</a>
-        <a href="{{ route('customer.dashboard') }}" class="block text-sm font-semibold text-blue-800 py-1.5">PATRON DASHBOARD</a>
+        <a href="{{ route('contact') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_contact') }}</a>        <a href="{{ route('customer.dashboard') }}" class="block text-sm font-semibold text-blue-800 py-1.5">PATRON DASHBOARD</a>
     </div>
 </header>
 

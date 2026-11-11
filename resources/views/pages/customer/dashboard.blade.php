@@ -18,8 +18,9 @@
             </div>
 
             <!-- Search Booking Form -->
-            <form method="GET" action="{{ route('customer.dashboard') }}" class="flex items-center gap-2">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search phone or booking ID..." class="px-4 py-2.5 rounded-full bg-white border border-[#0E1520]/15 text-xs font-mono text-[#0E1520] focus:outline-none focus:border-[#0E1520]">
+            <form method="GET" action="{{ route('customer.dashboard') }}" class="flex flex-wrap items-center gap-2">
+                <input type="text" name="booking_id" required value="{{ request('booking_id') }}" placeholder="Booking ID (KB-…)" aria-label="Booking ID" class="px-4 py-2.5 rounded-full bg-white border border-[#0E1520]/15 text-xs font-mono text-[#0E1520] focus:outline-none focus:border-[#0E1520]">
+                <input type="tel" name="phone" required value="{{ request('phone') }}" placeholder="Registered mobile" aria-label="Registered mobile number" class="px-4 py-2.5 rounded-full bg-white border border-[#0E1520]/15 text-xs font-mono text-[#0E1520] focus:outline-none focus:border-[#0E1520]">
                 <button type="submit" class="px-5 py-2.5 rounded-full bg-[#0E1520] text-white text-xs font-bold uppercase tracking-wider">
                     Lookup
                 </button>
@@ -90,8 +91,13 @@
                 @else
                     <div class="bg-white rounded-3xl p-12 text-center border border-[#0E1520]/10">
                         <div class="text-3xl mb-2">📋</div>
-                        <h3 class="font-serif text-xl font-bold text-[#0E1520]">No active bookings located</h3>
-                        <p class="text-xs text-[#0E1520]/60 mt-1 mb-6">Enter your registered mobile number or booking ID to retrieve your property dossier.</p>
+                        @if($lookupFailed)
+                            <h3 class="font-serif text-xl font-bold text-[#0E1520]">No booking matches those details</h3>
+                            <p class="text-xs text-[#0E1520]/60 mt-1 mb-6">Check the booking ID on your voucher and the mobile number you booked with, then try again.</p>
+                        @else
+                            <h3 class="font-serif text-xl font-bold text-[#0E1520]">Find your booking</h3>
+                            <p class="text-xs text-[#0E1520]/60 mt-1 mb-6">Enter your booking ID and registered mobile number to retrieve your property dossier.</p>
+                        @endif
                         <a href="{{ route('projects.index') }}" class="px-6 py-2.5 rounded-full bg-[#D4E845] text-[#0E1520] font-bold text-xs uppercase tracking-wider">
                             Browse Available Units
                         </a>

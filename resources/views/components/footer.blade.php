@@ -44,9 +44,7 @@
                     <li><a href="{{ route('tools') }}" class="hover:text-white transition-colors">{{ __('messages.nav_calculator') }}</a></li>
                     <li><a href="{{ route('nri') }}" class="hover:text-white transition-colors">{{ __('messages.nav_nri') }}</a></li>
                     <li><a href="{{ route('careers') }}" class="hover:text-white transition-colors">Careers & Internships</a></li>
-                    <li><a href="{{ route('customer.dashboard') }}" class="hover:text-white transition-colors">Customer Portal</a></li>
-                    <li><a href="{{ route('admin.dashboard') }}" class="text-amber-400 font-mono text-xs hover:underline">⚡ Admin Console</a></li>
-                </ul>
+                    <li><a href="{{ route('customer.dashboard') }}" class="hover:text-white transition-colors">Customer Portal</a></li>                </ul>
             </div>
 
             <!-- Column 5: Headquarters & Direct Line -->

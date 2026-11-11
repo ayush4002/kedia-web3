@@ -84,27 +84,27 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">Full Legal Name *</label>
-                        <input type="text" name="customer_name" required value="Ayush Gupta" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
+                        <input type="text" name="customer_name" required value="{{ old('customer_name') }}" placeholder="As per PAN card" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">Phone Number (WhatsApp) *</label>
-                        <input type="tel" name="customer_phone" required value="+91 98290 12345" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
+                        <input type="tel" name="customer_phone" required value="{{ old('customer_phone') }}" placeholder="+91 98290 00000" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">Email Address *</label>
-                        <input type="email" name="customer_email" required value="ayush@example.com" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
+                        <input type="email" name="customer_email" required value="{{ old('customer_email') }}" placeholder="you@example.com" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">City &amp; State</label>
-                        <input type="text" name="customer_city" value="Jaipur, Rajasthan" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
+                        <input type="text" name="customer_city" value="{{ old('customer_city', 'Jaipur, Rajasthan') }}" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">PAN Card Number</label>
-                        <input type="text" name="customer_pan" placeholder="ABCDE1234F" value="ABCDE1234F" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
+                        <input type="text" name="customer_pan" placeholder="ABCDE1234F" value="{{ old('customer_pan') }}" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">Aadhaar Last 4 Digits</label>
-                        <input type="text" name="customer_aadhaar" placeholder="9876" value="9876" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
+                        <input type="text" name="customer_aadhaar" placeholder="Last 4 digits" value="{{ old('customer_aadhaar') }}" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
                     </div>
                 </div>
             </div>

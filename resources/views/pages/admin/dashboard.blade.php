@@ -299,9 +299,9 @@
             @csrf
             <div>
                 <label class="block text-[#0E1520]/70 uppercase mb-1">Township *</label>
-                <select name="project_id" required class="w-full px-3 py-2 rounded-xl border border-gray-300">
+                <select name="project_slug" required class="w-full px-3 py-2 rounded-xl border border-gray-300">
                     @foreach($projects as $p)
-                        <option value="{{ $p->id }}">{{ $p->title }}</option>
+                        <option value="{{ $p->slug }}">{{ $p->title }}</option>
                     @endforeach
                 </select>
             </div>
@@ -313,17 +313,17 @@
                 </div>
                 <div>
                     <label class="block text-[#0E1520]/70 uppercase mb-1">Property Type</label>
-                    <select name="type" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-                        <option value="villa">Villa</option>
-                        <option value="plot">Plot</option>
-                        <option value="apartment">Apartment</option>
+                    <select name="unit_type" class="w-full px-3 py-2 rounded-xl border border-gray-300">
+                        <option value="Villa">Villa</option>
+                        <option value="Plot">Plot</option>
+                        <option value="Apartment">Apartment</option>
                     </select>
                 </div>
             </div>
 
             <div>
                 <label class="block text-[#0E1520]/70 uppercase mb-1">Title / Designation *</label>
-                <input type="text" name="title" required placeholder="e.g. 3 BHK Duplex Villa" class="w-full px-3 py-2 rounded-xl border border-gray-300">
+                <input type="text" name="configuration" required placeholder="e.g. 3 BHK Duplex Villa" class="w-full px-3 py-2 rounded-xl border border-gray-300">
             </div>
 
             <div class="grid grid-cols-2 gap-3">
@@ -332,8 +332,8 @@
                     <input type="number" name="area_sqft" required value="1600" class="w-full px-3 py-2 rounded-xl border border-gray-300">
                 </div>
                 <div>
-                    <label class="block text-[#0E1520]/70 uppercase mb-1">Base Price (INR) *</label>
-                    <input type="number" name="price_num" required value="4500000" class="w-full px-3 py-2 rounded-xl border border-gray-300">
+                    <label class="block text-[#0E1520]/70 uppercase mb-1">Total Price (INR) *</label>
+                    <input type="number" name="total_price" required min="100000" value="4500000" class="w-full px-3 py-2 rounded-xl border border-gray-300">
                 </div>
             </div>
 

@@ -7,6 +7,7 @@ use App\Models\Unit;
 use App\Models\Booking;
 use App\Models\SiteVisitLead;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminController extends Controller
@@ -124,23 +125,38 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'project_slug' => 'required|exists:projects,slug',
-            'unit_code' => 'required|string',
-            'unit_number' => 'nullable|string',
-            'unit_type' => 'required|string',
-            'configuration' => 'nullable|string',
+            'unit_code' => [
+                'required', 'string', 'max:60',
+                Rule::unique('units', 'unit_code')->where('project_slug', $request->input('project_slug')),
+            ],
+            'unit_number' => 'nullable|string|max:60',
+            'unit_type' => 'required|in:Villa,Plot,Apartment',
+            'configuration' => 'nullable|string|max:120',
             'status' => 'required|in:available,on_hold,sold',
-            'area_sqft' => 'required|numeric',
+            'area_sqft' => 'required|integer|min:1',
             'area_sqyd' => 'nullable|numeric',
             'bedrooms' => 'nullable|integer',
             'bathrooms' => 'nullable|integer',
-            'facing' => 'nullable|string',
-            'total_price' => 'required|numeric',
-            'floor_level' => 'nullable|string',
+            'facing' => 'nullable|string|max:60',
+            'total_price' => 'required|integer|min:100000',
+            'floor_level' => 'nullable|string|max:60',
+        ], [
+            'unit_code.unique' => 'That unit code already exists in this township.',
         ]);
 
         $project = Project::where('slug', $validated['project_slug'])->first();
         $validated['project_name'] = $project ? $project->name : 'Kedia Township';
         $validated['base_price'] = (int) ($validated['total_price'] * 0.85);
+
+        // These columns are NOT NULL in the units table; fill sensible defaults when left blank.
+        $validated['unit_number'] = $validated['unit_number'] ?? $validated['unit_code'];
+        $validated['configuration'] = $validated['configuration'] ?? $validated['unit_type'];
+        $validated['area_sqyd'] = $validated['area_sqyd'] ?? round($validated['area_sqft'] / 9, 2);
+        foreach (['bedrooms', 'bathrooms', 'facing', 'floor_level'] as $optional) {
+            if (!isset($validated[$optional])) {
+                unset($validated[$optional]); // let the column default apply
+            }
+        }
 
         $unit = Unit::create($validated);
 

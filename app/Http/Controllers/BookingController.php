@@ -6,6 +6,7 @@ use App\Models\Unit;
 use App\Models\Project;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class BookingController extends Controller
@@ -20,7 +21,7 @@ class BookingController extends Controller
             ->orWhere('id', $unitCode)
             ->firstOrFail();
 
-        if ($unit->status === 'sold') {
+        if ($unit->status !== 'available') {
             return redirect()->route('units.show', $unit->unit_code)
                 ->with('error', 'This unit has already been reserved or sold.');
         }
@@ -47,49 +48,29 @@ class BookingController extends Controller
             'notes' => 'nullable|string|max:500',
         ]);
 
-        $unit = Unit::with('project')->findOrFail($validated['unit_id']);
+        // Lock the unit row so two buyers cannot reserve the same unit at the same time.
+        $booking = DB::transaction(function () use ($validated) {
+            $unit = Unit::lockForUpdate()->find($validated['unit_id']);
 
-        if ($unit->status === 'sold') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sorry, this unit was just sold or reserved by another buyer.'
-            ], 422);
+            if (!$unit || $unit->status !== 'available') {
+                return null;
+            }
+
+            $booking = $this->createBooking($unit, $validated);
+
+            $unit->status = 'on_hold';
+            $unit->save();
+
+            return $booking;
+        });
+
+        if (!$booking) {
+            $message = 'Sorry, this unit was just reserved or sold by another buyer.';
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => $message], 422);
+            }
+            return back()->withInput()->with('error', $message);
         }
-
-        $pricing = $unit->computePricing();
-        $bookingId = 'KB-' . strtoupper(Str::random(7));
-
-        // Create booking record
-        $booking = Booking::create([
-            'booking_id' => $bookingId,
-            'unit_id' => $unit->id,
-            'project_id' => $unit->project_id,
-            'customer_name' => $validated['customer_name'],
-            'customer_email' => $validated['customer_email'],
-            'customer_phone' => $validated['customer_phone'],
-            'customer_pan' => $validated['customer_pan'] ?? 'XXXXX0000X',
-            'customer_aadhaar' => $validated['customer_aadhaar'] ?? 'XXXX-XXXX-0000',
-            'customer_city' => $validated['customer_city'] ?? 'Jaipur, Rajasthan',
-            'token_amount' => $pricing['token_amount'],
-            'total_amount' => $pricing['grand_total'],
-            'payment_status' => 'paid',
-            'payment_method' => $validated['payment_method'],
-            'transaction_ref' => 'TXN-' . strtoupper(Str::random(10)),
-            'booking_status' => 'confirmed',
-            'cost_breakdown' => $pricing,
-            'payment_schedule' => [
-                ['milestone' => 'Token Advance Booking', 'percentage' => 5, 'amount' => $pricing['token_amount'], 'status' => 'Paid', 'due_date' => now()->format('Y-m-d')],
-                ['milestone' => 'On Execution of Agreement to Sale (30 Days)', 'percentage' => 20, 'amount' => round($pricing['grand_total'] * 0.20), 'status' => 'Upcoming', 'due_date' => now()->addDays(30)->format('Y-m-d')],
-                ['milestone' => 'On Foundation & Plinth Completion', 'percentage' => 35, 'amount' => round($pricing['grand_total'] * 0.35), 'status' => 'Upcoming', 'due_date' => now()->addDays(90)->format('Y-m-d')],
-                ['milestone' => 'On Superstructure & Internal Plaster', 'percentage' => 30, 'amount' => round($pricing['grand_total'] * 0.30), 'status' => 'Upcoming', 'due_date' => now()->addDays(180)->format('Y-m-d')],
-                ['milestone' => 'On Registry & Possession Handover', 'percentage' => 10, 'amount' => round($pricing['grand_total'] * 0.10) - $pricing['token_amount'], 'status' => 'Upcoming', 'due_date' => now()->addDays(270)->format('Y-m-d')],
-            ],
-            'notes' => $validated['notes'] ?? 'Online E-commerce reservation via Kedia Portal',
-        ]);
-
-        // Mark unit as on_hold or sold
-        $unit->status = 'on_hold';
-        $unit->save();
 
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
@@ -100,6 +81,43 @@ class BookingController extends Controller
         }
 
         return redirect()->route('booking.confirmation', ['bookingId' => $booking->booking_id]);
+    }
+
+    private function createBooking(Unit $unit, array $validated): Booking
+    {
+        $pricing = $unit->computePricing();
+
+        do {
+            $bookingId = 'KB-' . strtoupper(Str::random(7));
+        } while (Booking::where('booking_id', $bookingId)->exists());
+
+        return Booking::create([
+            'booking_id' => $bookingId,
+            'unit_code' => $unit->unit_code,
+            'unit_number' => $unit->unit_number,
+            'project_slug' => $unit->project_slug,
+            'project_name' => $unit->project_name,
+            'customer_name' => $validated['customer_name'],
+            'customer_email' => $validated['customer_email'],
+            'customer_phone' => $validated['customer_phone'],
+            'customer_pan' => $validated['customer_pan'] ?? null,
+            'customer_aadhar' => $validated['customer_aadhaar'] ?? null,
+            'address' => $validated['customer_city'] ?? null,
+            'booking_date' => now(),
+            'token_amount_paid' => $pricing['token_amount'],
+            'total_unit_amount' => $pricing['grand_total'],
+            'payment_method' => $validated['payment_method'],
+            'payment_reference' => 'TXN-' . strtoupper(Str::random(10)),
+            'status' => 'confirmed',
+            'cost_breakdown' => $pricing,
+            'payment_schedule' => [
+                ['milestone' => 'Token Advance Booking', 'percentage' => 5, 'amount' => $pricing['token_amount'], 'status' => 'Paid', 'due_date' => now()->format('Y-m-d')],
+                ['milestone' => 'On Execution of Agreement to Sale (30 Days)', 'percentage' => 20, 'amount' => round($pricing['grand_total'] * 0.20), 'status' => 'Upcoming', 'due_date' => now()->addDays(30)->format('Y-m-d')],
+                ['milestone' => 'On Foundation & Plinth Completion', 'percentage' => 35, 'amount' => round($pricing['grand_total'] * 0.35), 'status' => 'Upcoming', 'due_date' => now()->addDays(90)->format('Y-m-d')],
+                ['milestone' => 'On Superstructure & Internal Plaster', 'percentage' => 30, 'amount' => round($pricing['grand_total'] * 0.30), 'status' => 'Upcoming', 'due_date' => now()->addDays(180)->format('Y-m-d')],
+                ['milestone' => 'On Registry & Possession Handover', 'percentage' => 10, 'amount' => round($pricing['grand_total'] * 0.10) - $pricing['token_amount'], 'status' => 'Upcoming', 'due_date' => now()->addDays(270)->format('Y-m-d')],
+            ],
+        ]);
     }
 
     /**

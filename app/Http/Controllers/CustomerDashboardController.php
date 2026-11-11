@@ -14,20 +14,27 @@ class CustomerDashboardController extends Controller
      */
     public function index(Request $request)
     {
-        // For demonstration, retrieve the most recent booking or query by phone/email if supplied
-        $search = $request->get('search');
-        $query = Booking::with(['unit', 'project'])->latest();
+        // A booking is only shown when the visitor supplies BOTH the exact booking ID
+        // and the phone number it was booked with. Nothing is listed by default.
+        $primaryBooking = null;
+        $lookupFailed = false;
 
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('customer_phone', 'like', "%{$search}%")
-                  ->orWhere('customer_email', 'like', "%{$search}%")
-                  ->orWhere('booking_id', 'like', "%{$search}%");
-            });
+        $bookingId = strtoupper(trim((string) $request->query('booking_id', '')));
+        $phone = $this->lastTenDigits((string) $request->query('phone', ''));
+
+        if ($bookingId !== '' || $phone !== '') {
+            $booking = $bookingId !== '' && strlen($phone) === 10
+                ? Booking::with(['unit', 'project'])->where('booking_id', $bookingId)->first()
+                : null;
+
+            if ($booking && hash_equals($this->lastTenDigits($booking->customer_phone), $phone)) {
+                $primaryBooking = $booking;
+            } else {
+                $lookupFailed = true;
+            }
         }
 
-        $bookings = $query->take(5)->get();
-        $primaryBooking = $bookings->first();
+        $bookings = collect($primaryBooking ? [$primaryBooking] : []);
 
         // Sample construction milestone track
         $constructionTimeline = [
@@ -38,6 +45,11 @@ class CustomerDashboardController extends Controller
             ['phase' => 'Possession & RERA Completion Handover', 'progress' => 0, 'date' => 'Target - Dec 2027', 'status' => 'pending'],
         ];
 
-        return view('pages.customer.dashboard', compact('bookings', 'primaryBooking', 'constructionTimeline'));
+        return view('pages.customer.dashboard', compact('bookings', 'primaryBooking', 'constructionTimeline', 'lookupFailed'));
+    }
+
+    private function lastTenDigits(string $phone): string
+    {
+        return substr(preg_replace('/\D+/', '', $phone), -10);
     }
 }

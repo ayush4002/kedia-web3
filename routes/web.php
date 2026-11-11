@@ -33,14 +33,14 @@ Route::get('/unit/{unitCode}', [UnitController::class, 'show'])->name('units.sho
 
 // E-Commerce Booking & Checkout Flow
 Route::get('/booking/{unitCode}', [BookingController::class, 'checkout'])->name('booking.checkout');
-Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+Route::post('/booking/store', [BookingController::class, 'store'])->middleware('throttle:10,1')->name('booking.store');
 Route::get('/booking/confirmation/{bookingId}', [BookingController::class, 'confirmation'])->name('booking.confirmation');
 
 // Customer Dashboard & Holding Tracker
-Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard');
+Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->middleware('throttle:20,1')->name('customer.dashboard');
 
 // Admin E-Commerce Command Center
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware([\App\Http\Middleware\AdminBasicAuth::class, 'throttle:60,1'])->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/units/{id}/status', [AdminController::class, 'updateUnitStatus'])->name('admin.units.status');
     Route::post('/units/{id}/price', [AdminController::class, 'updateUnitPrice'])->name('admin.units.price');
@@ -52,7 +52,7 @@ Route::prefix('admin')->group(function () {
 });
 
 // Inbound Site Visit & Callback Inquiries
-Route::post('/lead/site-visit', [LeadController::class, 'store'])->name('leads.store');
+Route::post('/lead/site-visit', [LeadController::class, 'store'])->middleware('throttle:10,1')->name('leads.store');
 
 // Static / Informational Pages
 Route::get('/about', [PageController::class, 'about'])->name('about');

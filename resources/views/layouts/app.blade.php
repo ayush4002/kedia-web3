@@ -126,6 +126,21 @@
         </div>
     @endif
 
+    @if($errors->any())
+        <div id="validationToast" role="alert" class="fixed bottom-24 right-6 z-50 max-w-sm bg-red-950 text-white border border-red-500 px-6 py-4 rounded-2xl shadow-2xl flex items-start gap-4">
+            <span class="mt-1 w-3 h-3 flex-shrink-0 rounded-full bg-red-500"></span>
+            <div class="text-xs font-medium space-y-1">
+                <div class="font-bold">Please check the form and try again:</div>
+                <ul class="list-disc pl-4 space-y-0.5 text-white/80">
+                    @foreach($errors->all() as $message)
+                        <li>{{ $message }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <button type="button" onclick="this.parentElement.remove()" class="text-white/50 hover:text-white" aria-label="Dismiss">&times;</button>
+        </div>
+    @endif
+
     <!-- Main Content Yield -->
     <main class="flex-grow">
         @yield('content')

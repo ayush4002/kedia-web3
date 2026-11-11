@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SiteVisitLead;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class LeadController extends Controller
 {
@@ -24,16 +25,22 @@ class LeadController extends Controller
             'message' => 'nullable|string|max:500',
         ]);
 
+        // site_visit_leads has no pickup column, so the chauffeur request is kept in the message.
+        $message = $validated['message'] ?? null;
+        if ($request->boolean('pickup_requested')) {
+            $message = trim(($message ? $message . "\n" : '') . 'Chauffeur pickup requested.');
+        }
+
         $lead = SiteVisitLead::create([
+            'lead_code' => $this->generateLeadCode(),
             'name' => $validated['name'],
             'phone' => $validated['phone'],
             'email' => $validated['email'] ?? null,
-            'project_name' => $validated['project_name'] ?? 'General Inquiry',
+            'project' => $validated['project_name'] ?? 'General Inquiry',
             'preferred_date' => $validated['preferred_date'] ?? now()->addDay()->toDateString(),
-            'time_slot' => $validated['time_slot'] ?? '11:00 AM - 01:00 PM',
-            'pickup_requested' => $request->has('pickup_requested'),
+            'preferred_time' => $validated['time_slot'] ?? '11:00 AM - 01:00 PM',
             'source' => $validated['source'] ?? 'website_modal',
-            'message' => $validated['message'] ?? null,
+            'message' => $message,
             'status' => 'new',
         ]);
 
@@ -46,5 +53,14 @@ class LeadController extends Controller
         }
 
         return back()->with('success', 'Thank you! Our relationship manager will contact you at ' . $validated['phone'] . ' shortly to confirm your visit.');
+    }
+
+    private function generateLeadCode(): string
+    {
+        do {
+            $code = 'LD-' . now()->format('ymd') . '-' . strtoupper(Str::random(5));
+        } while (SiteVisitLead::where('lead_code', $code)->exists());
+
+        return $code;
     }
 }

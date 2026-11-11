@@ -16,6 +16,10 @@ return [
             explode(',', env('APP_PREVIOUS_KEYS', ''))
         ),
     ],
+    'admin' => [
+        'user' => env('ADMIN_USER'),
+        'password' => env('ADMIN_PASSWORD'),
+    ],
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
