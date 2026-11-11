@@ -126,9 +126,9 @@
                                     <form action="{{ route('admin.bookings.status', $b->id) }}" method="POST">
                                         @csrf
                                         <select name="booking_status" onchange="this.form.submit()" class="px-2 py-1 rounded bg-[#FAF8F5] border border-[#0E1520]/20 text-[10px] font-bold">
-                                            <option value="confirmed" {{ $b->booking_status === 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                                            <option value="holding" {{ $b->booking_status === 'holding' ? 'selected' : '' }}>Holding</option>
-                                            <option value="cancelled" {{ $b->booking_status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                            @foreach(\App\Models\Booking::STATUSES as $value => $label)
+                                                <option value="{{ $value }}" {{ $b->booking_status === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                            @endforeach
                                         </select>
                                     </form>
                                 </td>
@@ -189,7 +189,7 @@
                         @foreach($units as $u)
                             <tr class="hover:bg-[#FAF8F5]">
                                 <td class="py-3 px-4 font-bold text-sm text-[#0E1520]">
-                                    <a href="{{ route('units.show', $u->unit_code) }}" target="_blank" class="hover:text-blue-700 underline">
+                                    <a href="{{ route('units.show', [$u->project_slug, $u->unit_code]) }}" target="_blank" class="hover:text-blue-700 underline">
                                         {{ $u->unit_code }}
                                     </a>
                                 </td>

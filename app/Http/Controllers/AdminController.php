@@ -25,7 +25,8 @@ class AdminController extends Controller
 
         // GMV & Financial KPIs
         $totalGMV = Unit::whereIn('status', ['sold', 'on_hold'])->sum('total_price');
-        $tokenRevenue = Booking::sum('token_amount_paid');
+        // Only tokens the team has verified count as revenue (unverified test payments don't).
+        $tokenRevenue = Booking::whereIn('status', Booking::RECEIVED_STATUSES)->sum('token_amount_paid');
         $totalBookingsCount = Booking::count();
 
         // Filter units by project if requested
@@ -103,8 +104,7 @@ class AdminController extends Controller
         ]);
 
         $unit = Unit::findOrFail($id);
-        $unit->total_price = (int) $request->price_num;
-        $unit->base_price = (int) ($request->price_num * 0.85);
+        $unit->applyTotalPrice((int) $request->price_num);
         $unit->save();
 
         if ($request->ajax() || $request->wantsJson()) {
@@ -146,7 +146,8 @@ class AdminController extends Controller
 
         $project = Project::where('slug', $validated['project_slug'])->first();
         $validated['project_name'] = $project ? $project->name : 'Kedia Township';
-        $validated['base_price'] = (int) ($validated['total_price'] * 0.85);
+        $totalPrice = (int) $validated['total_price'];
+        unset($validated['total_price']);
 
         // These columns are NOT NULL in the units table; fill sensible defaults when left blank.
         $validated['unit_number'] = $validated['unit_number'] ?? $validated['unit_code'];
@@ -158,7 +159,9 @@ class AdminController extends Controller
             }
         }
 
-        $unit = Unit::create($validated);
+        $unit = new Unit($validated);
+        $unit->applyTotalPrice($totalPrice);
+        $unit->save();
 
         return back()->with('success', "New unit {$unit->unit_code} created successfully.");
     }
@@ -181,12 +184,29 @@ class AdminController extends Controller
     public function updateBookingStatus(Request $request, $id)
     {
         $request->validate([
-            'booking_status' => 'required|in:confirmed,holding,cancelled,refunded'
+            'booking_status' => ['required', Rule::in(array_keys(Booking::STATUSES))],
         ]);
 
         $booking = Booking::findOrFail($id);
         $booking->status = $request->booking_status;
+
+        // Keep the token milestone in step with verification.
+        $schedule = $booking->payment_schedule;
+        if (!empty($schedule[0])) {
+            $schedule[0]['status'] = match ($booking->status) {
+                'confirmed', 'holding' => 'Paid',
+                'refunded' => 'Refunded',
+                'cancelled' => 'Cancelled',
+                default => 'Pending Verification',
+            };
+            $booking->payment_schedule = $schedule;
+        }
         $booking->save();
+
+        // Release the unit back to inventory when a booking is cancelled or refunded.
+        if (in_array($booking->status, ['cancelled', 'refunded'], true) && $booking->unit && $booking->unit->status === 'on_hold') {
+            $booking->unit->update(['status' => 'available']);
+        }
 
         return back()->with('success', "Booking #{$booking->booking_id} status changed to {$booking->booking_status}.");
     }

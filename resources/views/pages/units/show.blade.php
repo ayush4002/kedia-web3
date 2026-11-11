@@ -10,9 +10,9 @@
         <!-- Breadcrumb & Shortlist Trigger -->
         <div class="flex items-center justify-between mb-8">
             <div class="flex items-center gap-2 text-xs font-mono text-[#0E1520]/60">
-                <a href="{{ route('home') }}" class="hover:text-[#0E1520]">Home</a>
+                <a href="{{ route('home') }}" class="hover:text-[#0E1520]">{{ __('Home') }}</a>
                 <span>/</span>
-                <a href="{{ route('projects.index') }}" class="hover:text-[#0E1520]">Projects</a>
+                <a href="{{ route('projects.index') }}" class="hover:text-[#0E1520]">{{ __('Projects') }}</a>
                 <span>/</span>
                 @if($unit->project)
                     <a href="{{ route('projects.show', $unit->project->slug) }}" class="hover:text-[#0E1520]">{{ $unit->project->title }}</a>
@@ -22,10 +22,10 @@
             </div>
 
             <button type="button" 
-                onclick='addToShortlist({ id: "{{ $unit->unit_code }}", title: "{{ $unit->title }} ({{ $unit->unit_code }})", location: "{{ $unit->project->title ?? "Jaipur" }}", price: "{{ $unit->price_formatted }}", url: "{{ route("units.show", $unit->unit_code) }}" })'
+                onclick='addToShortlist({ id: "unit-{{ $unit->id }}", title: "{{ $unit->title }} ({{ $unit->unit_code }})", location: "{{ $unit->project->title ?? "Jaipur" }}", price: "{{ $unit->price_formatted }}", url: "{{ route("units.show", [$unit->project_slug, $unit->unit_code]) }}" })'
                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#0E1520]/15 text-xs font-mono font-semibold text-[#0E1520] hover:border-rose-400 hover:text-rose-600 transition-colors shadow-sm">
                 <span>♥</span>
-                <span>Save to Shortlist</span>
+                <span>{{ __('Save to Shortlist') }}</span>
             </button>
         </div>
 
@@ -59,10 +59,10 @@
                 <div class="rounded-3xl bg-[#09111C] p-8 border border-[#D4E845]/20 text-white shadow-xl">
                     <div class="flex items-center justify-between mb-4">
                         <div>
-                            <div class="text-[10px] font-mono uppercase tracking-widest text-[#D4E845]">Engineering Blueprint</div>
-                            <h3 class="font-serif text-2xl font-bold">2D Architectural Floor Layout</h3>
+                            <div class="text-[10px] font-mono uppercase tracking-widest text-[#D4E845]">{{ __('Engineering Blueprint') }}</div>
+                            <h3 class="font-serif text-2xl font-bold">{{ __('2D Architectural Floor Layout') }}</h3>
                         </div>
-                        <span class="font-mono text-xs text-white/50">Scale 1:50</span>
+                        <span class="font-mono text-xs text-white/50">{{ __('Scale 1:50') }}</span>
                     </div>
 
                     <!-- Blueprint SVG Mock Drawing -->
@@ -72,50 +72,50 @@
                             <rect x="20" y="20" width="360" height="160" stroke-width="2"></rect>
                             <!-- Master Bedroom -->
                             <rect x="20" y="20" width="160" height="100" stroke-width="1.5"></rect>
-                            <text x="50" y="70" fill="#D4E845" font-size="10" font-family="monospace">MASTER BEDROOM</text>
+                            <text x="50" y="70" fill="#D4E845" font-size="10" font-family="monospace">{{ __('MASTER BEDROOM') }}</text>
                             <text x="65" y="85" fill="white" font-size="8" opacity="0.6">14' x 16'</text>
                             <!-- Living Lounge -->
                             <rect x="180" y="20" width="200" height="100" stroke-width="1.5"></rect>
-                            <text x="230" y="70" fill="#D4E845" font-size="10" font-family="monospace">LIVING &amp; DINING</text>
+                            <text x="230" y="70" fill="#D4E845" font-size="10" font-family="monospace">{{ __('LIVING & DINING') }}</text>
                             <text x="255" y="85" fill="white" font-size="8" opacity="0.6">18' x 22'</text>
                             <!-- Modular Kitchen -->
                             <rect x="20" y="120" width="120" height="60" stroke-width="1.5"></rect>
-                            <text x="35" y="155" fill="#D4E845" font-size="9" font-family="monospace">KITCHEN</text>
+                            <text x="35" y="155" fill="#D4E845" font-size="9" font-family="monospace">{{ __('KITCHEN') }}</text>
                             <!-- Vastu Deck -->
                             <rect x="140" y="120" width="240" height="60" stroke-width="1.5"></rect>
-                            <text x="210" y="155" fill="#D4E845" font-size="9" font-family="monospace">PRIVATE COURTYARD &amp; LAWN</text>
+                            <text x="210" y="155" fill="#D4E845" font-size="9" font-family="monospace">{{ __('PRIVATE COURTYARD & LAWN') }}</text>
                         </svg>
-                        <div class="mt-2 font-mono text-[10px] text-white/50">Vedic Vastu Aligned with North-East Entrance</div>
+                        <div class="mt-2 font-mono text-[10px] text-white/50">{{ __('Vedic Vastu Aligned with North-East Entrance') }}</div>
                     </div>
                 </div>
 
                 <!-- Specifications Matrix -->
                 <div class="bg-white rounded-3xl p-8 border border-[#0E1520]/10 shadow-sm space-y-6">
-                    <h3 class="font-serif text-2xl font-bold text-[#0E1520]">Unit Dossier &amp; Specifications</h3>
+                    <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ __('Unit Dossier & Specifications') }}</h3>
                     
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 font-mono text-xs">
                         <div>
-                            <div class="text-[#0E1520]/50 text-[10px] uppercase">Property Type</div>
+                            <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Property Type') }}</div>
                             <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ ucfirst($unit->type) }}</div>
                         </div>
                         <div>
-                            <div class="text-[#0E1520]/50 text-[10px] uppercase">Super Built-Up Area</div>
+                            <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Super Built-Up Area') }}</div>
                             <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $unit->area_sqft }} SQ.FT</div>
                         </div>
                         <div>
-                            <div class="text-[#0E1520]/50 text-[10px] uppercase">Plot Size (Cadastral)</div>
+                            <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Plot Size (Cadastral)') }}</div>
                             <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $unit->plot_size_sqyd ?? '125' }} SQ.YD</div>
                         </div>
                         <div>
-                            <div class="text-[#0E1520]/50 text-[10px] uppercase">Vastu Facing</div>
+                            <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Vastu Facing') }}</div>
                             <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $unit->facing ?? 'East Facing' }}</div>
                         </div>
                         <div>
-                            <div class="text-[#0E1520]/50 text-[10px] uppercase">Bedrooms / Baths</div>
+                            <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Bedrooms / Baths') }}</div>
                             <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $unit->bedrooms ?? 3 }} BHK / {{ $unit->bathrooms ?? 3 }} Baths</div>
                         </div>
                         <div>
-                            <div class="text-[#0E1520]/50 text-[10px] uppercase">Floor Level</div>
+                            <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Floor Level') }}</div>
                             <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $unit->floor ?? 'Ground + 1' }}</div>
                         </div>
                     </div>
@@ -129,35 +129,38 @@
                 <div class="bg-white rounded-3xl p-8 border border-[#0E1520]/10 shadow-xl sticky top-28 space-y-6">
                     
                     <div>
-                        <div class="text-[10px] font-mono uppercase tracking-widest text-[#0E1520]/60">Transparent Valuation</div>
+                        <div class="text-[10px] font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Transparent Valuation') }}</div>
                         <h2 class="font-serif text-3xl font-bold text-[#0E1520] mt-1">{{ $unit->title }}</h2>
                         <div class="text-xs text-[#0E1520]/60 font-mono mt-0.5">Township: {{ $unit->project->title ?? 'Kedia Community' }}</div>
                     </div>
 
                     <!-- Price Breakup Card -->
                     <div class="bg-[#FAF8F5] rounded-2xl p-5 border border-[#0E1520]/10 space-y-3 font-mono text-xs">
-                        <div class="flex items-center justify-between pb-2 border-b border-[#0E1520]/10">
-                            <span class="text-[#0E1520]/70">Base Agreement Value:</span>
-                            <span class="font-bold text-[#0E1520]">₹ {{ number_format($pricing['base_price']) }}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-[#0E1520]/70">GST (5% Residential):</span>
-                            <span class="font-semibold text-[#0E1520]">₹ {{ number_format($pricing['gst']) }}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-[#0E1520]/70">Corpus &amp; Maintenance (2.5%):</span>
-                            <span class="font-semibold text-[#0E1520]">₹ {{ number_format($pricing['maintenance']) }}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-[#0E1520]/70">Club &amp; Power Infra:</span>
-                            <span class="font-semibold text-[#0E1520]">₹ {{ number_format($pricing['club_charges']) }}</span>
-                        </div>
-                        <div class="flex items-center justify-between pb-2 border-b border-[#0E1520]/10">
-                            <span class="text-[#0E1520]/70">Govt Stamp Duty &amp; Registry (6%):</span>
-                            <span class="font-semibold text-[#0E1520]">₹ {{ number_format($pricing['stamp_duty_estimate']) }}</span>
-                        </div>
+                        @php
+                            $priceRows = [
+                                ['Base Agreement Value', $pricing['base_price']],
+                                ['Infrastructure Development Charges', $pricing['development_charges']],
+                                ['Club Membership', $pricing['club_charges']],
+                                ['Parking', $pricing['parking_charges']],
+                                ['GST', $pricing['gst']],
+                                ['Govt Stamp Duty & Registration (est.)', $pricing['stamp_duty_estimate']],
+                                ['Other Charges', $pricing['other_charges']],
+                            ];
+                        @endphp
+                        @foreach($priceRows as [$label, $amount])
+                            @if($amount != 0 || $loop->first)
+                                <div class="flex items-center justify-between {{ $loop->first ? 'pb-2 border-b border-[#0E1520]/10' : '' }}">
+                                    <span class="text-[#0E1520]/70">{{ $label }}:</span>
+                                    <span class="{{ $loop->first ? 'font-bold' : 'font-semibold' }} text-[#0E1520]">₹ {{ number_format($amount) }}</span>
+                                </div>
+                            @endif
+                        @endforeach
+                        @if($pricing['gst'] == 0)
+                            <div class="text-[10px] text-[#0E1520]/50">{{ __('No GST applies to this unit.') }}</div>
+                        @endif
+                        <div class="border-b border-[#0E1520]/10"></div>
                         <div class="flex items-center justify-between pt-1 text-sm font-bold">
-                            <span class="text-[#0E1520]">Estimated All-Inclusive Cost:</span>
+                            <span class="text-[#0E1520]">{{ __('Estimated All-Inclusive Cost:') }}</span>
                             <span class="text-[#0E1520] font-serif text-lg">₹ {{ number_format($pricing['grand_total']) }}</span>
                         </div>
                     </div>
@@ -165,45 +168,45 @@
                     <!-- Token Advance Required Today -->
                     <div class="p-4 rounded-2xl bg-[#0E1520] text-white flex items-center justify-between">
                         <div>
-                            <div class="text-[10px] font-mono text-[#D4E845] uppercase tracking-wider">Advance Token Online (5%)</div>
+                            <div class="text-[10px] font-mono text-[#D4E845] uppercase tracking-wider">{{ __('Advance Token Online (5%)') }}</div>
                             <div class="text-xl font-bold font-serif">₹ {{ number_format($pricing['token_amount']) }}</div>
                         </div>
                         <span class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                            Refundable 15 Days
+                            {{ __('Refundable 15 Days') }}
                         </span>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="space-y-3 pt-2">
                         @if($unit->status === 'available')
-                            <a href="{{ route('booking.checkout', $unit->unit_code) }}" class="block w-full py-4 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-center text-xs uppercase tracking-wider transition-all shadow-lg transform hover:-translate-y-0.5">
-                                Book Unit Now (Test Token) &rarr;
+                            <a href="{{ route('booking.checkout', $unit->id) }}" class="block w-full py-4 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-center text-xs uppercase tracking-wider transition-all shadow-lg transform hover:-translate-y-0.5">
+                                {{ __('Book Unit Now (Test Token) →') }}
                             </a>
                         @elseif($unit->status === 'on_hold')
                             <button disabled class="w-full py-4 rounded-full bg-amber-100 text-amber-800 font-bold text-center text-xs uppercase tracking-wider cursor-not-allowed">
-                                Unit Under Holding
+                                {{ __('Unit Under Holding') }}
                             </button>
                         @else
                             <button disabled class="w-full py-4 rounded-full bg-slate-200 text-slate-600 font-bold text-center text-xs uppercase tracking-wider cursor-not-allowed">
-                                Unit Sold Out
+                                {{ __('Unit Sold Out') }}
                             </button>
                         @endif
 
                         <button type="button" onclick="openSiteVisitModal()" class="w-full py-3.5 rounded-full bg-[#FAF8F5] hover:bg-[#0E1520] text-[#0E1520] hover:text-white border border-[#0E1520]/15 font-bold text-center text-xs uppercase tracking-wider transition-colors">
-                            Schedule Private Site Visit
+                            {{ __('Schedule Private Site Visit') }}
                         </button>
                     </div>
 
                     <!-- Security & Transparency Assurances -->
                     <div class="pt-4 border-t border-[#0E1520]/10 text-[11px] font-mono text-[#0E1520]/60 space-y-1.5">
                         <div class="flex items-center gap-2">
-                            <span class="text-emerald-600">✓</span> Instant provisional reservation voucher generated
+                            <span class="text-emerald-600">✓</span> {{ __('Instant provisional reservation voucher generated') }}
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-emerald-600">✓</span> Unit held exclusively for 72 hours upon token payment
+                            <span class="text-emerald-600">✓</span> {{ __('Unit held exclusively for 72 hours upon token payment') }}
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-emerald-600">✓</span> Direct relationship manager assigned within 15 minutes
+                            <span class="text-emerald-600">✓</span> {{ __('Direct relationship manager assigned within 15 minutes') }}
                         </div>
                     </div>
 

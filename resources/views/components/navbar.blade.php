@@ -11,9 +11,9 @@
                 <img src="/assets/logo-navy.png" alt="Kedia Builders & Colonizers" class="h-9 sm:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105" onerror="this.src='/assets/logo-white.png'; this.classList.add('invert');">
             </a>
             <div class="hidden 2xl:flex items-center gap-2 pl-3 border-l border-[#0E1520]/20 text-[10px] font-sans font-semibold tracking-widest text-[#0E1520]/60 uppercase">
-                <span>EST. 1980</span>
+                <span>{{ __('EST. 1980') }}</span>
                 <span class="inline-block w-1 h-1 rounded-full bg-[#0E1520]/40"></span>
-                <span>JAIPUR</span>
+                <span>{{ __('JAIPUR') }}</span>
             </div>
         </div>
 
@@ -29,26 +29,26 @@
                 </a>
                 <!-- Dropdown Menu -->
                 <div class="absolute left-0 top-full mt-2 w-72 rounded-2xl bg-[#0E1520] text-white p-3 shadow-2xl border border-[#D4E845]/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div class="text-[10px] font-mono tracking-widest uppercase text-[#D4E845] px-3 py-1.5">Signature Townships</div>
+                    <div class="text-[10px] font-mono tracking-widest uppercase text-[#D4E845] px-3 py-1.5">{{ __('Signature Townships') }}</div>
                     <a href="{{ route('projects.show', 'kedias-landmark') }}" class="block px-3 py-2 rounded-xl text-xs hover:bg-white/10 transition-colors">
-                        <div class="font-semibold text-white">Kedia's Landmark</div>
-                        <div class="text-[11px] text-white/50">Ajmer Road · Villas &amp; Plots</div>
+                        <div class="font-semibold text-white">{{ __('Kedia\'s Landmark') }}</div>
+                        <div class="text-[11px] text-white/50">{{ __('Ajmer Road · Villas & Plots') }}</div>
                     </a>
                     <a href="{{ route('projects.show', 'kedias-atulyam') }}" class="block px-3 py-2 rounded-xl text-xs hover:bg-white/10 transition-colors">
-                        <div class="font-semibold text-white">Kedia's Atulyam</div>
-                        <div class="text-[11px] text-white/50">Sirsi Road · Smart Living</div>
+                        <div class="font-semibold text-white">{{ __('Kedia\'s Atulyam') }}</div>
+                        <div class="text-[11px] text-white/50">{{ __('Sirsi Road · Smart Living') }}</div>
                     </a>
                     <a href="{{ route('projects.show', 'kedias-tulsi') }}" class="block px-3 py-2 rounded-xl text-xs hover:bg-white/10 transition-colors">
-                        <div class="font-semibold text-white">Kedia's Tulsi</div>
-                        <div class="text-[11px] text-white/50">Bani Park · 3 &amp; 4 BHK Luxury</div>
+                        <div class="font-semibold text-white">{{ __('Kedia\'s Tulsi') }}</div>
+                        <div class="text-[11px] text-white/50">{{ __('Bani Park · 3 & 4 BHK Luxury') }}</div>
                     </a>
                     <a href="{{ route('projects.show', 'ganpati-greens') }}" class="block px-3 py-2 rounded-xl text-xs hover:bg-white/10 transition-colors">
-                        <div class="font-semibold text-white">Ganpati Greens</div>
-                        <div class="text-[11px] text-white/50">Eco-Friendly Villas &amp; Enclave</div>
+                        <div class="font-semibold text-white">{{ __('Ganpati Greens') }}</div>
+                        <div class="text-[11px] text-white/50">{{ __('Eco-Friendly Villas & Enclave') }}</div>
                     </a>
                     <div class="my-1 border-t border-white/10"></div>
                     <a href="{{ route('projects.index') }}" class="block px-3 py-2 text-center text-xs font-semibold text-[#D4E845] hover:underline">
-                        View All 16 Projects &rarr;
+                        {{ __('View All 16 Projects →') }}
                     </a>
                 </div>
             </div>
@@ -66,7 +66,7 @@
             <!-- Language Switcher Toggle -->
             <div class="flex items-center bg-[#0E1520]/5 p-0.5 rounded-full border border-[#0E1520]/10 text-xs">
                 <a href="{{ route('language.switch', 'en') }}" class="px-2.5 py-1 font-semibold rounded-full transition-all {{ $currentLocale === 'en' ? 'bg-[#0E1520] text-white shadow-sm' : 'text-[#0E1520]/60 hover:text-[#0E1520]' }}">
-                    EN
+                    {{ __('EN') }}
                 </a>
                 <a href="{{ route('language.switch', 'hi') }}" class="px-2.5 py-1 font-semibold rounded-full transition-all {{ $currentLocale === 'hi' ? 'bg-[#0E1520] text-[#D4E845] shadow-sm' : 'text-[#0E1520]/60 hover:text-[#0E1520]' }}">
                     हिन्दी
@@ -76,7 +76,7 @@
             <!-- AI Concierge Modal Trigger -->
             <button type="button" onclick="openAiConciergeModal()" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-[#0E1520]/15 hover:border-[#0E1520] text-[#0E1520] shadow-sm hover:shadow transition-all whitespace-nowrap group">
                 <span class="text-amber-500 group-hover:rotate-12 transition-transform">✨</span>
-                <span>AI Concierge</span>
+                <span>{{ __('AI Concierge') }}</span>
             </button>
 
             <!-- Shortlist Wishlist Button -->
@@ -128,7 +128,7 @@
         <a href="{{ route('gallery') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_gallery') }}</a>
         <a href="{{ route('tools') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_calculator') }}</a>
         <a href="{{ route('nri') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_nri') }}</a>
-        <a href="{{ route('contact') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_contact') }}</a>        <a href="{{ route('customer.dashboard') }}" class="block text-sm font-semibold text-blue-800 py-1.5">PATRON DASHBOARD</a>
+        <a href="{{ route('contact') }}" class="block text-sm font-semibold text-[#0E1520] py-1.5">{{ __('messages.nav_contact') }}</a>        <a href="{{ route('customer.dashboard') }}" class="block text-sm font-semibold text-blue-800 py-1.5">{{ __('PATRON DASHBOARD') }}</a>
     </div>
 </header>
 

@@ -29,13 +29,13 @@
         <div>
             <div class="flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-[#D4E845] mb-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>The Living Blueprint · Live Sector Layout</span>
+                <span>{{ __('The Living Blueprint · Live Sector Layout') }}</span>
             </div>
             <h3 class="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-white">
-                Cadastral Plot & Villa Master Plan
+                {{ __('Cadastral Plot & Villa Master Plan') }}
             </h3>
             <p class="text-xs sm:text-sm text-white/60 mt-1 max-w-2xl">
-                Units glow brass on hover. Click any plot to inspect specifications, instant cost sheets, or proceed to direct online booking.
+                {{ __('Units glow brass on hover. Click any plot to inspect specifications, instant cost sheets, or proceed to direct online booking.') }}
             </p>
         </div>
 
@@ -43,10 +43,10 @@
             <!-- Mode Toggle: CAD Blueprint vs Drone Aerial -->
             <div class="bg-black/40 p-1 rounded-full border border-white/10 flex items-center text-xs font-mono">
                 <button type="button" onclick="setBlueprintMode('cad')" id="btnCadMode" class="px-3.5 py-1.5 rounded-full bg-[#D4E845] text-[#0E1520] font-bold shadow transition-all">
-                    CAD Grid
+                    {{ __('CAD Grid') }}
                 </button>
                 <button type="button" onclick="setBlueprintMode('aerial')" id="btnAerialMode" class="px-3.5 py-1.5 rounded-full text-white/70 hover:text-white transition-all">
-                    Drone Aerial
+                    {{ __('Drone Aerial') }}
                 </button>
             </div>
 
@@ -54,19 +54,19 @@
             <div class="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/10 text-[11px] font-mono">
                 <div class="flex items-center gap-1.5">
                     <span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span>
-                    <span>Available</span>
+                    <span>{{ __('Available') }}</span>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <span class="w-2.5 h-2.5 rounded-sm bg-amber-400"></span>
-                    <span>On Hold</span>
+                    <span>{{ __('On Hold') }}</span>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <span class="w-2.5 h-2.5 rounded-sm bg-slate-500"></span>
-                    <span>Sold</span>
+                    <span>{{ __('Sold') }}</span>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <span class="w-2.5 h-2.5 rounded-sm bg-[#C8A24B] shadow-sm"></span>
-                    <span>Hover</span>
+                    <span>{{ __('Hover') }}</span>
                 </div>
             </div>
         </div>
@@ -85,12 +85,12 @@
             <div class="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center font-bold text-white mb-1">
                 N
             </div>
-            <span>1:200 CADASTRAL</span>
+            <span>{{ __('1:200 CADASTRAL') }}</span>
         </div>
 
         <!-- Top Sector Avenue Road -->
         <div class="relative z-10 text-center font-mono text-[10px] tracking-widest uppercase text-white/30 border-b border-dashed border-white/10 pb-2 mb-6">
-            &larr; MAIN AVENUE BOULEVARD · 60 FT WIDE SECTOR ROAD &rarr;
+            {{ __('← MAIN AVENUE BOULEVARD · 60 FT WIDE SECTOR ROAD →') }}
         </div>
 
         <!-- Plot Matrix -->
@@ -140,9 +140,9 @@
                 <!-- Central Haveli Club & Green Spine -->
                 <div class="lg:col-span-2 rounded-2xl bg-gradient-to-br from-[#12241F] to-[#0A1813] border border-emerald-500/30 p-5 text-center flex flex-col items-center justify-center shadow-lg relative overflow-hidden group">
                     <div class="text-2xl mb-1 text-emerald-400 group-hover:scale-110 transition-transform">&#127963;</div>
-                    <div class="font-serif font-bold text-base text-white tracking-wide">HAVELI CLUBHOUSE</div>
-                    <div class="text-[11px] font-mono text-emerald-300/80 uppercase tracking-widest mt-0.5">&amp; Central Eco Greens</div>
-                    <div class="text-[10px] text-white/50 mt-1.5">Infinity Pool · Gym · Vastu Temple</div>
+                    <div class="font-serif font-bold text-base text-white tracking-wide">{{ __('HAVELI CLUBHOUSE') }}</div>
+                    <div class="text-[11px] font-mono text-emerald-300/80 uppercase tracking-widest mt-0.5">{{ __('& Central Eco Greens') }}</div>
+                    <div class="text-[10px] text-white/50 mt-1.5">{{ __('Infinity Pool · Gym · Vastu Temple') }}</div>
                 </div>
 
                 <!-- Right Wing Plots (20-22) -->
@@ -205,12 +205,12 @@
         <!-- Bottom Sector Road & Title Certifications -->
         <div class="relative z-10 pt-6 mt-6 border-t border-dashed border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] font-mono text-white/50">
             <div class="flex items-center gap-2">
-                <span>&#169; Cadastral Coordinate System: JDA Sanction Zone Jaipur</span>
+                <span>{{ __('© Cadastral Coordinate System: JDA Sanction Zone Jaipur') }}</span>
                 <span class="hidden sm:inline">·</span>
-                <span class="text-[#D4E845]">Scale 1:200</span>
+                <span class="text-[#D4E845]">{{ __('Scale 1:200') }}</span>
             </div>
             <div class="text-amber-400 font-semibold">
-                * 100% Clear Land Titles with JDA Patta &amp; RERA Sanctions
+                {{ __('* 100% Clear Land Titles with JDA Patta & RERA Sanctions') }}
             </div>
         </div>
 
@@ -227,41 +227,43 @@
         </button>
 
         <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#D4E845] mb-2">
-            <span>Architectural Plot Dossier</span>
+            <span>{{ __('Architectural Plot Dossier') }}</span>
             <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            <span id="dossierStatusBadge" class="uppercase">Available</span>
+            <span id="dossierStatusBadge" class="uppercase">{{ __('Available') }}</span>
         </div>
 
-        <h3 id="dossierPlotCode" class="font-serif text-3xl font-bold text-white mb-1">Plot P-11</h3>
-        <p id="dossierPlotType" class="text-xs text-white/60 mb-6">Residential Villa Plot · JDA Approved Township</p>
+        <h3 id="dossierPlotCode" class="font-serif text-3xl font-bold text-white mb-1">{{ __('Plot P-11') }}</h3>
+        <p id="dossierPlotType" class="text-xs text-white/60 mb-6">{{ __('Residential Villa Plot · JDA Approved Township') }}</p>
 
         <!-- Specs Grid -->
         <div class="grid grid-cols-2 gap-3 mb-6 bg-white/5 p-4 rounded-2xl border border-white/10 text-xs font-mono">
             <div>
-                <div class="text-white/50 text-[10px] uppercase">Plot Size</div>
-                <div id="dossierPlotSize" class="text-white font-bold text-sm mt-0.5">111 SQ.YD</div>
+                <div class="text-white/50 text-[10px] uppercase">{{ __('Plot Size') }}</div>
+                <div id="dossierPlotSize" class="text-white font-bold text-sm mt-0.5">{{ __('111 SQ.YD') }}</div>
             </div>
             <div>
-                <div class="text-white/50 text-[10px] uppercase">Dimensions</div>
-                <div id="dossierPlotDimensions" class="text-white font-bold text-sm mt-0.5">25 x 40 ft</div>
+                <div class="text-white/50 text-[10px] uppercase">{{ __('Dimensions') }}</div>
+                <div id="dossierPlotDimensions" class="text-white font-bold text-sm mt-0.5">{{ __('25 x 40 ft') }}</div>
             </div>
             <div>
-                <div class="text-white/50 text-[10px] uppercase">Vastu Facing</div>
-                <div id="dossierPlotFacing" class="text-white font-bold text-sm mt-0.5">East Facing</div>
+                <div class="text-white/50 text-[10px] uppercase">{{ __('Vastu Facing') }}</div>
+                <div id="dossierPlotFacing" class="text-white font-bold text-sm mt-0.5">{{ __('East Facing') }}</div>
             </div>
             <div>
-                <div class="text-white/50 text-[10px] uppercase">Total Cost Estimate</div>
-                <div id="dossierPlotPrice" class="text-[#D4E845] font-bold text-sm mt-0.5">₹ 32.83 Lakh</div>
+                <div class="text-white/50 text-[10px] uppercase">{{ __('Total Cost Estimate') }}</div>
+                <div id="dossierPlotPrice" class="text-[#D4E845] font-bold text-sm mt-0.5">{{ __('₹ 32.83 Lakh') }}</div>
             </div>
         </div>
 
         <!-- Action Buttons -->
         <div class="flex items-center gap-3">
-            <a id="dossierBookBtn" href="{{ route('booking.checkout', 'P-11') }}" class="flex-1 py-3 px-4 rounded-full text-center text-xs font-bold uppercase tracking-wider bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] transition-colors shadow-lg">
-                Proceed to Book Unit &rarr;
+            {{-- The plots drawn on this plan are illustrative (they are not inventory rows),
+                 so the button opens the real unit list instead of a checkout for a fake code. --}}
+            <a id="dossierBookBtn" href="{{ ($project ?? null) ? route('projects.show', $project->slug) . '#inventorySection' : route('projects.index') }}" class="flex-1 py-3 px-4 rounded-full text-center text-xs font-bold uppercase tracking-wider bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] transition-colors shadow-lg">
+                {{ __('View Available Units →') }}
             </a>
             <button type="button" onclick="openSiteVisitModal()" class="py-3 px-4 rounded-full text-xs font-bold uppercase tracking-wider bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/10">
-                Schedule Visit
+                {{ __('Schedule Visit') }}
             </button>
         </div>
     </div>
@@ -301,8 +303,7 @@
             bookBtn.innerText = 'Unit Reserved / Sold';
         } else {
             bookBtn.classList.remove('opacity-50', 'pointer-events-none');
-            bookBtn.innerText = 'Proceed to Book Unit →';
-            bookBtn.href = '/booking/' + encodeURIComponent(plot.code);
+            bookBtn.innerText = 'View Available Units →';
         }
 
         const modal = document.getElementById('plotDossierModal');

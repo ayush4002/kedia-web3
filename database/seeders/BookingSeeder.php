@@ -12,7 +12,7 @@ class BookingSeeder extends Seeder
         $bookings = [
             [
                 'booking_id' => 'KED-2026-7821',
-                'unit_code' => 'KED-Villa102',
+                'unit_code' => 'NIK-Villa102',
                 'unit_number' => 'Villa 102',
                 'project_slug' => 'nikunj-villas',
                 'project_name' => 'Nikunj Villas',
@@ -49,7 +49,7 @@ class BookingSeeder extends Seeder
             ],
             [
                 'booking_id' => 'KED-2026-5541',
-                'unit_code' => 'KLA-Plot12',
+                'unit_code' => 'KED-Plot12',
                 'unit_number' => 'Plot 12',
                 'project_slug' => 'kedias-landmark',
                 'project_name' => "Kedia's Landmark",
@@ -87,5 +87,23 @@ class BookingSeeder extends Seeder
         foreach ($bookings as $b) {
             DB::table('bookings')->updateOrInsert(['booking_id' => $b['booking_id']], $b);
         }
+
+        // Link the seeded bookings to their units by project + code.
+        DB::statement('
+            UPDATE bookings
+            SET unit_id = (
+                SELECT units.id FROM units
+                WHERE units.project_slug = bookings.project_slug
+                  AND units.unit_code = bookings.unit_code
+                LIMIT 1
+            )
+            WHERE unit_id IS NULL
+        ');
+
+        // A booked unit can't still be listed as available.
+        DB::table('units')
+            ->whereIn('id', DB::table('bookings')->whereNotNull('unit_id')->pluck('unit_id'))
+            ->where('status', 'available')
+            ->update(['status' => 'on_hold']);
     }
 }

@@ -58,7 +58,7 @@ class Unit extends Model
 
     public function bookings(): HasMany
     {
-        return $this->hasMany(Booking::class, 'unit_code', 'unit_code');
+        return $this->hasMany(Booking::class, 'unit_id');
     }
 
     // Accessor aliases for view compatibility
@@ -93,31 +93,67 @@ class Unit extends Model
         return $this->unit_type ?? 'Villa';
     }
 
+    public const TOKEN_RATE = 0.05;
+
     /**
-     * Compute full itemized pricing breakdown with statutory dues and token
+     * Itemised cost sheet built from the breakdown stored on the unit, so the
+     * total always equals the listed total_price shown across the site.
      */
-    public function computePricing(?int $basePrice = null): array
+    public function computePricing(): array
     {
-        $base = $basePrice ?? ($this->base_price ?: 3500000);
-        $type = $this->unit_type ?? 'Villa';
-
-        $idc = (int) round($base * 0.04);
-        $club = ($type === 'Villa') ? 75000 : 35000;
-        $maintenance = (int) round($base * 0.025);
-        $gst = (int) round($base * 0.05);
-        $reg = (int) round($base * 0.06);
-        $total = $base + $idc + $club + $maintenance + $gst + $reg;
-        $token = (int) round($total * 0.05);
-
-        return [
-            'base_price' => $base,
-            'development_charges' => $idc,
-            'club_charges' => $club,
-            'maintenance' => $maintenance,
-            'gst' => $gst,
-            'stamp_duty_estimate' => $reg,
-            'grand_total' => $total,
-            'token_amount' => $token,
+        $components = [
+            'base_price' => (int) $this->base_price,
+            'development_charges' => (int) $this->development_charges,
+            'club_charges' => (int) $this->club_membership,
+            'parking_charges' => (int) $this->parking_charges,
+            'gst' => (int) $this->gst,
+            'stamp_duty_estimate' => (int) $this->stamp_duty_registration,
         ];
+
+        $sum = array_sum($components);
+        $total = (int) $this->total_price ?: $sum;
+
+        // Any gap between the stored total and its parts is shown as an adjustment
+        // rather than silently changing the price the buyer saw.
+        $components['other_charges'] = $total - $sum;
+        $components['grand_total'] = $total;
+        $components['token_amount'] = (int) round($total * self::TOKEN_RATE);
+
+        return $components;
+    }
+
+    /**
+     * Set a new all-inclusive price and rebuild the breakdown so its parts still
+     * add up to it: existing parts are scaled proportionally; a unit with no
+     * breakdown yet gets a standard one (no GST on plots, 5% on built units).
+     */
+    public function applyTotalPrice(int $total): void
+    {
+        $parts = ['development_charges', 'club_membership', 'parking_charges', 'gst', 'stamp_duty_registration'];
+        $oldTotal = (int) $this->total_price;
+
+        if ($oldTotal > 0 && $this->base_price > 0) {
+            $ratio = $total / $oldTotal;
+            foreach ($parts as $part) {
+                $this->{$part} = (int) round(((int) $this->{$part}) * $ratio);
+            }
+        } else {
+            $gstRate = $this->unit_type === 'Plot' ? 0 : 0.05;
+            // total = base * (1 + 0.04 dev + gst + 0.06 stamp) + club
+            $club = $this->unit_type === 'Plot' ? 35000 : 75000;
+            $base = (int) round(($total - $club) / (1 + 0.04 + $gstRate + 0.06));
+            $this->development_charges = (int) round($base * 0.04);
+            $this->club_membership = $club;
+            $this->parking_charges = 0;
+            $this->gst = (int) round($base * $gstRate);
+            $this->stamp_duty_registration = (int) round($base * 0.06);
+        }
+
+        $others = 0;
+        foreach ($parts as $part) {
+            $others += (int) $this->{$part};
+        }
+        $this->base_price = $total - $others;
+        $this->total_price = $total;
     }
 }

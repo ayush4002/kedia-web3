@@ -10,19 +10,19 @@
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-[#0E1520]/10">
             <div>
-                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">Patron Holding Portal</span>
+                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Patron Holding Portal') }}</span>
                 <h1 class="font-serif text-3xl sm:text-4xl font-bold text-[#0E1520]">
-                    My Property Holdings &amp; Construction Tracker
+                    {{ __('My Property Holdings & Construction Tracker') }}
                 </h1>
-                <p class="text-xs sm:text-sm text-[#0E1520]/60 mt-1">Review active unit allocations, token receipts, construction milestones, and title documents.</p>
+                <p class="text-xs sm:text-sm text-[#0E1520]/60 mt-1">{{ __('Review active unit allocations, token receipts, construction milestones, and title documents.') }}</p>
             </div>
 
             <!-- Search Booking Form -->
             <form method="GET" action="{{ route('customer.dashboard') }}" class="flex flex-wrap items-center gap-2">
-                <input type="text" name="booking_id" required value="{{ request('booking_id') }}" placeholder="Booking ID (KB-…)" aria-label="Booking ID" class="px-4 py-2.5 rounded-full bg-white border border-[#0E1520]/15 text-xs font-mono text-[#0E1520] focus:outline-none focus:border-[#0E1520]">
-                <input type="tel" name="phone" required value="{{ request('phone') }}" placeholder="Registered mobile" aria-label="Registered mobile number" class="px-4 py-2.5 rounded-full bg-white border border-[#0E1520]/15 text-xs font-mono text-[#0E1520] focus:outline-none focus:border-[#0E1520]">
+                <input type="text" name="booking_id" required value="{{ request('booking_id') }}" placeholder="{{ __('Booking ID (KB-…)') }}" aria-label="Booking ID" class="px-4 py-2.5 rounded-full bg-white border border-[#0E1520]/15 text-xs font-mono text-[#0E1520] focus:outline-none focus:border-[#0E1520]">
+                <input type="tel" name="phone" required value="{{ request('phone') }}" placeholder="{{ __('Registered mobile') }}" aria-label="Registered mobile number" class="px-4 py-2.5 rounded-full bg-white border border-[#0E1520]/15 text-xs font-mono text-[#0E1520] focus:outline-none focus:border-[#0E1520]">
                 <button type="submit" class="px-5 py-2.5 rounded-full bg-[#0E1520] text-white text-xs font-bold uppercase tracking-wider">
-                    Lookup
+                    {{ __('Lookup') }}
                 </button>
             </form>
         </div>
@@ -38,7 +38,7 @@
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#0E1520]/10">
                             <div>
                                 <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider font-bold bg-emerald-100 text-emerald-800">
-                                    ● {{ strtoupper($primaryBooking->booking_status) }}
+                                    ● {{ strtoupper($primaryBooking->status_label) }}
                                 </span>
                                 <h2 class="font-serif text-2xl font-bold text-[#0E1520] mt-2">
                                     {{ $primaryBooking->unit->title ?? 'Villa Residence' }} ({{ $primaryBooking->unit->unit_code ?? 'P-11' }})
@@ -46,17 +46,17 @@
                                 <div class="text-xs text-[#0E1520]/60 font-mono">{{ $primaryBooking->project->title ?? 'Kedia Landmark' }} · {{ $primaryBooking->project->location ?? 'Jaipur' }}</div>
                             </div>
                             <div class="text-left sm:text-right font-mono text-xs">
-                                <div class="text-[#0E1520]/50 uppercase text-[10px]">Booking Ref</div>
+                                <div class="text-[#0E1520]/50 uppercase text-[10px]">{{ __('Booking Ref') }}</div>
                                 <div class="text-base font-bold text-[#0E1520]">{{ $primaryBooking->booking_id }}</div>
-                                <div class="text-[10px] text-emerald-700 font-bold mt-0.5">Token Paid: ₹ {{ number_format($primaryBooking->token_amount) }}</div>
+                                <div class="text-[10px] text-emerald-700 font-bold mt-0.5">Token {{ $primaryBooking->payment_status === 'paid' ? 'Paid' : '(awaiting verification)' }}: ₹ {{ number_format($primaryBooking->token_amount) }}</div>
                             </div>
                         </div>
 
                         <!-- 5 Payment Milestones -->
                         <div class="space-y-3 font-mono text-xs">
                             <div class="flex items-center justify-between">
-                                <h3 class="font-serif text-lg font-bold text-[#0E1520]">Milestone Payment Progress</h3>
-                                <span class="text-[10px] text-emerald-700 font-bold">Phase 1 Complete</span>
+                                <h3 class="font-serif text-lg font-bold text-[#0E1520]">{{ __('Milestone Payment Progress') }}</h3>
+                                <span class="text-[10px] text-emerald-700 font-bold">{{ __('Phase 1 Complete') }}</span>
                             </div>
 
                             <div class="space-y-2">
@@ -81,10 +81,10 @@
 
                         <div class="pt-2 flex flex-wrap gap-3">
                             <a href="{{ route('booking.confirmation', $primaryBooking->booking_id) }}" class="px-5 py-2.5 rounded-full bg-[#0E1520] text-white text-xs font-mono font-bold hover:bg-[#162132]">
-                                Download Official Allotment Voucher &rarr;
+                                {{ __('Download Official Allotment Voucher →') }}
                             </a>
                             <button type="button" onclick="alert('JDA Sanction Map is verified and archived under record #JDA-2026-KD.')" class="px-5 py-2.5 rounded-full bg-white border border-[#0E1520]/20 text-[#0E1520] text-xs font-mono font-bold hover:bg-[#FAF8F5]">
-                                🗺 View JDA Cadastral Map
+                                {{ __('🗺 View JDA Cadastral Map') }}
                             </button>
                         </div>
                     </div>
@@ -92,14 +92,14 @@
                     <div class="bg-white rounded-3xl p-12 text-center border border-[#0E1520]/10">
                         <div class="text-3xl mb-2">📋</div>
                         @if($lookupFailed)
-                            <h3 class="font-serif text-xl font-bold text-[#0E1520]">No booking matches those details</h3>
-                            <p class="text-xs text-[#0E1520]/60 mt-1 mb-6">Check the booking ID on your voucher and the mobile number you booked with, then try again.</p>
+                            <h3 class="font-serif text-xl font-bold text-[#0E1520]">{{ __('No booking matches those details') }}</h3>
+                            <p class="text-xs text-[#0E1520]/60 mt-1 mb-6">{{ __('Check the booking ID on your voucher and the mobile number you booked with, then try again.') }}</p>
                         @else
-                            <h3 class="font-serif text-xl font-bold text-[#0E1520]">Find your booking</h3>
-                            <p class="text-xs text-[#0E1520]/60 mt-1 mb-6">Enter your booking ID and registered mobile number to retrieve your property dossier.</p>
+                            <h3 class="font-serif text-xl font-bold text-[#0E1520]">{{ __('Find your booking') }}</h3>
+                            <p class="text-xs text-[#0E1520]/60 mt-1 mb-6">{{ __('Enter your booking ID and registered mobile number to retrieve your property dossier.') }}</p>
                         @endif
                         <a href="{{ route('projects.index') }}" class="px-6 py-2.5 rounded-full bg-[#D4E845] text-[#0E1520] font-bold text-xs uppercase tracking-wider">
-                            Browse Available Units
+                            {{ __('Browse Available Units') }}
                         </a>
                     </div>
                 @endif
@@ -107,8 +107,8 @@
                 <!-- Live Construction Progress Track -->
                 <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#0E1520]/10 shadow-sm space-y-6">
                     <div>
-                        <div class="text-[10px] font-mono uppercase tracking-widest text-[#0E1520]/60">Engineering Milestones</div>
-                        <h3 class="font-serif text-2xl font-bold text-[#0E1520] mt-1">Township Construction Progress</h3>
+                        <div class="text-[10px] font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Engineering Milestones') }}</div>
+                        <h3 class="font-serif text-2xl font-bold text-[#0E1520] mt-1">{{ __('Township Construction Progress') }}</h3>
                     </div>
 
                     <div class="space-y-4">
@@ -133,48 +133,48 @@
                 
                 <!-- Assigned Officer Card -->
                 <div class="bg-[#0E1520] text-white rounded-3xl p-6 sm:p-8 border border-white/10 shadow-xl space-y-4">
-                    <div class="text-[10px] font-mono text-[#D4E845] uppercase tracking-wider">Dedicated Custodian</div>
+                    <div class="text-[10px] font-mono text-[#D4E845] uppercase tracking-wider">{{ __('Dedicated Custodian') }}</div>
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 rounded-full bg-[#D4E845] text-[#0E1520] flex items-center justify-center font-bold text-lg font-serif">
-                            RM
+                            {{ __('RM') }}
                         </div>
                         <div>
-                            <h4 class="font-serif text-lg font-bold">Vikramaditya Rathore</h4>
-                            <div class="text-xs text-white/60 font-mono">Senior Portfolio Officer</div>
+                            <h4 class="font-serif text-lg font-bold">{{ __('Vikramaditya Rathore') }}</h4>
+                            <div class="text-xs text-white/60 font-mono">{{ __('Senior Portfolio Officer') }}</div>
                         </div>
                     </div>
                     <p class="text-xs text-white/70 leading-relaxed font-mono">
-                        Available 7 days a week for registration scheduling, bank loan processing, or physical site inspection.
+                        {{ __('Available 7 days a week for registration scheduling, bank loan processing, or physical site inspection.') }}
                     </p>
                     <div class="pt-2 space-y-2 font-mono text-xs">
                         <a href="tel:+918302500500" class="block w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-center font-bold text-[#D4E845] transition-colors">
-                            📞 Call +91 8302 500 500
+                            {{ __('📞 Call +91 8302 500 500') }}
                         </a>
                         <a href="https://wa.me/919829184872" target="_blank" class="block w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-center font-bold text-white transition-colors">
-                            💬 WhatsApp Direct Desk
+                            {{ __('💬 WhatsApp Direct Desk') }}
                         </a>
                     </div>
                 </div>
 
                 <!-- Legal Documents Repository -->
                 <div class="bg-white rounded-3xl p-6 border border-[#0E1520]/10 shadow-sm space-y-4">
-                    <h4 class="font-serif text-lg font-bold text-[#0E1520]">Sanction Repository</h4>
+                    <h4 class="font-serif text-lg font-bold text-[#0E1520]">{{ __('Sanction Repository') }}</h4>
                     <ul class="space-y-3 font-mono text-xs">
                         <li class="flex items-center justify-between pb-2 border-b border-[#0E1520]/5">
-                            <span class="text-[#0E1520]">JDA Approved Layout Plan</span>
-                            <span class="text-emerald-700 font-bold">PDF (Verified)</span>
+                            <span class="text-[#0E1520]">{{ __('JDA Approved Layout Plan') }}</span>
+                            <span class="text-emerald-700 font-bold">{{ __('PDF (Verified)') }}</span>
                         </li>
                         <li class="flex items-center justify-between pb-2 border-b border-[#0E1520]/5">
-                            <span class="text-[#0E1520]">RERA Sanction Certificate</span>
-                            <span class="text-emerald-700 font-bold">RAJ/P/2021/1480</span>
+                            <span class="text-[#0E1520]">{{ __('RERA Sanction Certificate') }}</span>
+                            <span class="text-emerald-700 font-bold">{{ __('RAJ/P/2021/1480') }}</span>
                         </li>
                         <li class="flex items-center justify-between pb-2 border-b border-[#0E1520]/5">
-                            <span class="text-[#0E1520]">Non-Encumbrance 40-Yr Search</span>
-                            <span class="text-emerald-700 font-bold">Clean Title</span>
+                            <span class="text-[#0E1520]">{{ __('Non-Encumbrance 40-Yr Search') }}</span>
+                            <span class="text-emerald-700 font-bold">{{ __('Clean Title') }}</span>
                         </li>
                         <li class="flex items-center justify-between">
-                            <span class="text-[#0E1520]">Standard Agreement to Sale</span>
-                            <span class="text-blue-700 font-bold">Draft Available</span>
+                            <span class="text-[#0E1520]">{{ __('Standard Agreement to Sale') }}</span>
+                            <span class="text-blue-700 font-bold">{{ __('Draft Available') }}</span>
                         </li>
                     </ul>
                 </div>

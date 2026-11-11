@@ -10,9 +10,9 @@
         
         <!-- Breadcrumb -->
         <div class="flex items-center gap-2 text-xs font-mono text-white/50 mb-6">
-            <a href="{{ route('home') }}" class="hover:text-white">Home</a>
+            <a href="{{ route('home') }}" class="hover:text-white">{{ __('Home') }}</a>
             <span>/</span>
-            <a href="{{ route('projects.index') }}" class="hover:text-white">Townships</a>
+            <a href="{{ route('projects.index') }}" class="hover:text-white">{{ __('Townships') }}</a>
             <span>/</span>
             <span class="text-[#D4E845]">{{ $project->title }}</span>
         </div>
@@ -28,7 +28,7 @@
                         {{ ucfirst($project->type) }} Community
                     </span>
                     <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                        100% JDA Approved
+                        {{ __('100% JDA Approved') }}
                     </span>
                 </div>
 
@@ -42,22 +42,22 @@
 
                 <div class="flex flex-wrap items-center gap-6 pt-2 font-mono text-xs">
                     <div>
-                        <div class="text-white/40 uppercase text-[10px]">Location</div>
+                        <div class="text-white/40 uppercase text-[10px]">{{ __('Location') }}</div>
                         <div class="text-white font-bold text-sm">{{ $project->location }}</div>
                     </div>
                     <div class="border-l border-white/20 pl-6">
-                        <div class="text-white/40 uppercase text-[10px]">Price Starting</div>
+                        <div class="text-white/40 uppercase text-[10px]">{{ __('Price Starting') }}</div>
                         <div class="text-[#D4E845] font-bold text-sm">{{ $project->price_range }}</div>
                     </div>
                     <div class="border-l border-white/20 pl-6">
-                        <div class="text-white/40 uppercase text-[10px]">RERA Number</div>
+                        <div class="text-white/40 uppercase text-[10px]">{{ __('RERA Number') }}</div>
                         <div class="text-white font-bold text-sm">{{ $project->rera_number }}</div>
                     </div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-4 pt-4">
                     <button type="button" onclick="openSiteVisitModal()" class="px-6 py-3.5 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-xs uppercase tracking-wider transition-all shadow-lg">
-                        Schedule Site Visit &rarr;
+                        {{ __('Schedule Site Visit →') }}
                     </button>
                     <a href="#inventorySection" class="px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider transition-colors border border-white/20">
                         View Live Units ({{ count($project->units) }})
@@ -80,8 +80,8 @@
 <section class="py-16 bg-[#080E17]">
     <div class="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24">
         <div class="mb-8">
-            <span class="text-xs font-mono uppercase tracking-widest text-[#D4E845]">Sector Blueprint</span>
-            <h2 class="font-serif text-3xl font-bold text-white mt-1">Township Sector Layout &amp; Cadastral Plots</h2>
+            <span class="text-xs font-mono uppercase tracking-widest text-[#D4E845]">{{ __('Sector Blueprint') }}</span>
+            <h2 class="font-serif text-3xl font-bold text-white mt-1">{{ __('Township Sector Layout & Cadastral Plots') }}</h2>
         </div>
         @include('components.living-blueprint', ['project' => $project])
     </div>
@@ -93,9 +93,9 @@
         
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>
-                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">Live Product Catalog</span>
+                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Live Product Catalog') }}</span>
                 <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0E1520] mt-1">Available Units in {{ $project->title }}</h2>
-                <p class="text-xs sm:text-sm text-[#0E1520]/70 mt-1">Every unit is an individually registered asset. Compare specifications and lock your booking with a test advance token.</p>
+                <p class="text-xs sm:text-sm text-[#0E1520]/70 mt-1">{{ __('Every unit is an individually registered asset. Compare specifications and lock your booking with a test advance token.') }}</p>
             </div>
             <div class="flex items-center gap-3 text-xs font-mono">
                 <span class="px-3 py-1.5 rounded-full bg-white border border-[#0E1520]/10 font-bold">
@@ -116,21 +116,21 @@
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
                         <tr class="bg-[#FAF8F5] border-b border-[#0E1520]/10 text-[10px] font-mono uppercase tracking-wider text-[#0E1520]/60">
-                            <th class="py-4 px-6">Unit Code</th>
-                            <th class="py-4 px-6">Type &amp; Config</th>
-                            <th class="py-4 px-6">Carpet / Super Area</th>
-                            <th class="py-4 px-6">Facing</th>
-                            <th class="py-4 px-6">Floor / Block</th>
-                            <th class="py-4 px-6">Price</th>
-                            <th class="py-4 px-6">Status</th>
-                            <th class="py-4 px-6 text-right">Action</th>
+                            <th class="py-4 px-6">{{ __('Unit Code') }}</th>
+                            <th class="py-4 px-6">{{ __('Type & Config') }}</th>
+                            <th class="py-4 px-6">{{ __('Carpet / Super Area') }}</th>
+                            <th class="py-4 px-6">{{ __('Facing') }}</th>
+                            <th class="py-4 px-6">{{ __('Floor / Block') }}</th>
+                            <th class="py-4 px-6">{{ __('Price') }}</th>
+                            <th class="py-4 px-6">{{ __('Status') }}</th>
+                            <th class="py-4 px-6 text-right">{{ __('Action') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-[#0E1520]/5 font-mono">
                         @forelse($project->units as $unit)
                             <tr class="hover:bg-[#FAF8F5]/80 transition-colors">
                                 <td class="py-4 px-6 font-bold text-sm text-[#0E1520]">
-                                    <a href="{{ route('units.show', $unit->unit_code) }}" class="hover:text-[#C8A24B] underline hover:no-underline">
+                                    <a href="{{ route('units.show', [$unit->project_slug, $unit->unit_code]) }}" class="hover:text-[#C8A24B] underline hover:no-underline">
                                         {{ $unit->unit_code }}
                                     </a>
                                 </td>
@@ -152,7 +152,7 @@
                                 </td>
                                 <td class="py-4 px-6">
                                     <div class="font-bold text-sm text-[#0E1520]">{{ $unit->price_formatted }}</div>
-                                    <div class="text-[9px] text-[#0E1520]/40">Excl. Registry/GST</div>
+                                    <div class="text-[9px] text-[#0E1520]/40">{{ __('Excl. Registry/GST') }}</div>
                                 </td>
                                 <td class="py-4 px-6">
                                     <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] uppercase font-bold
@@ -165,17 +165,17 @@
                                 </td>
                                 <td class="py-4 px-6 text-right">
                                     @if($unit->status === 'available')
-                                        <a href="{{ route('booking.checkout', $unit->unit_code) }}" class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-[11px] uppercase tracking-wider transition-colors shadow">
-                                            <span>Book Now</span>
-                                            <span>&rarr;</span>
+                                        <a href="{{ route('booking.checkout', $unit->id) }}" class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-[11px] uppercase tracking-wider transition-colors shadow">
+                                            <span>{{ __('Book Now') }}</span>
+                                            <span>{{ __('→') }}</span>
                                         </a>
                                     @elseif($unit->status === 'on_hold')
                                         <span class="inline-block px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 text-[10px] font-semibold border border-amber-200">
-                                            Under Holding
+                                            {{ __('Under Holding') }}
                                         </span>
                                     @else
                                         <span class="inline-block px-3 py-1.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-semibold">
-                                            Sold Out
+                                            {{ __('Sold Out') }}
                                         </span>
                                     @endif
                                 </td>
@@ -183,7 +183,7 @@
                         @empty
                             <tr>
                                 <td colspan="8" class="text-center py-12 text-[#0E1520]/60">
-                                    No units logged yet for this township. Contact customer care for offline allotment.
+                                    {{ __('No units logged yet for this township. Contact customer care for offline allotment.') }}
                                 </td>
                             </tr>
                         @endforelse
@@ -200,32 +200,32 @@
     <div class="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="p-8 rounded-3xl bg-[#FAF8F5] border border-[#0E1520]/10">
-                <div class="text-xl font-bold font-serif mb-4 text-[#0E1520]">Sanctions &amp; Legal</div>
+                <div class="text-xl font-bold font-serif mb-4 text-[#0E1520]">{{ __('Sanctions & Legal') }}</div>
                 <ul class="space-y-3 text-xs text-[#0E1520]/80 font-mono">
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> 100% Individual JDA Patta</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('100% Individual JDA Patta') }}</li>
                     <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> RERA Registered: {{ $project->rera_number }}</li>
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Approved by all Leading Banks (SBI, HDFC, ICICI)</li>
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Non-Encumbrance Title Guarantee</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('Approved by all Leading Banks (SBI, HDFC, ICICI)') }}</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('Non-Encumbrance Title Guarantee') }}</li>
                 </ul>
             </div>
 
             <div class="p-8 rounded-3xl bg-[#FAF8F5] border border-[#0E1520]/10">
-                <div class="text-xl font-bold font-serif mb-4 text-[#0E1520]">Infrastructure Standards</div>
+                <div class="text-xl font-bold font-serif mb-4 text-[#0E1520]">{{ __('Infrastructure Standards') }}</div>
                 <ul class="space-y-3 text-xs text-[#0E1520]/80 font-mono">
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> 40-60 Ft Wide Asphalt Sector Roads</li>
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Underground Concealed Electrical Cabling</li>
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Centralized Water Overhead Reservoir</li>
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Rainwater Harvesting Recharge Pits</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('40-60 Ft Wide Asphalt Sector Roads') }}</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('Underground Concealed Electrical Cabling') }}</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('Centralized Water Overhead Reservoir') }}</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('Rainwater Harvesting Recharge Pits') }}</li>
                 </ul>
             </div>
 
             <div class="p-8 rounded-3xl bg-[#FAF8F5] border border-[#0E1520]/10">
-                <div class="text-xl font-bold font-serif mb-4 text-[#0E1520]">Lifestyle Amenities</div>
+                <div class="text-xl font-bold font-serif mb-4 text-[#0E1520]">{{ __('Lifestyle Amenities') }}</div>
                 <ul class="space-y-3 text-xs text-[#0E1520]/80 font-mono">
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Gated Security &amp; 24x7 CCTV Surveillance</li>
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Clubhouse &amp; Indoor Gymnasium</li>
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Landscaped Thematic Gardens &amp; Kids Play Area</li>
-                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Vedic Vastu Compliant Plot Alignment</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('Gated Security & 24x7 CCTV Surveillance') }}</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('Clubhouse & Indoor Gymnasium') }}</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('Landscaped Thematic Gardens & Kids Play Area') }}</li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> {{ __('Vedic Vastu Compliant Plot Alignment') }}</li>
                 </ul>
             </div>
         </div>

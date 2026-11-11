@@ -7,8 +7,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
+    public const STATUS_PENDING_VERIFICATION = 'pending_verification';
+
+    /** Statuses an admin can set, with display labels. */
+    public const STATUSES = [
+        'pending_verification' => 'Pending Verification',
+        'confirmed' => 'Confirmed',
+        'holding' => 'Holding',
+        'cancelled' => 'Cancelled',
+        'refunded' => 'Refunded',
+    ];
+
+    /** Statuses whose token counts as money actually received. */
+    public const RECEIVED_STATUSES = ['confirmed', 'holding', 'agreement_pending', 'allotted', 'registry_complete'];
+
     protected $fillable = [
         'booking_id',
+        'unit_id',
         'unit_code',
         'unit_number',
         'project_slug',
@@ -39,7 +54,7 @@ class Booking extends Model
 
     public function unit(): BelongsTo
     {
-        return $this->belongsTo(Unit::class, 'unit_code', 'unit_code');
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 
     public function project(): BelongsTo
@@ -70,6 +85,11 @@ class Booking extends Model
 
     public function getPaymentStatusAttribute(): string
     {
-        return $this->token_amount_paid > 0 ? 'paid' : 'pending';
+        return in_array($this->status, self::RECEIVED_STATUSES, true) ? 'paid' : 'pending';
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return self::STATUSES[$this->status] ?? ucwords(str_replace('_', ' ', (string) $this->status));
     }
 }

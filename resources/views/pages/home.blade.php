@@ -22,11 +22,11 @@
                         <!-- Floating Glass Badge -->
                         <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-[#0E1520]/85 backdrop-blur-md border border-white/10 text-white flex items-center justify-between">
                             <div>
-                                <div class="text-[10px] font-mono text-[#D4E845] uppercase tracking-wider">Live Development</div>
-                                <div class="text-sm font-bold">Nikunj Villas · Sirsi Road</div>
+                                <div class="text-[10px] font-mono text-[#D4E845] uppercase tracking-wider">{{ __('Live Development') }}</div>
+                                <div class="text-sm font-bold">{{ __('Nikunj Villas · Sirsi Road') }}</div>
                             </div>
                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                                94% Handed Over
+                                {{ __('94% Handed Over') }}
                             </span>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                     <a href="{{ route('projects.index') }}" class="inline-flex items-center gap-2.5 sm:gap-3 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-[#0E1520] hover:bg-[#162132] text-white font-semibold text-xs sm:text-sm transition-all transform hover:-translate-y-0.5 shadow-xl group">
                         <span>{{ __('messages.btn_explore_projects') }}</span>
                         <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#D4E845] text-[#0E1520] flex items-center justify-center font-bold text-xs group-hover:translate-x-1 transition-transform">
-                            &rarr;
+                            {{ __('→') }}
                         </span>
                     </a>
 
@@ -64,12 +64,12 @@
                     <div class="flex items-center gap-3 sm:gap-4 bg-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-[#0E1520]/10 shadow-sm">
                         <div class="flex items-center gap-2">
                             <span class="font-serif text-2xl sm:text-3xl font-bold text-[#0E1520]">44+</span>
-                            <span class="text-[10px] sm:text-[11px] font-semibold text-[#0E1520]/70 leading-tight uppercase tracking-wider">Years of<br>Excellence</span>
+                            <span class="text-[10px] sm:text-[11px] font-semibold text-[#0E1520]/70 leading-tight uppercase tracking-wider">{{ __('Years of') }}<br>{{ __('Excellence') }}</span>
                         </div>
                         <div class="w-px h-7 bg-[#0E1520]/10"></div>
                         <button type="button" onclick="openSiteVisitModal()" class="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-semibold text-[#0E1520] hover:text-[#C8A24B] transition-colors">
                             <span class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#FAF8F5] border border-[#0E1520]/15 flex items-center justify-center text-[9px] sm:text-[10px]">▶</span>
-                            <span>Tour Video</span>
+                            <span>{{ __('Tour Video') }}</span>
                         </button>
                     </div>
                 </div>
@@ -87,27 +87,27 @@
                     <div class="px-3 py-1.5 sm:py-2 sm:border-l border-[#0E1520]/10">
                         <label class="block text-[10px] font-mono text-[#0E1520]/50 uppercase tracking-wider">{{ __('messages.search_location') }}</label>
                         <select name="location" class="w-full text-xs font-bold text-[#0E1520] bg-transparent focus:outline-none cursor-pointer">
-                            <option value="">All Jaipur Sectors</option>
-                            <option value="Ajmer Road">Ajmer Road</option>
-                            <option value="Sirsi Road">Sirsi Road</option>
-                            <option value="Bani Park">Bani Park</option>
-                            <option value="Sikar Road">Sikar Road</option>
+                            <option value="">{{ __('All Jaipur Sectors') }}</option>
+                            <option value="Ajmer Road">{{ __('Ajmer Road') }}</option>
+                            <option value="Sirsi Road">{{ __('Sirsi Road') }}</option>
+                            <option value="Bani Park">{{ __('Bani Park') }}</option>
+                            <option value="Sikar Road">{{ __('Sikar Road') }}</option>
                         </select>
                     </div>
                     <div class="px-3 py-1.5 sm:py-2 sm:border-l border-[#0E1520]/10">
                         <label class="block text-[10px] font-mono text-[#0E1520]/50 uppercase tracking-wider">{{ __('messages.search_type') }}</label>
                         <select name="type" class="w-full text-xs font-bold text-[#0E1520] bg-transparent focus:outline-none cursor-pointer">
-                            <option value="all">All Properties</option>
-                            <option value="villa">Luxury Villas</option>
-                            <option value="plot">JDA Plots</option>
-                            <option value="apartment">Apartments</option>
+                            <option value="all">{{ __('All Properties') }}</option>
+                            <option value="villa">{{ __('Luxury Villas') }}</option>
+                            <option value="plot">{{ __('JDA Plots') }}</option>
+                            <option value="apartment">{{ __('Apartments') }}</option>
                         </select>
                     </div>
                     <button type="submit" class="w-full py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-xs uppercase tracking-wider transition-colors shadow flex items-center justify-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                        <span>Search</span>
+                        <span>{{ __('Search') }}</span>
                     </button>
                 </form>
 
@@ -134,15 +134,15 @@
             <div class="rounded-3xl bg-[#0E1520] text-white p-8 sm:p-10 flex flex-col justify-between min-h-[420px] shadow-xl relative overflow-hidden group">
                 <div>
                     <span class="text-xs font-mono text-white/40 block mb-6">01.</span>
-                    <h3 class="font-serif text-2xl sm:text-3xl font-bold mb-4 text-white">What we do</h3>
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold mb-4 text-white">{{ __('What we do') }}</h3>
                     <p class="text-sm text-white/70 leading-relaxed">
-                        We maintain this by ensuring absolute transparency, rigorous JDA title diligence, and professional conduct across every master-planned township in Jaipur.
+                        {{ __('We maintain this by ensuring absolute transparency, rigorous JDA title diligence, and professional conduct across every master-planned township in Jaipur.') }}
                     </p>
                 </div>
                 <div class="pt-8">
                     <a href="{{ route('about') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold uppercase tracking-wider text-white transition-colors">
-                        <span>Our Solutions</span>
-                        <span class="text-[#D4E845]">&rarr;</span>
+                        <span>{{ __('Our Solutions') }}</span>
+                        <span class="text-[#D4E845]">{{ __('→') }}</span>
                     </a>
                 </div>
             </div>
@@ -151,12 +151,12 @@
             <div class="rounded-3xl bg-[#D4E845] text-[#0E1520] p-8 sm:p-10 flex flex-col justify-between min-h-[420px] shadow-xl relative overflow-hidden group">
                 <div>
                     <span class="text-xs font-mono text-[#0E1520]/60 block mb-6">02.</span>
-                    <h3 class="font-serif text-2xl sm:text-3xl font-bold mb-4 text-[#0E1520]">Our impact</h3>
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold mb-4 text-[#0E1520]">{{ __('Our impact') }}</h3>
                     <p class="text-sm text-[#0E1520]/80 leading-relaxed mb-6">
-                        We work with both investors and aspiring families to build enduring residential landmarks that appreciate with unmatched capital returns.
+                        {{ __('We work with both investors and aspiring families to build enduring residential landmarks that appreciate with unmatched capital returns.') }}
                     </p>
                     <a href="{{ route('projects.index') }}" class="text-xs font-bold uppercase tracking-wider text-[#0E1520] underline hover:no-underline">
-                        See Projects &rarr;
+                        {{ __('See Projects →') }}
                     </a>
                 </div>
                 <div class="pt-6">
@@ -170,12 +170,12 @@
             <div class="rounded-3xl bg-[#162132] text-white p-8 sm:p-10 flex flex-col justify-between min-h-[420px] shadow-xl relative overflow-hidden group">
                 <div>
                     <span class="text-xs font-mono text-white/40 block mb-6">03.</span>
-                    <h3 class="font-serif text-2xl sm:text-3xl font-bold mb-4 text-white">Core values</h3>
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold mb-4 text-white">{{ __('Core values') }}</h3>
                     <p class="text-sm text-white/70 leading-relaxed mb-6">
-                        To empower homeowners with cutting-edge construction technologies, eco-friendly rainwater harvesting, and Vastu-compliant architectural layouts.
+                        {{ __('To empower homeowners with cutting-edge construction technologies, eco-friendly rainwater harvesting, and Vastu-compliant architectural layouts.') }}
                     </p>
                     <a href="{{ route('about') }}" class="text-xs font-bold uppercase tracking-wider text-[#D4E845] underline hover:no-underline">
-                        Discover More &rarr;
+                        {{ __('Discover More →') }}
                     </a>
                 </div>
                 <div class="pt-6">
@@ -196,42 +196,42 @@
         <div class="animate-marquee flex flex-nowrap items-center gap-12 whitespace-nowrap text-sm font-medium text-[#0E1520]">
             
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
-                <span class="font-bold tracking-tight">Master Planned Townships</span>
+                <span class="font-bold tracking-tight">{{ __('Master Planned Townships') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
                     <img src="/media/img/2021/04/Kedia-Nikunj-6-600.webp" class="w-full h-full object-cover">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
-                <span class="font-bold tracking-tight">Comprehensive Amenities</span>
+                <span class="font-bold tracking-tight">{{ __('Comprehensive Amenities') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
                     <img src="/media/img/2021/04/Kedia-Nikunj-7-600.webp" class="w-full h-full object-cover">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
-                <span class="font-bold tracking-tight">100% JDA Approved</span>
+                <span class="font-bold tracking-tight">{{ __('100% JDA Approved') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
                     <img src="/media/img/2021/04/Kedia-Nikunj-8-600.webp" class="w-full h-full object-cover">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
-                <span class="font-bold tracking-tight">Vastu &amp; Eco Harmony</span>
+                <span class="font-bold tracking-tight">{{ __('Vastu & Eco Harmony') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
                     <img src="/media/img/2021/04/Kedia-Nikunj-9-600.webp" class="w-full h-full object-cover">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
-                <span class="font-bold tracking-tight">4+ Decades of Trust (Est. 1980)</span>
+                <span class="font-bold tracking-tight">{{ __('4+ Decades of Trust (Est. 1980)') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
                     <img src="/media/img/2021/04/Kedia-Nikunj-2-600.webp" class="w-full h-full object-cover">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
-                <span class="font-bold tracking-tight">Prompt RERA Handover</span>
+                <span class="font-bold tracking-tight">{{ __('Prompt RERA Handover') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
                     <img src="/media/img/2021/04/Kedia-Nikunj-3-600.webp" class="w-full h-full object-cover">
                 </span>
@@ -239,21 +239,21 @@
 
             <!-- Repeated set for seamless loop -->
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
-                <span class="font-bold tracking-tight">Master Planned Townships</span>
+                <span class="font-bold tracking-tight">{{ __('Master Planned Townships') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
                     <img src="/media/img/2021/04/Kedia-Nikunj-6-600.webp" class="w-full h-full object-cover">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
-                <span class="font-bold tracking-tight">Comprehensive Amenities</span>
+                <span class="font-bold tracking-tight">{{ __('Comprehensive Amenities') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
                     <img src="/media/img/2021/04/Kedia-Nikunj-7-600.webp" class="w-full h-full object-cover">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
-                <span class="font-bold tracking-tight">100% JDA Approved</span>
+                <span class="font-bold tracking-tight">{{ __('100% JDA Approved') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
                     <img src="/media/img/2021/04/Kedia-Nikunj-8-600.webp" class="w-full h-full object-cover">
                 </span>
@@ -274,26 +274,26 @@
             
             <div class="space-y-2 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
                 <div class="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight">48<span class="text-[#D4E845]">+</span></div>
-                <div class="text-xs sm:text-sm font-mono uppercase tracking-wider text-white/60">Completed Projects</div>
-                <div class="text-xs text-white/40">Successfully delivered across Jaipur</div>
+                <div class="text-xs sm:text-sm font-mono uppercase tracking-wider text-white/60">{{ __('Completed Projects') }}</div>
+                <div class="text-xs text-white/40">{{ __('Successfully delivered across Jaipur') }}</div>
             </div>
 
             <div class="space-y-2 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
                 <div class="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight">52<span class="text-[#D4E845]">+</span></div>
-                <div class="text-xs sm:text-sm font-mono uppercase tracking-wider text-white/60">Projects in Development</div>
-                <div class="text-xs text-white/40">Ongoing infrastructure &amp; enclaves</div>
+                <div class="text-xs sm:text-sm font-mono uppercase tracking-wider text-white/60">{{ __('Projects in Development') }}</div>
+                <div class="text-xs text-white/40">{{ __('Ongoing infrastructure & enclaves') }}</div>
             </div>
 
             <div class="space-y-2 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
                 <div class="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight">2.3<span class="text-[#D4E845]">b+</span></div>
-                <div class="text-xs sm:text-sm font-mono uppercase tracking-wider text-white/60">Total Projects Cost</div>
-                <div class="text-xs text-white/40">In capital asset valuation</div>
+                <div class="text-xs sm:text-sm font-mono uppercase tracking-wider text-white/60">{{ __('Total Projects Cost') }}</div>
+                <div class="text-xs text-white/40">{{ __('In capital asset valuation') }}</div>
             </div>
 
             <div class="space-y-2">
                 <div class="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight">18<span class="text-[#D4E845]">m+</span></div>
-                <div class="text-xs sm:text-sm font-mono uppercase tracking-wider text-white/60">Square Feet of Property</div>
-                <div class="text-xs text-white/40">Transforming the Pink City landscape</div>
+                <div class="text-xs sm:text-sm font-mono uppercase tracking-wider text-white/60">{{ __('Square Feet of Property') }}</div>
+                <div class="text-xs text-white/40">{{ __('Transforming the Pink City landscape') }}</div>
             </div>
 
         </div>
@@ -306,14 +306,14 @@
         
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
             <div class="space-y-3">
-                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">Why Invest in Kedia</span>
+                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Why Invest in Kedia') }}</span>
                 <h2 class="font-serif text-3xl sm:text-5xl font-bold text-[#0E1520] tracking-tight">
-                    What makes us different
+                    {{ __('What makes us different') }}
                 </h2>
             </div>
             <a href="{{ route('about') }}" class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#0E1520] font-bold hover:text-[#C8A24B]">
-                <span>Read Full Corporate History</span>
-                <span>&rarr;</span>
+                <span>{{ __('Read Full Corporate History') }}</span>
+                <span>{{ __('→') }}</span>
             </a>
         </div>
 
@@ -324,9 +324,9 @@
                 <div class="w-12 h-12 rounded-2xl bg-[#D4E845]/20 text-[#0E1520] flex items-center justify-center font-bold text-lg mb-6">
                     01
                 </div>
-                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">Exclusive Market Record</h3>
+                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">{{ __('Exclusive Market Record') }}</h3>
                 <p class="text-sm text-[#0E1520]/70 leading-relaxed">
-                    An impeccable legacy in Jaipur's real estate market developed over 4+ decades of transparent land tenure and zero litigation.
+                    {{ __('An impeccable legacy in Jaipur\'s real estate market developed over 4+ decades of transparent land tenure and zero litigation.') }}
                 </p>
             </div>
 
@@ -335,9 +335,9 @@
                 <div class="w-12 h-12 rounded-2xl bg-[#D4E845]/20 text-[#0E1520] flex items-center justify-center font-bold text-lg mb-6">
                     02
                 </div>
-                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">100% JDA Approved &amp; Sanctioned</h3>
+                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">{{ __('100% JDA Approved & Sanctioned') }}</h3>
                 <p class="text-sm text-[#0E1520]/70 leading-relaxed">
-                    Every township possesses individual JDA Pattas, 90A conversions, and RAJ-RERA clearances ready for immediate bank financing.
+                    {{ __('Every township possesses individual JDA Pattas, 90A conversions, and RAJ-RERA clearances ready for immediate bank financing.') }}
                 </p>
             </div>
 
@@ -346,9 +346,9 @@
                 <div class="w-12 h-12 rounded-2xl bg-[#D4E845]/20 text-[#0E1520] flex items-center justify-center font-bold text-lg mb-6">
                     03
                 </div>
-                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">Connected &amp; Thriving Locations</h3>
+                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">{{ __('Connected & Thriving Locations') }}</h3>
                 <p class="text-sm text-[#0E1520]/70 leading-relaxed">
-                    Strategically located along Jaipur's highest growth corridors: Ajmer Road expressway, Sirsi Road, Bani Park, and Sikar Road.
+                    {{ __('Strategically located along Jaipur\'s highest growth corridors: Ajmer Road expressway, Sirsi Road, Bani Park, and Sikar Road.') }}
                 </p>
             </div>
 
@@ -357,9 +357,9 @@
                 <div class="w-12 h-12 rounded-2xl bg-[#D4E845]/20 text-[#0E1520] flex items-center justify-center font-bold text-lg mb-6">
                     04
                 </div>
-                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">Comprehensive Club Amenities</h3>
+                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">{{ __('Comprehensive Club Amenities') }}</h3>
                 <p class="text-sm text-[#0E1520]/70 leading-relaxed">
-                    Clubhouses, infinity swimming pools, AC gymnasiums, banquet lawns, sports arenas, and senior citizen pavilions within the gated campus.
+                    {{ __('Clubhouses, infinity swimming pools, AC gymnasiums, banquet lawns, sports arenas, and senior citizen pavilions within the gated campus.') }}
                 </p>
             </div>
 
@@ -368,9 +368,9 @@
                 <div class="w-12 h-12 rounded-2xl bg-[#D4E845]/20 text-[#0E1520] flex items-center justify-center font-bold text-lg mb-6">
                     05
                 </div>
-                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">Vastu &amp; Eco Harmony</h3>
+                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">{{ __('Vastu & Eco Harmony') }}</h3>
                 <p class="text-sm text-[#0E1520]/70 leading-relaxed">
-                    All layouts strictly follow Vedic Vastu guidelines, complemented by underground rainwater recharge shafts and solar street lights.
+                    {{ __('All layouts strictly follow Vedic Vastu guidelines, complemented by underground rainwater recharge shafts and solar street lights.') }}
                 </p>
             </div>
 
@@ -379,9 +379,9 @@
                 <div class="w-12 h-12 rounded-2xl bg-[#D4E845]/20 text-[#0E1520] flex items-center justify-center font-bold text-lg mb-6">
                     06
                 </div>
-                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">Prompt Delivery &amp; Security</h3>
+                <h3 class="font-serif text-xl font-bold text-[#0E1520] mb-2">{{ __('Prompt Delivery & Security') }}</h3>
                 <p class="text-sm text-[#0E1520]/70 leading-relaxed">
-                    Over 200 completed land development projects with timely handovers, boundary walls, 24/7 CCTV, and guarded security check-posts.
+                    {{ __('Over 200 completed land development projects with timely handovers, boundary walls, 24/7 CCTV, and guarded security check-posts.') }}
                 </p>
             </div>
 
@@ -397,22 +397,22 @@
         <!-- Signature Developments Section Header with View Switcher (Matches CAD Blueprint & Dossiers) -->
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
             <div class="space-y-3 max-w-2xl">
-                <span class="text-xs font-mono uppercase tracking-widest text-[#D4E845]">Signature Developments</span>
+                <span class="text-xs font-mono uppercase tracking-widest text-[#D4E845]">{{ __('Signature Developments') }}</span>
                 <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
-                    Discover luxury living at an affordable price
+                    {{ __('Discover luxury living at an affordable price') }}
                 </h2>
                 <p class="text-sm text-white/60">
-                    Browse live property inventory like a boutique catalog. Check real-time availability, floor plans, and book online with test token.
+                    {{ __('Browse live property inventory like a boutique catalog. Check real-time availability, floor plans, and book online with test token.') }}
                 </p>
             </div>
 
             <!-- View Switcher Pills: Project Dossiers vs Living Blueprint Map -->
             <div class="inline-flex p-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono flex-shrink-0">
                 <button type="button" id="btnTabDossiers" onclick="toggleCatalogView('dossiers')" class="px-5 py-2.5 rounded-full text-white/70 hover:text-white transition-all font-semibold">
-                    Project Dossiers
+                    {{ __('Project Dossiers') }}
                 </button>
                 <button type="button" id="btnTabBlueprint" onclick="toggleCatalogView('blueprint')" class="px-5 py-2.5 rounded-full bg-[#D4E845] text-[#0E1520] font-bold shadow transition-all flex items-center gap-2">
-                    <span>Living Blueprint Map</span>
+                    <span>{{ __('Living Blueprint Map') }}</span>
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 </button>
             </div>
@@ -429,13 +429,13 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 border-b border-white/10">
                     <div>
                         <div class="text-xs font-mono tracking-widest uppercase text-[#D4E845] mb-1">
-                            Live Master Inventory · Verified JDA Titles
+                            {{ __('Live Master Inventory · Verified JDA Titles') }}
                         </div>
-                        <h3 class="font-serif text-2xl font-bold text-white">Curated Residence Dossiers</h3>
+                        <h3 class="font-serif text-2xl font-bold text-white">{{ __('Curated Residence Dossiers') }}</h3>
                     </div>
                     <div class="flex items-center gap-2 font-mono text-xs">
-                        <span class="px-3 py-1.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">120 Total Units</span>
-                        <span class="px-3 py-1.5 rounded-full bg-[#D4E845]/20 text-[#D4E845] border border-[#D4E845]/30">Instant Booking ₹1L</span>
+                        <span class="px-3 py-1.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">{{ __('120 Total Units') }}</span>
+                        <span class="px-3 py-1.5 rounded-full bg-[#D4E845]/20 text-[#D4E845] border border-[#D4E845]/30">{{ __('Instant Booking ₹1L') }}</span>
                     </div>
                 </div>
 
@@ -453,20 +453,20 @@
                                 <div class="text-xs text-white/50 mb-4">{{ $u->project_name }} · {{ $u->facing }} Facing</div>
 
                                 <div class="grid grid-cols-2 gap-2 text-[11px] font-mono text-white/70 py-3 border-y border-white/5 mb-4">
-                                    <div>Area: <span class="text-white font-bold">{{ $u->area_sqft }} sq.ft</span></div>
-                                    <div>Plot: <span class="text-white font-bold">{{ $u->area_sqyd }} sq.yd</span></div>
-                                    <div>Bedrooms: <span class="text-white font-bold">{{ $u->bedrooms }} BHK</span></div>
-                                    <div>Floor: <span class="text-white font-bold">{{ $u->floor_level }}</span></div>
+                                    <div>{{ __('Area:') }} <span class="text-white font-bold">{{ $u->area_sqft }} sq.ft</span></div>
+                                    <div>{{ __('Plot:') }} <span class="text-white font-bold">{{ $u->area_sqyd }} sq.yd</span></div>
+                                    <div>{{ __('Bedrooms:') }} <span class="text-white font-bold">{{ $u->bedrooms }} BHK</span></div>
+                                    <div>{{ __('Floor:') }} <span class="text-white font-bold">{{ $u->floor_level }}</span></div>
                                 </div>
                             </div>
 
                             <div class="pt-2 flex items-center justify-between">
                                 <div>
-                                    <div class="text-[10px] font-mono text-white/50 uppercase">All-Inclusive</div>
+                                    <div class="text-[10px] font-mono text-white/50 uppercase">{{ __('All-Inclusive') }}</div>
                                     <div class="font-serif text-lg font-bold text-[#D4E845]">{{ $u->price_formatted }}</div>
                                 </div>
-                                <a href="{{ route('units.show', $u->unit_code) }}" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-[#D4E845] hover:text-[#0E1520] text-xs font-bold font-mono transition-colors">
-                                    View Dossier &rarr;
+                                <a href="{{ route('units.show', [$u->project_slug, $u->unit_code]) }}" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-[#D4E845] hover:text-[#0E1520] text-xs font-bold font-mono transition-colors">
+                                    {{ __('View Dossier →') }}
                                 </a>
                             </div>
                         </div>
@@ -475,8 +475,8 @@
 
                 <div class="pt-8 text-center border-t border-white/10 mt-8">
                     <a href="{{ route('projects.index') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#D4E845] text-[#0E1520] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#c2d733] transition-all">
-                        <span>Explore All 120 Units in Live Inventory Catalog</span>
-                        <span>&rarr;</span>
+                        <span>{{ __('Explore All 120 Units in Live Inventory Catalog') }}</span>
+                        <span>{{ __('→') }}</span>
                     </a>
                 </div>
             </div>
@@ -512,14 +512,14 @@
         
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
             <div class="space-y-3">
-                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">Architectural Plates</span>
+                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Architectural Plates') }}</span>
                 <h2 class="font-serif text-3xl sm:text-5xl font-bold text-[#0E1520] tracking-tight">
-                    Featured Kedia Townships
+                    {{ __('Featured Kedia Townships') }}
                 </h2>
             </div>
             <a href="{{ route('projects.index') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0E1520] text-white text-xs font-mono uppercase tracking-wider font-semibold hover:bg-[#162132]">
-                <span>Browse All 16 Projects</span>
-                <span class="text-[#D4E845]">&rarr;</span>
+                <span>{{ __('Browse All 16 Projects') }}</span>
+                <span class="text-[#D4E845]">{{ __('→') }}</span>
             </a>
         </div>
 
@@ -561,12 +561,12 @@
                     <!-- Footer Details -->
                     <div class="p-6 pt-0 border-t border-[#0E1520]/5 flex items-center justify-between mt-4">
                         <div>
-                            <div class="text-[10px] font-mono text-[#0E1520]/50 uppercase">Starting From</div>
+                            <div class="text-[10px] font-mono text-[#0E1520]/50 uppercase">{{ __('Starting From') }}</div>
                             <div class="font-bold text-sm text-[#0E1520]">{{ $project->price_range }}</div>
                         </div>
                         <a href="{{ route('projects.show', $project->slug) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#FAF8F5] border border-[#0E1520]/15 text-xs font-bold text-[#0E1520] group-hover:bg-[#D4E845] group-hover:border-[#D4E845] transition-colors">
-                            <span>Explore Units</span>
-                            <span>&rarr;</span>
+                            <span>{{ __('Explore Units') }}</span>
+                            <span>{{ __('→') }}</span>
                         </a>
                     </div>
                 </div>
@@ -581,12 +581,12 @@
     <div class="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24">
         
         <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span class="text-xs font-mono uppercase tracking-widest text-[#D4E845]">Visionary Custodians</span>
+            <span class="text-xs font-mono uppercase tracking-widest text-[#D4E845]">{{ __('Visionary Custodians') }}</span>
             <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
-                Global executive leadership
+                {{ __('Global executive leadership') }}
             </h2>
             <p class="text-xs sm:text-sm text-white/60">
-                Combining 4+ decades of Jaipur real estate wisdom with state-of-the-art engineering and institutional governance.
+                {{ __('Combining 4+ decades of Jaipur real estate wisdom with state-of-the-art engineering and institutional governance.') }}
             </p>
         </div>
 
@@ -598,12 +598,12 @@
                     <img src="/media/img/2021/04/Mr-Rajendra-kedia-600.webp" alt="Mr Rajendra Kedia" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h3 class="font-serif text-xl font-bold text-white">Mr Rajendra Kedia</h3>
-                    <div class="text-xs font-mono text-[#D4E845] uppercase tracking-wider mt-0.5">Founder &amp; Chairman</div>
-                    <div class="text-[11px] font-mono text-white/40 mt-1">Pioneering Since 1980 (44+ Years)</div>
+                    <h3 class="font-serif text-xl font-bold text-white">{{ __('Mr Rajendra Kedia') }}</h3>
+                    <div class="text-xs font-mono text-[#D4E845] uppercase tracking-wider mt-0.5">{{ __('Founder & Chairman') }}</div>
+                    <div class="text-[11px] font-mono text-white/40 mt-1">{{ __('Pioneering Since 1980 (44+ Years)') }}</div>
                 </div>
                 <p class="text-xs text-white/70 leading-relaxed">
-                    Laid the foundation of Kedia Builders in 1980. Has guided the completion of over 200+ land development milestones with steadfast devotion to clear titles.
+                    {{ __('Laid the foundation of Kedia Builders in 1980. Has guided the completion of over 200+ land development milestones with steadfast devotion to clear titles.') }}
                 </p>
             </div>
 
@@ -613,12 +613,12 @@
                     <img src="/media/img/2021/04/Mr-Saurabh-Kedia-600.webp" alt="Mr Saurabh Kedia" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h3 class="font-serif text-xl font-bold text-white">Mr Saurabh Kedia</h3>
-                    <div class="text-xs font-mono text-[#D4E845] uppercase tracking-wider mt-0.5">Director</div>
-                    <div class="text-[11px] font-mono text-white/40 mt-1">Master's · Bhawani Niketan (10+ Yrs)</div>
+                    <h3 class="font-serif text-xl font-bold text-white">{{ __('Mr Saurabh Kedia') }}</h3>
+                    <div class="text-xs font-mono text-[#D4E845] uppercase tracking-wider mt-0.5">{{ __('Director') }}</div>
+                    <div class="text-[11px] font-mono text-white/40 mt-1">{{ __('Master\'s · Bhawani Niketan (10+ Yrs)') }}</div>
                 </div>
                 <p class="text-xs text-white/70 leading-relaxed">
-                    Directs engineering from the inside out. Enforces top-tier construction benchmarks, earthquake-resistant design, and turnkey villa execution.
+                    {{ __('Directs engineering from the inside out. Enforces top-tier construction benchmarks, earthquake-resistant design, and turnkey villa execution.') }}
                 </p>
             </div>
 
@@ -628,12 +628,12 @@
                     <img src="/media/img/2021/04/Mr-Gaurav-Kedia-600.webp" alt="Mr Gaurav Kedia" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h3 class="font-serif text-xl font-bold text-white">Mr Gaurav Kedia</h3>
-                    <div class="text-xs font-mono text-[#D4E845] uppercase tracking-wider mt-0.5">Chief Executive Officer</div>
-                    <div class="text-[11px] font-mono text-white/40 mt-1">B.Com · Commerce College (8+ Yrs)</div>
+                    <h3 class="font-serif text-xl font-bold text-white">{{ __('Mr Gaurav Kedia') }}</h3>
+                    <div class="text-xs font-mono text-[#D4E845] uppercase tracking-wider mt-0.5">{{ __('Chief Executive Officer') }}</div>
+                    <div class="text-[11px] font-mono text-white/40 mt-1">{{ __('B.Com · Commerce College (8+ Yrs)') }}</div>
                 </div>
                 <p class="text-xs text-white/70 leading-relaxed">
-                    Believes the tiniest things make the biggest difference. The strategist studying buyer needs, digital booking workflows, and modern living ergonomics.
+                    {{ __('Believes the tiniest things make the biggest difference. The strategist studying buyer needs, digital booking workflows, and modern living ergonomics.') }}
                 </p>
             </div>
 
@@ -650,19 +650,19 @@
             <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-[#D4E845]/10 pointer-events-none blur-3xl"></div>
 
             <div class="max-w-2xl mx-auto space-y-6 relative z-10">
-                <span class="text-xs font-mono uppercase tracking-widest text-[#D4E845]">Reserve Your Slice of Jaipur</span>
+                <span class="text-xs font-mono uppercase tracking-widest text-[#D4E845]">{{ __('Reserve Your Slice of Jaipur') }}</span>
                 <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white">
-                    Your dream home awaits
+                    {{ __('Your dream home awaits') }}
                 </h2>
                 <p class="text-sm text-white/70 leading-relaxed">
-                    Experience luxury architectural living with 100% JDA Patta sanctions. Schedule your private chauffeured site tour or book your unit online today.
+                    {{ __('Experience luxury architectural living with 100% JDA Patta sanctions. Schedule your private chauffeured site tour or book your unit online today.') }}
                 </p>
                 <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
                     <button type="button" onclick="openSiteVisitModal()" class="px-8 py-4 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-xs uppercase tracking-wider shadow-lg transition-all transform hover:-translate-y-0.5">
-                        Schedule Chauffeured Tour &rarr;
+                        {{ __('Schedule Chauffeured Tour →') }}
                     </button>
                     <a href="{{ route('projects.index') }}" class="px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider transition-colors border border-white/20">
-                        Browse Unit Inventory
+                        {{ __('Browse Unit Inventory') }}
                     </a>
                 </div>
             </div>

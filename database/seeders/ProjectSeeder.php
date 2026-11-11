@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class ProjectSeeder extends Seeder
 {
-    public function run(): void
+    /** Seed rows, also used by `php artisan kedia:repair-text`. */
+    public static function data(): array
     {
         $json = <<<'JSON'
 [
@@ -478,9 +479,12 @@ class ProjectSeeder extends Seeder
 ]
 JSON;
 
-        $projects = json_decode($json, true);
+        return json_decode($json, true);
+    }
 
-        foreach ($projects as $item) {
+    public function run(): void
+    {
+        foreach (static::data() as $item) {
             DB::table('projects')->updateOrInsert(['slug' => $item['slug']], $item);
         }
     }

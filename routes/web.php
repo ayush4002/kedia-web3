@@ -29,10 +29,12 @@ Route::get('/projects', [ProjectController::class, 'index'])->name('projects.ind
 Route::get('/projects/{slug}', [ProjectController::class, 'show'])->name('projects.show');
 
 // Unit Product Page
-Route::get('/unit/{unitCode}', [UnitController::class, 'show'])->name('units.show');
+// Unit codes are only unique within a project, so unit URLs include the project slug.
+Route::get('/projects/{slug}/units/{unitCode}', [UnitController::class, 'show'])->name('units.show');
+Route::get('/unit/{unitCode}', [UnitController::class, 'legacy'])->name('units.legacy');
 
 // E-Commerce Booking & Checkout Flow
-Route::get('/booking/{unitCode}', [BookingController::class, 'checkout'])->name('booking.checkout');
+Route::get('/booking/{unit}', [BookingController::class, 'checkout'])->whereNumber('unit')->name('booking.checkout');
 Route::post('/booking/store', [BookingController::class, 'store'])->middleware('throttle:10,1')->name('booking.store');
 Route::get('/booking/confirmation/{bookingId}', [BookingController::class, 'confirmation'])->name('booking.confirmation');
 

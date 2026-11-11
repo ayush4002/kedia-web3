@@ -43,7 +43,7 @@ A high-performance, architectural real estate e-commerce platform for **Kedia Bu
 │       ├── Booking.php                        # Casts for payment schedules & cost sheets
 │       └── SiteVisitLead.php                  # Inbound lead tracking
 ├── database/
-│   ├── kedia_builders_db.sql                  # Complete MySQL database dump (Schema + 139 inserts)
+│   ├── kedia_builders_db.sql                  # Complete MySQL database dump (Schema + seed data, UTF-8)
 │   ├── migrations/
 │   │   ├── 2026_01_01_000001_create_projects_table.php
 │   │   ├── 2026_01_01_000002_create_units_table.php
@@ -124,18 +124,31 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
+Set the admin console login (the admin console at `/admin` stays closed while the password is blank):
+```ini
+ADMIN_USER=admin
+ADMIN_PASSWORD=choose-a-strong-password
+```
+
 ### Step 4: Setup Database (Choose Option A or Option B)
 
 #### Option A: Direct SQL Dump Import (Instant)
-Import the provided MySQL dump file via command line or phpMyAdmin:
+Import the provided UTF-8 MySQL dump (built from the migrations and seeders) via command line or phpMyAdmin:
 ```bash
-mysql -u root -p kedia_builders_db < database/kedia_builders_db.sql
+mysql -u root -p --default-character-set=utf8mb4 kedia_builders_db < database/kedia_builders_db.sql
 ```
 
 #### Option B: Laravel Artisan Migrations & Seeders
 ```bash
 # Creates tables and seeds all 16 projects and 120 inventory units
 php artisan migrate --seed
+```
+
+#### Database imported from the old (pre-November 2026) dump?
+That dump was UTF-16 and turned characters like `·`, `₹` and `’` into `??`, and it had no migrations table. Repair it in place (statuses, prices and bookings are untouched), then apply new migrations:
+```bash
+php artisan kedia:repair-db --baseline
+php artisan migrate
 ```
 
 ### Step 5: Start Development Server
@@ -153,8 +166,8 @@ Open **`http://127.0.0.1:8000`** in your browser.
 | `/` | `home` | Spaciaz Split Hero, 3 Signature Cards, Ticker, Stats & Living Blueprint |
 | `/projects` | `projects.index` | Filterable catalog by type (villa/plot/apartment) and status |
 | `/projects/{slug}` | `projects.show` | Township dossier, RERA details, sector blueprint & available units |
-| `/unit/{code}` | `units.show` | Unit product page, 2D floorplan blueprint, live price breakup |
-| `/booking/{code}` | `booking.checkout` | 4-step e-commerce checkout & 5% test token reservation |
+| `/projects/{slug}/units/{code}` | `units.show` | Unit product page, 2D floorplan blueprint, live price breakup (unit codes are unique only within a project) |
+| `/booking/{unitId}` | `booking.checkout` | 4-step checkout & 5% test token reservation (held as *Pending Verification* until confirmed in admin) |
 | `/booking/confirmation/{id}`| `booking.confirmation` | Official allotment voucher & printable payment receipt |
 | `/dashboard` | `customer.dashboard`| Patron holding tracker & milestone payment schedules |
 | `/admin` | `admin.dashboard` | E-Commerce Command Center (GMV, unit status toggle, price updater, CSV exports) |

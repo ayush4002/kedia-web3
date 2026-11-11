@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class UnitSeeder extends Seeder
 {
-    public function run(): void
+    /** Seed rows, also used by `php artisan kedia:repair-text`. */
+    public static function data(): array
     {
         $json = <<<'JSON'
 [
@@ -3374,10 +3375,17 @@ class UnitSeeder extends Seeder
 ]
 JSON;
 
-        $units = json_decode($json, true);
+        return json_decode($json, true);
+    }
 
-        foreach ($units as $u) {
-            DB::table('units')->updateOrInsert(['unit_code' => $u['unit_code']], $u);
+    public function run(): void
+    {
+        // Unit codes repeat across projects, so the natural key is project + code.
+        foreach (static::data() as $u) {
+            DB::table('units')->updateOrInsert(
+                ['project_slug' => $u['project_slug'], 'unit_code' => $u['unit_code']],
+                $u
+            );
         }
     }
 }

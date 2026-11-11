@@ -114,7 +114,7 @@
         <div id="flashToast" class="fixed bottom-24 right-6 z-50 bg-[#0E1520] text-white border border-[#D4E845] px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 transition-all">
             <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
             <div class="text-xs font-medium">{{ session('success') }}</div>
-            <button onclick="this.parentElement.remove()" class="text-white/50 hover:text-white">&times;</button>
+            <button onclick="this.parentElement.remove()" class="text-white/50 hover:text-white">{{ __('×') }}</button>
         </div>
     @endif
 
@@ -122,7 +122,7 @@
         <div id="flashToast" class="fixed bottom-24 right-6 z-50 bg-red-950 text-white border border-red-500 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4">
             <span class="w-3 h-3 rounded-full bg-red-500"></span>
             <div class="text-xs font-medium">{{ session('error') }}</div>
-            <button onclick="this.parentElement.remove()" class="text-white/50 hover:text-white">&times;</button>
+            <button onclick="this.parentElement.remove()" class="text-white/50 hover:text-white">{{ __('×') }}</button>
         </div>
     @endif
 
@@ -130,14 +130,14 @@
         <div id="validationToast" role="alert" class="fixed bottom-24 right-6 z-50 max-w-sm bg-red-950 text-white border border-red-500 px-6 py-4 rounded-2xl shadow-2xl flex items-start gap-4">
             <span class="mt-1 w-3 h-3 flex-shrink-0 rounded-full bg-red-500"></span>
             <div class="text-xs font-medium space-y-1">
-                <div class="font-bold">Please check the form and try again:</div>
+                <div class="font-bold">{{ __('Please check the form and try again:') }}</div>
                 <ul class="list-disc pl-4 space-y-0.5 text-white/80">
                     @foreach($errors->all() as $message)
                         <li>{{ $message }}</li>
                     @endforeach
                 </ul>
             </div>
-            <button type="button" onclick="this.parentElement.remove()" class="text-white/50 hover:text-white" aria-label="Dismiss">&times;</button>
+            <button type="button" onclick="this.parentElement.remove()" class="text-white/50 hover:text-white" aria-label="Dismiss">{{ __('×') }}</button>
         </div>
     @endif
 
@@ -160,7 +160,7 @@
         <!-- Quick WhatsApp Button -->
         <a href="https://wa.me/919829184872?text=Hello%20Kedia%20Builders%2C%20I%20would%20like%20to%20inquire%20about%20your%20Jaipur%20projects." target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#25D366] text-white font-mono text-xs font-bold shadow-xl hover:bg-[#20ba59] transition-all transform hover:-translate-y-0.5 group" title="Chat on WhatsApp">
             <span class="w-2.5 h-2.5 rounded-full bg-white pulse-emerald"></span>
-            <span class="hidden sm:inline">WhatsApp Desk</span>
+            <span class="hidden sm:inline">{{ __('WhatsApp Desk') }}</span>
             <span class="text-sm">💬</span>
         </a>
 
@@ -176,26 +176,26 @@
         <div class="p-6 border-b border-[#0E1520]/10 flex items-center justify-between bg-[#FAF8F5]">
             <div class="flex items-center gap-2">
                 <span class="text-rose-500 text-lg">♥</span>
-                <h3 class="font-serif text-xl font-bold text-[#0E1520]">My Shortlisted Units</h3>
+                <h3 class="font-serif text-xl font-bold text-[#0E1520]">{{ __('My Shortlisted Units') }}</h3>
             </div>
             <button type="button" onclick="toggleShortlistDrawer()" class="p-2 text-gray-500 hover:text-black text-xl">
-                &times;
+                {{ __('×') }}
             </button>
         </div>
 
         <div id="shortlistItemsContainer" class="p-6 flex-grow overflow-y-auto space-y-4">
             <!-- Dynamic units rendered via JS -->
             <div class="text-center py-12 text-[#0E1520]/50 font-mono text-xs" id="emptyShortlistNotice">
-                Your shortlist is currently empty.<br>Click the heart icon on any unit or project to save it here for comparison.
+                {{ __('Your shortlist is currently empty.') }}<br>{{ __('Click the heart icon on any unit or project to save it here for comparison.') }}
             </div>
         </div>
 
         <div class="p-6 border-t border-[#0E1520]/10 bg-[#FAF8F5] space-y-3">
             <button type="button" onclick="openSiteVisitModal()" class="w-full py-3 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-xs uppercase tracking-wider shadow">
-                Schedule Site Visit for Shortlist &rarr;
+                {{ __('Schedule Site Visit for Shortlist →') }}
             </button>
             <button type="button" onclick="clearShortlist()" class="w-full py-2 text-center text-xs text-rose-600 hover:underline font-mono">
-                Clear Shortlist
+                {{ __('Clear Shortlist') }}
             </button>
         </div>
     </div>
@@ -209,52 +209,52 @@
                 </svg>
             </button>
 
-            <div class="text-xs font-mono uppercase tracking-widest text-[#D4E845] mb-1">VIP Site Experience</div>
+            <div class="text-xs font-mono uppercase tracking-widest text-[#D4E845] mb-1">{{ __('VIP Site Experience') }}</div>
             <h3 class="font-serif text-2xl font-bold text-white mb-2">{{ __('messages.schedule_title') }}</h3>
             <p class="text-xs text-white/60 mb-6">{{ __('messages.schedule_desc') }}</p>
 
             <form action="{{ route('leads.store') }}" method="POST" class="space-y-4 font-mono text-xs">
                 @csrf
                 <div>
-                    <label class="block text-white/70 uppercase mb-1">Full Legal Name *</label>
-                    <input type="text" name="name" required placeholder="e.g. Rahul Sharma" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-[#D4E845] focus:outline-none">
+                    <label class="block text-white/70 uppercase mb-1">{{ __('Full Legal Name *') }}</label>
+                    <input type="text" name="name" required placeholder="{{ __('e.g. Rahul Sharma') }}" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-[#D4E845] focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-white/70 uppercase mb-1">Phone Number (WhatsApp) *</label>
+                    <label class="block text-white/70 uppercase mb-1">{{ __('Phone Number (WhatsApp) *') }}</label>
                     <input type="tel" name="phone" required placeholder="+91 98290 00000" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-[#D4E845] focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-white/70 uppercase mb-1">Select Project</label>
+                    <label class="block text-white/70 uppercase mb-1">{{ __('Select Project') }}</label>
                     <select name="project_name" class="w-full px-4 py-2.5 rounded-xl bg-[#162132] border border-white/10 text-white text-sm focus:border-[#D4E845] focus:outline-none">
-                        <option value="Kedia's Landmark">Kedia's Landmark (Ajmer Road)</option>
-                        <option value="Kedia's Atulyam">Kedia's Atulyam (Sirsi Road)</option>
-                        <option value="Kedia's Tulsi">Kedia's Tulsi (Bani Park)</option>
-                        <option value="Ganpati Greens">Ganpati Greens (Sikar Road)</option>
-                        <option value="Nikunj Villas">Nikunj Villas (Sirsi Road)</option>
-                        <option value="Kedia Aravali">Kedia Aravali Plots</option>
+                        <option value="Kedia's Landmark">{{ __('Kedia\'s Landmark (Ajmer Road)') }}</option>
+                        <option value="Kedia's Atulyam">{{ __('Kedia\'s Atulyam (Sirsi Road)') }}</option>
+                        <option value="Kedia's Tulsi">{{ __('Kedia\'s Tulsi (Bani Park)') }}</option>
+                        <option value="Ganpati Greens">{{ __('Ganpati Greens (Sikar Road)') }}</option>
+                        <option value="Nikunj Villas">{{ __('Nikunj Villas (Sirsi Road)') }}</option>
+                        <option value="Kedia Aravali">{{ __('Kedia Aravali Plots') }}</option>
                     </select>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-white/70 uppercase mb-1">Date</label>
+                        <label class="block text-white/70 uppercase mb-1">{{ __('Date') }}</label>
                         <input type="date" name="preferred_date" value="{{ date('Y-m-d', strtotime('+1 day')) }}" class="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-[#D4E845] focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-white/70 uppercase mb-1">Slot</label>
+                        <label class="block text-white/70 uppercase mb-1">{{ __('Slot') }}</label>
                         <select name="time_slot" class="w-full px-3 py-2.5 rounded-xl bg-[#162132] border border-white/10 text-white text-xs focus:border-[#D4E845] focus:outline-none">
-                            <option>10:00 AM - 12:00 PM</option>
-                            <option>12:00 PM - 02:00 PM</option>
-                            <option>03:00 PM - 05:00 PM</option>
+                            <option value="10:00 AM - 12:00 PM">{{ __('10:00 AM - 12:00 PM') }}</option>
+                            <option value="12:00 PM - 02:00 PM">{{ __('12:00 PM - 02:00 PM') }}</option>
+                            <option value="03:00 PM - 05:00 PM">{{ __('03:00 PM - 05:00 PM') }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 pt-1">
                     <input type="checkbox" id="pickup_requested" name="pickup_requested" value="1" class="rounded border-white/20 text-[#D4E845]">
-                    <label for="pickup_requested" class="text-xs text-white/80">Request Chauffeur Pickup (Jaipur City)</label>
+                    <label for="pickup_requested" class="text-xs text-white/80">{{ __('Request Chauffeur Pickup (Jaipur City)') }}</label>
                 </div>
 
                 <button type="submit" class="w-full py-3 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-xs uppercase tracking-wider transition-all shadow-lg mt-2">
-                    Confirm Private Site Tour &rarr;
+                    {{ __('Confirm Private Site Tour →') }}
                 </button>
             </form>
         </div>
@@ -270,37 +270,37 @@
             </button>
 
             <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#D4E845] mb-1">
-                <span>✨ Kedia AI Concierge</span>
+                <span>{{ __('✨ Kedia AI Concierge') }}</span>
                 <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span class="text-white/60">Live Assistant</span>
+                <span class="text-white/60">{{ __('Live Assistant') }}</span>
             </div>
-            <h3 class="font-serif text-2xl font-bold text-white mb-2">Find Your Ideal Residence</h3>
-            <p class="text-xs text-white/60 mb-6">Select your criteria to get instant project and inventory recommendations based on 4+ decades of Jaipur real estate data.</p>
+            <h3 class="font-serif text-2xl font-bold text-white mb-2">{{ __('Find Your Ideal Residence') }}</h3>
+            <p class="text-xs text-white/60 mb-6">{{ __('Select your criteria to get instant project and inventory recommendations based on 4+ decades of Jaipur real estate data.') }}</p>
 
             <div class="space-y-4 text-xs font-mono">
                 <div>
-                    <label class="block text-white/70 uppercase mb-1">Target Budget Range</label>
+                    <label class="block text-white/70 uppercase mb-1">{{ __('Target Budget Range') }}</label>
                     <div class="grid grid-cols-3 gap-2">
                         <button type="button" onclick="filterByBudget('30-50')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">₹ 30 - 50 L</button>
                         <button type="button" onclick="filterByBudget('50-80')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">₹ 50 - 80 L</button>
-                        <button type="button" onclick="filterByBudget('80+')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">₹ 80 L & Above</button>
+                        <button type="button" onclick="filterByBudget('80+')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">{{ __('₹ 80 L & Above') }}</button>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-white/70 uppercase mb-1">Preferred Configuration</label>
+                    <label class="block text-white/70 uppercase mb-1">{{ __('Preferred Configuration') }}</label>
                     <div class="grid grid-cols-3 gap-2">
-                        <button type="button" onclick="filterByType('villa')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">Luxury Villa</button>
-                        <button type="button" onclick="filterByType('plot')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">JDA Plot</button>
-                        <button type="button" onclick="filterByType('apartment')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">3/4 BHK Flat</button>
+                        <button type="button" onclick="filterByType('villa')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">{{ __('Luxury Villa') }}</button>
+                        <button type="button" onclick="filterByType('plot')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">{{ __('JDA Plot') }}</button>
+                        <button type="button" onclick="filterByType('apartment')" class="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-[#D4E845] hover:text-[#D4E845] text-center">{{ __('3/4 BHK Flat') }}</button>
                     </div>
                 </div>
 
                 <div id="aiRecommendationBox" class="mt-4 p-4 rounded-2xl bg-white/5 border border-white/10 text-xs hidden">
-                    <div class="text-[#D4E845] font-bold mb-1" id="aiRecTitle">Recommended: Kedia's Landmark</div>
-                    <div class="text-white/70 leading-relaxed" id="aiRecDesc">Located on Ajmer Road with JDA approved plots from ₹ 32.83 Lakh and turnkey villas.</div>
+                    <div class="text-[#D4E845] font-bold mb-1" id="aiRecTitle">{{ __('Recommended: Kedia\'s Landmark') }}</div>
+                    <div class="text-white/70 leading-relaxed" id="aiRecDesc">{{ __('Located on Ajmer Road with JDA approved plots from ₹ 32.83 Lakh and turnkey villas.') }}</div>
                     <a id="aiRecLink" href="{{ route('projects.show', 'kedias-landmark') }}" class="inline-block mt-3 px-4 py-2 rounded-full bg-[#D4E845] text-[#0E1520] font-bold text-[11px] uppercase tracking-wider">
-                        Explore Township &rarr;
+                        {{ __('Explore Township →') }}
                     </a>
                 </div>
             </div>

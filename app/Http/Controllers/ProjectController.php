@@ -81,12 +81,7 @@ class ProjectController extends Controller
     {
         $project = Project::with(['units' => function ($q) {
             $q->orderBy('unit_code', 'asc');
-        }])->where('slug', $slug)->first();
-
-        if (!$project) {
-            // Fallback to first project or 404
-            $project = Project::with('units')->firstOrFail();
-        }
+        }])->where('slug', $slug)->firstOrFail();
 
         // Summary of project units
         $unitStats = [

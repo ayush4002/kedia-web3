@@ -9,12 +9,12 @@
     <div class="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div class="space-y-2">
-                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">Signature Catalog</span>
+                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Signature Catalog') }}</span>
                 <h1 class="font-serif text-4xl sm:text-5xl font-bold text-[#0E1520] tracking-tight">
-                    Projects &amp; Master-Planned Townships
+                    {{ __('Projects & Master-Planned Townships') }}
                 </h1>
                 <p class="text-sm text-[#0E1520]/70 max-w-2xl">
-                    Explore our diverse portfolio of JDA-approved luxury villas, turnkey plots, and residential communities across Jaipur's key corridors.
+                    {{ __('Explore our diverse portfolio of JDA-approved luxury villas, turnkey plots, and residential communities across Jaipur\'s key corridors.') }}
                 </p>
             </div>
             <div class="flex items-center gap-3 font-mono text-xs text-[#0E1520]">
@@ -22,7 +22,7 @@
                     {{ count($projects) }} Developments
                 </span>
                 <span class="px-3 py-1.5 rounded-full bg-[#D4E845] text-[#0E1520] font-bold">
-                    100% JDA Patta
+                    {{ __('100% JDA Patta') }}
                 </span>
             </div>
         </div>
@@ -53,16 +53,16 @@
             <!-- Status & Sort Controls -->
             <div class="flex items-center gap-3 w-full sm:w-auto">
                 <select name="status" onchange="this.form.submit()" class="px-3.5 py-2 rounded-full bg-[#FAF8F5] border border-[#0E1520]/15 text-xs font-semibold text-[#0E1520] focus:outline-none cursor-pointer">
-                    <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All Status</option>
-                    <option value="ongoing" {{ request('status') == 'ongoing' ? 'selected' : '' }}>Under Construction</option>
-                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Ready to Move</option>
+                    <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>{{ __('All Status') }}</option>
+                    <option value="ongoing" {{ request('status') == 'ongoing' ? 'selected' : '' }}>{{ __('Under Construction') }}</option>
+                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('Ready to Move') }}</option>
                 </select>
 
                 <select name="sort" onchange="this.form.submit()" class="px-3.5 py-2 rounded-full bg-[#FAF8F5] border border-[#0E1520]/15 text-xs font-semibold text-[#0E1520] focus:outline-none cursor-pointer">
-                    <option value="featured" {{ request('sort') == 'featured' ? 'selected' : '' }}>Sort: Featured</option>
-                    <option value="price-low" {{ request('sort') == 'price-low' ? 'selected' : '' }}>Price: Low to High</option>
-                    <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>Price: High to Low</option>
-                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest Additions</option>
+                    <option value="featured" {{ request('sort') == 'featured' ? 'selected' : '' }}>{{ __('Sort: Featured') }}</option>
+                    <option value="price-low" {{ request('sort') == 'price-low' ? 'selected' : '' }}>{{ __('Price: Low to High') }}</option>
+                    <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>{{ __('Price: High to Low') }}</option>
+                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>{{ __('Newest Additions') }}</option>
                 </select>
             </div>
 
@@ -77,10 +77,10 @@
         @if($projects->isEmpty())
             <div class="text-center py-24 bg-white rounded-3xl border border-[#0E1520]/10 p-8">
                 <div class="text-3xl mb-3">🔍</div>
-                <h3 class="font-serif text-2xl font-bold text-[#0E1520]">No projects found</h3>
-                <p class="text-xs text-[#0E1520]/60 mt-1 mb-6">Try clearing your filters to see our full catalogue.</p>
+                <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ __('No projects found') }}</h3>
+                <p class="text-xs text-[#0E1520]/60 mt-1 mb-6">{{ __('Try clearing your filters to see our full catalogue.') }}</p>
                 <a href="{{ route('projects.index') }}" class="px-6 py-2.5 rounded-full bg-[#0E1520] text-white font-bold text-xs uppercase tracking-wider">
-                    Reset Filters
+                    {{ __('Reset Filters') }}
                 </a>
             </div>
         @else
@@ -133,12 +133,12 @@
                         <!-- Card Footer -->
                         <div class="p-6 pt-0 border-t border-[#0E1520]/5 flex items-center justify-between mt-4">
                             <div>
-                                <div class="text-[10px] font-mono text-[#0E1520]/50 uppercase">Starting From</div>
+                                <div class="text-[10px] font-mono text-[#0E1520]/50 uppercase">{{ __('Starting From') }}</div>
                                 <div class="font-bold text-sm text-[#0E1520]">{{ $project->price_range }}</div>
                             </div>
                             <a href="{{ route('projects.show', $project->slug) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#FAF8F5] border border-[#0E1520]/15 text-xs font-bold text-[#0E1520] group-hover:bg-[#D4E845] group-hover:border-[#D4E845] transition-colors">
-                                <span>Inspect Township</span>
-                                <span>&rarr;</span>
+                                <span>{{ __('Inspect Township') }}</span>
+                                <span>{{ __('→') }}</span>
                             </a>
                         </div>
                     </div>

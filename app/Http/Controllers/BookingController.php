@@ -14,15 +14,12 @@ class BookingController extends Controller
     /**
      * Step 1 - 4: E-Commerce Style Booking Checkout View.
      */
-    public function checkout($unitCode)
+    public function checkout(int $unit)
     {
-        $unit = Unit::with('project')
-            ->where('unit_code', $unitCode)
-            ->orWhere('id', $unitCode)
-            ->firstOrFail();
+        $unit = Unit::with('project')->findOrFail($unit);
 
         if ($unit->status !== 'available') {
-            return redirect()->route('units.show', $unit->unit_code)
+            return redirect()->route('units.show', [$unit->project_slug, $unit->unit_code])
                 ->with('error', 'This unit has already been reserved or sold.');
         }
 
@@ -93,6 +90,7 @@ class BookingController extends Controller
 
         return Booking::create([
             'booking_id' => $bookingId,
+            'unit_id' => $unit->id,
             'unit_code' => $unit->unit_code,
             'unit_number' => $unit->unit_number,
             'project_slug' => $unit->project_slug,
@@ -107,17 +105,54 @@ class BookingController extends Controller
             'token_amount_paid' => $pricing['token_amount'],
             'total_unit_amount' => $pricing['grand_total'],
             'payment_method' => $validated['payment_method'],
-            'payment_reference' => 'TXN-' . strtoupper(Str::random(10)),
-            'status' => 'confirmed',
+            // No real payment gateway is connected yet: the token is a simulated (test)
+            // payment, so the booking waits for the sales team to verify it in admin.
+            'payment_reference' => 'TEST-' . strtoupper(Str::random(10)),
+            'status' => Booking::STATUS_PENDING_VERIFICATION,
             'cost_breakdown' => $pricing,
-            'payment_schedule' => [
-                ['milestone' => 'Token Advance Booking', 'percentage' => 5, 'amount' => $pricing['token_amount'], 'status' => 'Paid', 'due_date' => now()->format('Y-m-d')],
-                ['milestone' => 'On Execution of Agreement to Sale (30 Days)', 'percentage' => 20, 'amount' => round($pricing['grand_total'] * 0.20), 'status' => 'Upcoming', 'due_date' => now()->addDays(30)->format('Y-m-d')],
-                ['milestone' => 'On Foundation & Plinth Completion', 'percentage' => 35, 'amount' => round($pricing['grand_total'] * 0.35), 'status' => 'Upcoming', 'due_date' => now()->addDays(90)->format('Y-m-d')],
-                ['milestone' => 'On Superstructure & Internal Plaster', 'percentage' => 30, 'amount' => round($pricing['grand_total'] * 0.30), 'status' => 'Upcoming', 'due_date' => now()->addDays(180)->format('Y-m-d')],
-                ['milestone' => 'On Registry & Possession Handover', 'percentage' => 10, 'amount' => round($pricing['grand_total'] * 0.10) - $pricing['token_amount'], 'status' => 'Upcoming', 'due_date' => now()->addDays(270)->format('Y-m-d')],
-            ],
+            'payment_schedule' => $this->paymentSchedule($pricing['grand_total'], $pricing['token_amount']),
         ]);
+    }
+
+    /**
+     * Milestone schedule whose amounts always add up exactly to the grand total.
+     */
+    private function paymentSchedule(int $total, int $token): array
+    {
+        // [label, weight of the post-token balance, due in days]
+        $stages = [
+            ['On Execution of Agreement to Sale (30 Days)', 20, 30],
+            ['On Foundation & Plinth Completion', 35, 90],
+            ['On Superstructure & Internal Plaster', 30, 180],
+            ['On Registry & Possession Handover', 10, 270],
+        ];
+        $weightSum = array_sum(array_column($stages, 1));
+
+        $schedule = [[
+            'milestone' => 'Token Advance Booking',
+            'percentage' => round($token / max($total, 1) * 100, 2),
+            'amount' => $token,
+            'status' => 'Pending Verification',
+            'due_date' => now()->format('Y-m-d'),
+        ]];
+
+        $balance = $total - $token;
+        $allocated = 0;
+        foreach ($stages as $i => [$label, $weight, $days]) {
+            $amount = $i === array_key_last($stages)
+                ? $balance - $allocated
+                : (int) round($balance * $weight / $weightSum);
+            $allocated += $amount;
+            $schedule[] = [
+                'milestone' => $label,
+                'percentage' => round($amount / max($total, 1) * 100, 2),
+                'amount' => $amount,
+                'status' => 'Upcoming',
+                'due_date' => now()->addDays($days)->format('Y-m-d'),
+            ];
+        }
+
+        return $schedule;
     }
 
     /**
