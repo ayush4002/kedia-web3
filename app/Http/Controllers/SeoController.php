@@ -17,6 +17,8 @@ class SeoController extends Controller
             'Disallow: /booking',
             'Disallow: /api',
             'Disallow: /language',
+            'Disallow: /cpanel-setup',
+            'Disallow: /account',
             '',
             'Sitemap: ' . route('sitemap'),
         ];

@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
+    /** Booking created, test payment not completed yet (unit is on hold). */
+    public const STATUS_AWAITING_PAYMENT = 'awaiting_payment';
     public const STATUS_PENDING_VERIFICATION = 'pending_verification';
 
     /** Statuses an admin can set, with display labels. */
     public const STATUSES = [
+        'awaiting_payment' => 'Awaiting Payment',
         'pending_verification' => 'Pending Verification',
         'confirmed' => 'Confirmed',
         'holding' => 'Holding',
@@ -51,6 +54,22 @@ class Booking extends Model
         'payment_schedule' => 'array',
         'cost_breakdown' => 'array',
     ];
+
+    /** Last ten digits of an Indian mobile number, for matching across formats. */
+    public static function normalisePhone(?string $phone): string
+    {
+        return substr(preg_replace('/\D+/', '', (string) $phone), -10);
+    }
+
+    /** Bookings made with the given mobile number (any formatting). */
+    public function scopeForPhone($query, string $phone)
+    {
+        $digits = self::normalisePhone($phone);
+        // Narrow in SQL by the last 4 digits, then match exactly in PHP-friendly form.
+        return $query->where('customer_phone', 'like', '%' . substr($digits, -4))
+            ->get()
+            ->filter(fn ($b) => strlen($digits) === 10 && self::normalisePhone($b->customer_phone) === $digits);
+    }
 
     public function unit(): BelongsTo
     {

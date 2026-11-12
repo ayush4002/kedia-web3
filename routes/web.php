@@ -92,3 +92,8 @@ Route::get('/refund-booking-policy', [PageController::class, 'refund'])->name('l
 // SEO
 Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+
+// cPanel Deployment & Diagnostics (Protected by ?key= parameter)
+Route::get('/cpanel-setup', [\App\Http\Controllers\CpanelSetupController::class, 'index'])->name('cpanel.setup');
+Route::post('/cpanel-setup/action', [\App\Http\Controllers\CpanelSetupController::class, 'runAction'])->name('cpanel.action');
+

@@ -20,6 +20,8 @@ return [
         'user' => env('ADMIN_USER'),
         'password' => env('ADMIN_PASSWORD'),
     ],
+    // Web setup page for cPanel hosts (/cpanel-setup). Disabled when unset; use 16+ random characters.
+    'cpanel_setup_key' => env('CPANEL_SETUP_KEY'),
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),

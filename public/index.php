@@ -4,18 +4,32 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-// Determine if the application is in maintenance mode...
-if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+// Locate Laravel application root (supports standard & cPanel separated public_html structures)
+$appPath = __DIR__ . '/..';
+$candidates = [
+    __DIR__ . '/..',
+    __DIR__ . '/../kedia',
+    __DIR__ . '/../kedia-web3',
+    __DIR__ . '/../laravel',
+    __DIR__ . '/../laravel_app',
+    __DIR__ . '/../app_core',
+];
+
+foreach ($candidates as $dir) {
+    if (file_exists($dir . '/vendor/autoload.php') && file_exists($dir . '/bootstrap/app.php')) {
+        $appPath = $dir;
+        break;
+    }
+}
+
+// Maintenance mode check...
+if (file_exists($maintenance = $appPath . '/storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
-// Register the Composer autoloader...
-if (file_exists(__DIR__.'/../vendor/autoload.php')) {
-    require __DIR__.'/../vendor/autoload.php';
-}
+// Register Composer autoloader...
+require_once $appPath . '/vendor/autoload.php';
 
-// Bootstrap Laravel and handle the request...
-if (file_exists(__DIR__.'/../bootstrap/app.php')) {
-    (require_once __DIR__.'/../bootstrap/app.php')
-        ->handleRequest(Request::capture());
-}
+// Bootstrap Laravel and handle request...
+(require_once $appPath . '/bootstrap/app.php')
+    ->handleRequest(Request::capture());
