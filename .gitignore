@@ -19,6 +19,8 @@ database/*.sqlite
 dist/
 dist-ssr/
 screenshots/
+.phpunit.result.cache
+.phpunit.cache/
 .vscode/
 .idea/
 .DS_Store
