@@ -62,3 +62,8 @@ Route::get('/nri', [PageController::class, 'nri'])->name('nri');
 Route::get('/careers', [PageController::class, 'careers'])->name('careers');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/legal', [PageController::class, 'legal'])->name('legal');
+
+// cPanel Deployment & Diagnostics (Protected by ?key= parameter)
+Route::get('/cpanel-setup', [\App\Http\Controllers\CpanelSetupController::class, 'index'])->name('cpanel.setup');
+Route::post('/cpanel-setup/action', [\App\Http\Controllers\CpanelSetupController::class, 'runAction'])->name('cpanel.action');
+
