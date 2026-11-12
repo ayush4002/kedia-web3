@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Booking Confirmed #' . $booking->booking_id . ' | Kedia Builders & Colonizers')
+@section('title', 'Booking ' . $booking->booking_id . ' | Kedia Builders & Colonizers')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
 
@@ -31,7 +32,7 @@
             <!-- Watermark / Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#0E1520]/10">
                 <div>
-                    <img src="/assets/logo-navy.png" alt="Kedia Builders" class="h-10 w-auto mb-2" onerror="this.src='/assets/logo-white.png'; this.classList.add('invert');">
+                    <img fetchpriority="high" src="/assets/logo-navy.png" alt="Kedia Builders" class="h-10 w-auto mb-2" onerror="this.src='/assets/logo-white.png'; this.classList.add('invert');">
                     <div class="text-[11px] font-mono text-[#0E1520]/60">{{ __('Kedia Builders & Colonizers · Jaipur, Rajasthan') }}</div>
                 </div>
                 <div class="text-left sm:text-right font-mono text-xs">
@@ -82,15 +83,15 @@
                 <div class="p-4 space-y-2.5">
                     <div class="flex justify-between text-[#0E1520]/70">
                         <span>{{ __('Total Property Agreement Value:') }}</span>
-                        <span class="font-semibold text-[#0E1520]">₹ {{ number_format($booking->total_amount) }}</span>
+                        <span class="font-semibold text-[#0E1520]">₹ {{ \App\Support\Format::inr($booking->total_amount) }}</span>
                     </div>
                     <div class="flex justify-between text-emerald-700 font-bold pt-2 border-t border-[#0E1520]/10">
                         <span>Advance Booking Token (5%){{ $booking->payment_status === 'paid' ? ' — Paid' : ' — Awaiting Verification' }}:</span>
-                        <span class="text-sm">₹ {{ number_format($booking->token_amount) }}</span>
+                        <span class="text-sm">₹ {{ \App\Support\Format::inr($booking->token_amount) }}</span>
                     </div>
                     <div class="flex justify-between text-[#0E1520]/60 text-[11px]">
                         <span>{{ __('Remaining Balance in Construction Milestones:') }}</span>
-                        <span>₹ {{ number_format($booking->total_amount - $booking->token_amount) }}</span>
+                        <span>₹ {{ \App\Support\Format::inr($booking->total_amount - $booking->token_amount) }}</span>
                     </div>
                 </div>
             </div>
@@ -107,7 +108,7 @@
                                     <div class="text-[10px] text-[#0E1520]/50">Due Target: {{ $stage['due_date'] }}</div>
                                 </div>
                                 <div class="text-right">
-                                    <div class="font-bold text-[#0E1520]">₹ {{ number_format($stage['amount']) }}</div>
+                                    <div class="font-bold text-[#0E1520]">₹ {{ \App\Support\Format::inr($stage['amount']) }}</div>
                                     <span class="inline-block text-[10px] uppercase font-bold {{ $stage['status'] === 'Paid' ? 'text-emerald-600' : 'text-amber-600' }}">
                                         ● {{ $stage['status'] }}
                                     </span>

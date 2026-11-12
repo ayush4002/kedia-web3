@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "kedia-web",
+  "scripts": {
+    "build:css": "tailwindcss -c tailwind.config.js -i resources/css/site.css -o public/assets/site.css --minify",
+    "watch:css": "tailwindcss -c tailwind.config.js -i resources/css/site.css -o public/assets/site.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}

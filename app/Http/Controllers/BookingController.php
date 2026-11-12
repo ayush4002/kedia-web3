@@ -72,12 +72,12 @@ class BookingController extends Controller
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
                 'success' => true,
-                'redirect_url' => route('booking.confirmation', ['bookingId' => $booking->booking_id]),
+                'redirect_url' => $booking->voucherUrl(),
                 'booking' => $booking,
             ]);
         }
 
-        return redirect()->route('booking.confirmation', ['bookingId' => $booking->booking_id]);
+        return redirect()->to($booking->voucherUrl());
     }
 
     private function createBooking(Unit $unit, array $validated): Booking

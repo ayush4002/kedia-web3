@@ -33,7 +33,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <div class="group rounded-3xl overflow-hidden aspect-[4/3] bg-[#0E1520] relative shadow-lg">
-                <img src="/media/img/2021/04/Kedia-Nikunj-1-1920.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img fetchpriority="high" alt="{{ __('Grand Entrance Arch & 60ft Boulevard') }}" src="/media/img/2021/04/Kedia-Nikunj-1-1920.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
                     <div>
                         <div class="text-[10px] font-mono text-[#D4E845] uppercase">{{ __('Nikunj Villas') }}</div>
@@ -43,7 +43,7 @@
             </div>
 
             <div class="group rounded-3xl overflow-hidden aspect-[4/3] bg-[#0E1520] relative shadow-lg">
-                <img src="/media/img/2021/04/Kedia-Nikunj-2-600.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img loading="lazy" decoding="async" alt="{{ __('Turnkey Luxury Villa Facade') }}" src="/media/img/2021/04/Kedia-Nikunj-2-600.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
                     <div>
                         <div class="text-[10px] font-mono text-[#D4E845] uppercase">{{ __('Ganpati Greens') }}</div>
@@ -53,7 +53,7 @@
             </div>
 
             <div class="group rounded-3xl overflow-hidden aspect-[4/3] bg-[#0E1520] relative shadow-lg">
-                <img src="/media/img/2021/04/Amara-Bhoomi-Pujan-1-900.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img loading="lazy" decoding="async" alt="{{ __('Amara Vedic Bhoomi Pujan') }}" src="/media/img/2021/04/Amara-Bhoomi-Pujan-1-900.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
                     <div>
                         <div class="text-[10px] font-mono text-[#D4E845] uppercase">{{ __('Ceremony Milestone') }}</div>
@@ -63,7 +63,7 @@
             </div>
 
             <div class="group rounded-3xl overflow-hidden aspect-[4/3] bg-[#0E1520] relative shadow-lg">
-                <img src="/media/img/2021/04/Prana-Pratishtha-ceremony-1-900.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img loading="lazy" decoding="async" alt="{{ __('Township Temple Prana Pratishtha') }}" src="/media/img/2021/04/Prana-Pratishtha-ceremony-1-900.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
                     <div>
                         <div class="text-[10px] font-mono text-[#D4E845] uppercase">{{ __('Vedic Heritage') }}</div>
@@ -73,7 +73,7 @@
             </div>
 
             <div class="group rounded-3xl overflow-hidden aspect-[4/3] bg-[#0E1520] relative shadow-lg">
-                <img src="/media/img/2021/04/Kedia-Nikunj-4-900.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img loading="lazy" decoding="async" alt="{{ __('Landscaped Haveli Gardens') }}" src="/media/img/2021/04/Kedia-Nikunj-4-900.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
                     <div>
                         <div class="text-[10px] font-mono text-[#D4E845] uppercase">{{ __('Clubhouse & Greens') }}</div>
@@ -83,7 +83,7 @@
             </div>
 
             <div class="group rounded-3xl overflow-hidden aspect-[4/3] bg-[#0E1520] relative shadow-lg">
-                <img src="/media/img/2021/04/Press-Release-900.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img loading="lazy" decoding="async" alt="{{ __('Press Coverage & Industry Honors') }}" src="/media/img/2021/04/Press-Release-900.webp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
                     <div>
                         <div class="text-[10px] font-mono text-[#D4E845] uppercase">{{ __('Media Dispatches') }}</div>

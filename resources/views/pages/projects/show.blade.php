@@ -1,6 +1,23 @@
 @extends('layouts.app')
 
-@section('title', $project->title . ' | Kedia Builders & Colonizers')
+@section('title', $project->title . ' · ' . $project->location . ' | Kedia Builders & Colonizers')
+@section('meta_description', \Illuminate\Support\Str::limit(strip_tags((string) $project->description) ?: ($project->title . ' by Kedia Builders & Colonizers in ' . $project->location . ', Jaipur.'), 155))
+@section('og_image', $project->hero_image)
+
+@push('structured_data')
+<script type="application/ld+json">
+{!! json_encode(array_filter([
+    '@context' => 'https://schema.org',
+    '@type' => 'Residence',
+    'name' => $project->title,
+    'description' => \Illuminate\Support\Str::limit(strip_tags((string) $project->description), 300),
+    'url' => url()->current(),
+    'image' => url($project->hero_image),
+    'address' => ['@type' => 'PostalAddress', 'streetAddress' => $project->address ?: $project->location, 'addressLocality' => 'Jaipur', 'addressRegion' => 'Rajasthan', 'addressCountry' => 'IN'],
+    'geo' => ($project->latitude && $project->longitude) ? ['@type' => 'GeoCoordinates', 'latitude' => (float) $project->latitude, 'longitude' => (float) $project->longitude] : null,
+]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}
+</script>
+@endpush
 
 @section('content')
 
@@ -62,13 +79,18 @@
                     <a href="#inventorySection" class="px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider transition-colors border border-white/20">
                         View Live Units ({{ count($project->units) }})
                     </a>
+                    @if($project->brochure_url)
+                        <a href="{{ $project->brochure_url }}" target="_blank" rel="noopener" download class="px-6 py-3.5 rounded-full bg-transparent hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider transition-colors border border-white/20">
+                            {{ __('Download Brochure (PDF)') }}
+                        </a>
+                    @endif
                 </div>
             </div>
 
             <!-- Hero Image Preview -->
             <div class="lg:col-span-5">
                 <div class="rounded-3xl overflow-hidden border-2 border-white/10 shadow-2xl aspect-[4/3] bg-black/40">
-                    <img src="{{ $project->hero_image }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                    <img fetchpriority="high" src="{{ $project->hero_image }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
                 </div>
             </div>
 

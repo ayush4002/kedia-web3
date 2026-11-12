@@ -8,39 +8,80 @@
     <title>@yield('title', 'Kedia Builders & Colonizers | The Jaipur Blueprint')</title>
     <meta name="description" content="@yield('meta_description', 'Pioneering luxury real estate in Jaipur, Rajasthan since 1980. 200+ land development projects, JDA approved luxury villas, plots, and apartments.')">
 
+    @php
+        $pageTitle = html_entity_decode(trim($__env->yieldContent('title', 'Kedia Builders & Colonizers | The Jaipur Blueprint')), ENT_QUOTES);
+        $pageDescription = html_entity_decode(trim($__env->yieldContent('meta_description', 'Pioneering luxury real estate in Jaipur, Rajasthan since 1980. 200+ land development projects, JDA approved luxury villas, plots, and apartments.')), ENT_QUOTES);
+        $pageImage = url(trim($__env->yieldContent('og_image', '/assets/og-default.jpg')));
+
+        // Strings that JavaScript writes into the page; translated in the script block for the current locale.
+        $jsI18nKeys = [
+            'View', 'Remove', 'Plot', 'Unit Reserved / Sold', 'View Available Units →', 'Available', 'On Hold', 'Sold',
+            "Recommended: Kedia's Landmark & Ganpati Greens",
+            'Features 111-150 sq.yd JDA approved plots and compact luxury villas starting from ₹ 32.83 Lakh.',
+            "Recommended: Kedia's Atulyam (Sirsi Road)",
+            'Smart living community with 3 BHK duplex villas and underground amenities starting from ₹ 58.00 Lakh.',
+            "Recommended: Kedia's Tulsi (Bani Park)",
+            'Ultra-luxury 3 & 4 BHK residences in prime central Jaipur with rooftop infinity lounge, starting ₹ 1.25 Cr.',
+            'Signature Villas: Nikunj Villas & Atulyam',
+            'Architect-crafted 3 & 4 BHK duplex villas with private terrace, personal lawn, and Vastu compliance.',
+            'Clear Title Plots: Kedia Aravali & Landmark',
+            '100% JDA Patta sanctioned residential plots with wide sector asphalt roads and water-harvesting.',
+            "Prime Apartments: Kedia's Tulsi (Bani Park)",
+            'Exclusive high-rise luxury apartments with private elevator access and serene Bani Park address.',
+        ];
+    @endphp
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta name="robots" content="@yield('robots', 'index, follow')">
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Kedia Builders & Colonizers">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ $pageImage }}">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'hi' ? 'hi_IN' : 'en_IN' }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ $pageImage }}">
+
+    <!-- Structured data: the business -->
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'RealEstateAgent',
+        'name' => 'Kedia Builders & Colonizers',
+        'url' => url('/'),
+        'logo' => url('/assets/logo-navy.png'),
+        'image' => url('/assets/og-default.jpg'),
+        'telephone' => '+91-8302500500',
+        'email' => 'kediabuildersandcolonizers@gmail.com',
+        'foundingDate' => '1980',
+        'address' => [
+            '@type' => 'PostalAddress',
+            'streetAddress' => 'Sikar Road & Bani Park',
+            'addressLocality' => 'Jaipur',
+            'addressRegion' => 'Rajasthan',
+            'postalCode' => '302016',
+            'addressCountry' => 'IN',
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}
+    </script>
+    @stack('structured_data')
+
     <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
     <link rel="icon" type="image/png" href="/assets/favicon.png">
+    <link rel="apple-touch-icon" href="/assets/favicon-512.png">
 
     <!-- Google Fonts: Cormorant Garamond / Playfair Display, Inter, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN with Spaciaz Architectural Config -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        kedia: {
-                            navy: '#0E1520',
-                            navyLight: '#162132',
-                            paper: '#FAF8F5',
-                            lime: '#D4E845',
-                            gold: '#C8A24B',
-                            stone: '#E8E3D8'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'Cormorant Garamond', 'serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Compiled Tailwind CSS (npm run build:css) -->
+    <link rel="stylesheet" href="/assets/site.css?v={{ @filemtime(public_path('assets/site.css')) }}">
 
     <style>
         body {
@@ -309,6 +350,10 @@
 
     <!-- Scripts -->
     <script>
+        // Strings written by JavaScript, translated server-side for the current locale.
+        window.KEDIA_I18N = @json(collect($jsI18nKeys)->mapWithKeys(fn ($k) => [$k => __($k)]));
+        function t(key) { return (window.KEDIA_I18N && window.KEDIA_I18N[key]) || key; }
+
         // Scroll Top visibility
         window.addEventListener('scroll', () => {
             const btn = document.getElementById('btnScrollTop');
@@ -350,16 +395,16 @@
             box.classList.remove('hidden');
 
             if (range === '30-50') {
-                title.innerText = "Recommended: Kedia's Landmark & Ganpati Greens";
-                desc.innerText = "Features 111-150 sq.yd JDA approved plots and compact luxury villas starting from ₹ 32.83 Lakh.";
+                title.innerText = t("Recommended: Kedia's Landmark & Ganpati Greens");
+                desc.innerText = t("Features 111-150 sq.yd JDA approved plots and compact luxury villas starting from ₹ 32.83 Lakh.");
                 link.href = "/projects/kedias-landmark";
             } else if (range === '50-80') {
-                title.innerText = "Recommended: Kedia's Atulyam (Sirsi Road)";
-                desc.innerText = "Smart living community with 3 BHK duplex villas and underground amenities starting from ₹ 58.00 Lakh.";
+                title.innerText = t("Recommended: Kedia's Atulyam (Sirsi Road)");
+                desc.innerText = t("Smart living community with 3 BHK duplex villas and underground amenities starting from ₹ 58.00 Lakh.");
                 link.href = "/projects/kedias-atulyam";
             } else {
-                title.innerText = "Recommended: Kedia's Tulsi (Bani Park)";
-                desc.innerText = "Ultra-luxury 3 & 4 BHK residences in prime central Jaipur with rooftop infinity lounge, starting ₹ 1.25 Cr.";
+                title.innerText = t("Recommended: Kedia's Tulsi (Bani Park)");
+                desc.innerText = t("Ultra-luxury 3 & 4 BHK residences in prime central Jaipur with rooftop infinity lounge, starting ₹ 1.25 Cr.");
                 link.href = "/projects/kedias-tulsi";
             }
         }
@@ -372,16 +417,16 @@
             box.classList.remove('hidden');
 
             if (type === 'villa') {
-                title.innerText = "Signature Villas: Nikunj Villas & Atulyam";
-                desc.innerText = "Architect-crafted 3 & 4 BHK duplex villas with private terrace, personal lawn, and Vastu compliance.";
+                title.innerText = t("Signature Villas: Nikunj Villas & Atulyam");
+                desc.innerText = t("Architect-crafted 3 & 4 BHK duplex villas with private terrace, personal lawn, and Vastu compliance.");
                 link.href = "/projects/nikunj-villas";
             } else if (type === 'plot') {
-                title.innerText = "Clear Title Plots: Kedia Aravali & Landmark";
-                desc.innerText = "100% JDA Patta sanctioned residential plots with wide sector asphalt roads and water-harvesting.";
+                title.innerText = t("Clear Title Plots: Kedia Aravali & Landmark");
+                desc.innerText = t("100% JDA Patta sanctioned residential plots with wide sector asphalt roads and water-harvesting.");
                 link.href = "/projects/kedia-aravali";
             } else {
-                title.innerText = "Prime Apartments: Kedia's Tulsi (Bani Park)";
-                desc.innerText = "Exclusive high-rise luxury apartments with private elevator access and serene Bani Park address.";
+                title.innerText = t("Prime Apartments: Kedia's Tulsi (Bani Park)");
+                desc.innerText = t("Exclusive high-rise luxury apartments with private elevator access and serene Bani Park address.");
                 link.href = "/projects/kedias-tulsi";
             }
         }
@@ -419,20 +464,29 @@
                     container.appendChild(emptyNotice);
                 } else {
                     if (emptyNotice) emptyNotice.style.display = 'none';
+                    // Built with DOM APIs (not innerHTML) so stored text can never inject markup.
+                    const el = (tag, className, text) => {
+                        const node = document.createElement(tag);
+                        if (className) node.className = className;
+                        if (text !== undefined) node.textContent = text;
+                        return node;
+                    };
                     list.forEach(item => {
-                        const div = document.createElement('div');
-                        div.className = 'p-4 rounded-2xl bg-[#FAF8F5] border border-[#0E1520]/10 flex items-center justify-between font-mono text-xs';
-                        div.innerHTML = `
-                            <div>
-                                <div class="font-bold text-[#0E1520]">${item.title}</div>
-                                <div class="text-[10px] text-[#0E1520]/60">${item.location || 'Jaipur'} · ${item.price || ''}</div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <a href="${item.url}" class="px-3 py-1 rounded-full bg-[#0E1520] text-white text-[10px] font-bold">View</a>
-                                <button onclick="removeFromShortlist('${item.id}')" class="text-rose-500 hover:text-rose-700 text-sm font-bold">&times;</button>
-                            </div>
-                        `;
-                        container.appendChild(div);
+                        const row = el('div', 'p-4 rounded-2xl bg-[#FAF8F5] border border-[#0E1520]/10 flex items-center justify-between font-mono text-xs');
+                        const info = el('div');
+                        info.appendChild(el('div', 'font-bold text-[#0E1520]', String(item.title || '')));
+                        info.appendChild(el('div', 'text-[10px] text-[#0E1520]/60', (item.location || 'Jaipur') + ' · ' + (item.price || '')));
+                        const actions = el('div', 'flex items-center gap-2');
+                        const view = el('a', 'px-3 py-1 rounded-full bg-[#0E1520] text-white text-[10px] font-bold', t('View'));
+                        const url = String(item.url || '');
+                        view.href = url.startsWith('/') || url.startsWith(location.origin) ? url : '#';
+                        const remove = el('button', 'text-rose-500 hover:text-rose-700 text-sm font-bold', '×');
+                        remove.type = 'button';
+                        remove.setAttribute('aria-label', t('Remove'));
+                        remove.addEventListener('click', () => removeFromShortlist(item.id));
+                        actions.append(view, remove);
+                        row.append(info, actions);
+                        container.appendChild(row);
                     });
                 }
             }

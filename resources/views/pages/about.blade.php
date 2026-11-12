@@ -58,7 +58,7 @@
             <div class="bg-white rounded-3xl p-8 border border-[#0E1520]/10 shadow-sm space-y-6 flex flex-col justify-between">
                 <div class="space-y-4">
                     <div class="w-28 h-28 rounded-full overflow-hidden border-2 border-[#0E1520] mx-auto shadow-lg">
-                        <img src="/media/img/2021/04/Mr-Rajendra-kedia-600.webp" alt="Mr Rajendra Kedia" class="w-full h-full object-cover">
+                        <img fetchpriority="high" src="/media/img/2021/04/Mr-Rajendra-kedia-600.webp" alt="Mr Rajendra Kedia" class="w-full h-full object-cover">
                     </div>
                     <div class="text-center">
                         <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ __('Mr Rajendra Kedia') }}</h3>
@@ -75,7 +75,7 @@
             <div class="bg-white rounded-3xl p-8 border border-[#0E1520]/10 shadow-sm space-y-6 flex flex-col justify-between">
                 <div class="space-y-4">
                     <div class="w-28 h-28 rounded-full overflow-hidden border-2 border-[#0E1520] mx-auto shadow-lg">
-                        <img src="/media/img/2021/04/Mr-Saurabh-Kedia-600.webp" alt="Mr Saurabh Kedia" class="w-full h-full object-cover">
+                        <img loading="lazy" decoding="async" src="/media/img/2021/04/Mr-Saurabh-Kedia-600.webp" alt="Mr Saurabh Kedia" class="w-full h-full object-cover">
                     </div>
                     <div class="text-center">
                         <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ __('Mr Saurabh Kedia') }}</h3>
@@ -92,7 +92,7 @@
             <div class="bg-white rounded-3xl p-8 border border-[#0E1520]/10 shadow-sm space-y-6 flex flex-col justify-between">
                 <div class="space-y-4">
                     <div class="w-28 h-28 rounded-full overflow-hidden border-2 border-[#0E1520] mx-auto shadow-lg">
-                        <img src="/media/img/2021/04/Mr-Gaurav-Kedia-600.webp" alt="Mr Gaurav Kedia" class="w-full h-full object-cover">
+                        <img loading="lazy" decoding="async" src="/media/img/2021/04/Mr-Gaurav-Kedia-600.webp" alt="Mr Gaurav Kedia" class="w-full h-full object-cover">
                     </div>
                     <div class="text-center">
                         <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ __('Mr Gaurav Kedia') }}</h3>

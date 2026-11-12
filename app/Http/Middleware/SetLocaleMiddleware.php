@@ -15,9 +15,8 @@ class SetLocaleMiddleware
     public function handle(Request $request, Closure $next)
     {
         $locale = Session::get('locale', Session::get('app_locale'));
-        if ($locale && in_array($locale, ['en', 'hi'])) {
-            App::setLocale($locale);
-        }
+        // Always set it, so a locale from an earlier request in the same process never carries over.
+        App::setLocale(in_array($locale, ['en', 'hi'], true) ? $locale : config('app.locale', 'en'));
 
         return $next($request);
     }

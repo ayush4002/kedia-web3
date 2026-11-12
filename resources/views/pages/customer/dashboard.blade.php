@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Patron Portal & Booking Dashboard | Kedia Builders & Colonizers')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
 
@@ -48,7 +49,7 @@
                             <div class="text-left sm:text-right font-mono text-xs">
                                 <div class="text-[#0E1520]/50 uppercase text-[10px]">{{ __('Booking Ref') }}</div>
                                 <div class="text-base font-bold text-[#0E1520]">{{ $primaryBooking->booking_id }}</div>
-                                <div class="text-[10px] text-emerald-700 font-bold mt-0.5">Token {{ $primaryBooking->payment_status === 'paid' ? 'Paid' : '(awaiting verification)' }}: ₹ {{ number_format($primaryBooking->token_amount) }}</div>
+                                <div class="text-[10px] text-emerald-700 font-bold mt-0.5">Token {{ $primaryBooking->payment_status === 'paid' ? 'Paid' : '(awaiting verification)' }}: ₹ {{ \App\Support\Format::inr($primaryBooking->token_amount) }}</div>
                             </div>
                         </div>
 
@@ -68,7 +69,7 @@
                                                 <div class="text-[10px] text-[#0E1520]/50">Due: {{ $m['due_date'] }}</div>
                                             </div>
                                             <div class="text-right">
-                                                <div class="font-bold text-[#0E1520]">₹ {{ number_format($m['amount']) }}</div>
+                                                <div class="font-bold text-[#0E1520]">₹ {{ \App\Support\Format::inr($m['amount']) }}</div>
                                                 <span class="text-[10px] uppercase font-bold {{ $m['status'] === 'Paid' ? 'text-emerald-700' : 'text-amber-700' }}">
                                                     ● {{ $m['status'] }}
                                                 </span>
@@ -80,7 +81,7 @@
                         </div>
 
                         <div class="pt-2 flex flex-wrap gap-3">
-                            <a href="{{ route('booking.confirmation', $primaryBooking->booking_id) }}" class="px-5 py-2.5 rounded-full bg-[#0E1520] text-white text-xs font-mono font-bold hover:bg-[#162132]">
+                            <a href="{{ $primaryBooking->voucherUrl() }}" class="px-5 py-2.5 rounded-full bg-[#0E1520] text-white text-xs font-mono font-bold hover:bg-[#162132]">
                                 {{ __('Download Official Allotment Voucher →') }}
                             </a>
                             <button type="button" onclick="alert('JDA Sanction Map is verified and archived under record #JDA-2026-KD.')" class="px-5 py-2.5 rounded-full bg-white border border-[#0E1520]/20 text-[#0E1520] text-xs font-mono font-bold hover:bg-[#FAF8F5]">

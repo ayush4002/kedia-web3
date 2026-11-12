@@ -8,7 +8,7 @@
             <!-- Column 1 & 2: Brand & Corporate Statement -->
             <div class="lg:col-span-2 space-y-6">
                 <a href="{{ route('home') }}" class="inline-block">
-                    <img src="/assets/logo-white.png" alt="Kedia Builders & Colonizers" class="h-12 w-auto object-contain" onerror="this.src='/assets/logo-navy.png'; this.classList.add('brightness-0', 'invert');">
+                    <img loading="lazy" decoding="async" src="/assets/logo-white.png" alt="Kedia Builders & Colonizers" class="h-12 w-auto object-contain" onerror="this.src='/assets/logo-navy.png'; this.classList.add('brightness-0', 'invert');">
                 </a>
                 <p class="text-sm text-white/70 max-w-md leading-relaxed">
                     {{ __('messages.footer_about') }}

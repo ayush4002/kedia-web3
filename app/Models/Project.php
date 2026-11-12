@@ -74,12 +74,25 @@ class Project extends Model
     public function getPriceRangeAttribute(): string
     {
         if (!empty($this->starting_price) && $this->starting_price > 0) {
-            return 'Starting at ₹ ' . number_format($this->starting_price / 100000, 2) . ' Lakh*';
+            return 'Starting at ' . \App\Support\Format::lakhCrore($this->starting_price) . '*';
         }
         if (!empty($this->price_label)) {
-            return preg_replace('/(\?{1,3}|₹)/u', '₹ ', $this->price_label);
+            // Seed labels are written "₹24.80"; add the space used elsewhere on the site.
+            return preg_replace('/₹\s*/u', '₹ ', $this->price_label);
         }
         return 'Price on Request';
+    }
+
+    /**
+     * Public URL of the project's brochure PDF, or null when the file isn't on disk.
+     */
+    public function getBrochureUrlAttribute(): ?string
+    {
+        $path = ltrim((string) $this->brochure_path, '/');
+        if ($path === '' || !is_file(public_path('media/' . $path))) {
+            return null;
+        }
+        return '/media/' . $path;
     }
 
     public function getPriceStartNumAttribute(): int

@@ -70,7 +70,7 @@ class Unit extends Model
     public function getPriceFormattedAttribute(): string
     {
         $price = $this->total_price ?: $this->base_price;
-        return '₹ ' . number_format($price / 100000, 2) . ' Lakh';
+        return \App\Support\Format::lakhCrore($price);
     }
 
     public function getPriceNumAttribute(): int

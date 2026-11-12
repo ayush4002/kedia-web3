@@ -157,6 +157,27 @@ php artisan serve
 ```
 Open **`http://127.0.0.1:8000`** in your browser.
 
+### Styles (Tailwind)
+The site uses a compiled stylesheet, `public/assets/site.css` (committed, so servers need no Node). After changing classes in any Blade view, rebuild it:
+```bash
+npm install
+npm run build:css
+```
+Use `npm run watch:css` while developing.
+
+### Running the tests
+The suite runs against an in-memory SQLite database (no MySQL needed):
+```bash
+php vendor/bin/phpunit
+```
+
+### Going to production
+- `APP_ENV=production`, `APP_DEBUG=false`, and a fresh `php artisan key:generate`.
+- Set `APP_URL` to the real domain (used by the sitemap, canonical links and signed voucher links).
+- Set a strong `ADMIN_PASSWORD`.
+- Point the web server at `public/` (Apache uses the included `public/.htaccess`).
+- Hindi copy lives in `lang/hi.json`; have a native speaker review it before launch. The legal page and admin console are intentionally English-only.
+
 ---
 
 ## 🔑 Key Routes & URLs

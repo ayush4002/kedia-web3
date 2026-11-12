@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Unit ' . $unit->unit_code . ' | ' . ($unit->project->title ?? 'Kedia Builders'))
+@section('title', $unit->title . ' (' . $unit->unit_code . ') at ' . ($unit->project->title ?? 'Kedia Builders') . ' | Kedia Builders & Colonizers')
+@section('meta_description', $unit->title . ' in ' . ($unit->project->title ?? 'a Kedia township') . ', ' . ($unit->project->location ?? 'Jaipur') . '. ' . \App\Support\Format::inr($unit->area_sqft) . ' sq ft, ' . (stripos((string) $unit->facing, 'facing') !== false ? $unit->facing : $unit->facing . ' facing') . ', all-inclusive ' . $unit->price_formatted . '. Check live availability and book online.')
+@if($unit->project)
+    @section('og_image', $unit->project->hero_image)
+@endif
 
 @section('content')
 
@@ -37,7 +41,7 @@
                 <!-- Main Unit Visual Card -->
                 <div class="rounded-3xl bg-[#0E1520] p-4 border border-[#0E1520]/10 shadow-2xl relative overflow-hidden">
                     <div class="relative aspect-[16/10] rounded-2xl overflow-hidden bg-black/50">
-                        <img src="{{ $unit->project->hero_image ?? '/media/img/2021/04/Kedia-Nikunj-1-1920.webp' }}" alt="Unit {{ $unit->unit_code }}" class="w-full h-full object-cover">
+                        <img fetchpriority="high" src="{{ $unit->project->hero_image ?? '/media/img/2021/04/Kedia-Nikunj-1-1920.webp' }}" alt="Unit {{ $unit->unit_code }}" class="w-full h-full object-cover">
                         
                         <!-- Floating Unit Badge -->
                         <div class="absolute top-4 left-4 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-white font-mono text-xs flex items-center gap-2">
@@ -130,7 +134,7 @@
                     
                     <div>
                         <div class="text-[10px] font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Transparent Valuation') }}</div>
-                        <h2 class="font-serif text-3xl font-bold text-[#0E1520] mt-1">{{ $unit->title }}</h2>
+                        <h1 class="font-serif text-3xl font-bold text-[#0E1520] mt-1">{{ $unit->title }}</h1>
                         <div class="text-xs text-[#0E1520]/60 font-mono mt-0.5">Township: {{ $unit->project->title ?? 'Kedia Community' }}</div>
                     </div>
 
@@ -151,7 +155,7 @@
                             @if($amount != 0 || $loop->first)
                                 <div class="flex items-center justify-between {{ $loop->first ? 'pb-2 border-b border-[#0E1520]/10' : '' }}">
                                     <span class="text-[#0E1520]/70">{{ $label }}:</span>
-                                    <span class="{{ $loop->first ? 'font-bold' : 'font-semibold' }} text-[#0E1520]">₹ {{ number_format($amount) }}</span>
+                                    <span class="{{ $loop->first ? 'font-bold' : 'font-semibold' }} text-[#0E1520]">₹ {{ \App\Support\Format::inr($amount) }}</span>
                                 </div>
                             @endif
                         @endforeach
@@ -161,7 +165,7 @@
                         <div class="border-b border-[#0E1520]/10"></div>
                         <div class="flex items-center justify-between pt-1 text-sm font-bold">
                             <span class="text-[#0E1520]">{{ __('Estimated All-Inclusive Cost:') }}</span>
-                            <span class="text-[#0E1520] font-serif text-lg">₹ {{ number_format($pricing['grand_total']) }}</span>
+                            <span class="text-[#0E1520] font-serif text-lg">₹ {{ \App\Support\Format::inr($pricing['grand_total']) }}</span>
                         </div>
                     </div>
 
@@ -169,7 +173,7 @@
                     <div class="p-4 rounded-2xl bg-[#0E1520] text-white flex items-center justify-between">
                         <div>
                             <div class="text-[10px] font-mono text-[#D4E845] uppercase tracking-wider">{{ __('Advance Token Online (5%)') }}</div>
-                            <div class="text-xl font-bold font-serif">₹ {{ number_format($pricing['token_amount']) }}</div>
+                            <div class="text-xl font-bold font-serif">₹ {{ \App\Support\Format::inr($pricing['token_amount']) }}</div>
                         </div>
                         <span class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                             {{ __('Refundable 15 Days') }}

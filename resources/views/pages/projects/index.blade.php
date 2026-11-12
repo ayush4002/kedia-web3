@@ -90,7 +90,7 @@
                         <div>
                             <!-- Arch Frame Cover -->
                             <div class="relative aspect-[16/10] overflow-hidden bg-[#0E1520]">
-                                <img src="{{ $project->hero_image }}" alt="{{ $project->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='/media/img/2021/04/Kedia-Nikunj-1-1920.webp'">
+                                <img fetchpriority="high" src="{{ $project->hero_image }}" alt="{{ $project->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='/media/img/2021/04/Kedia-Nikunj-1-1920.webp'">
                                 
                                 <!-- Status Tag -->
                                 <div class="absolute top-4 left-4">

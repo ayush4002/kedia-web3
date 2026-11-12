@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Reserve Unit ' . $unit->unit_code . ' | Kedia Builders Booking Checkout')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
 
@@ -50,7 +51,7 @@
                     </div>
                     <div class="text-right">
                         <div class="text-xs font-mono uppercase text-[#0E1520]/50">{{ __('All-Inclusive Price') }}</div>
-                        <div class="font-bold text-xl text-[#0E1520] font-mono">₹ {{ number_format($pricing['grand_total']) }}</div>
+                        <div class="font-bold text-xl text-[#0E1520] font-mono">₹ {{ \App\Support\Format::inr($pricing['grand_total']) }}</div>
                     </div>
                 </div>
 
@@ -144,7 +145,7 @@
             <div class="bg-[#0E1520] text-white rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                 <div>
                     <div class="text-[10px] font-mono text-[#D4E845] uppercase tracking-wider">{{ __('Token Advance Payable Now') }}</div>
-                    <div class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">₹ {{ number_format($pricing['token_amount']) }}</div>
+                    <div class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">₹ {{ \App\Support\Format::inr($pricing['token_amount']) }}</div>
                     <div class="text-xs text-white/50 font-mono mt-1">{{ __('5% of total project value. Balance payable in RERA milestones.') }}</div>
                 </div>
 

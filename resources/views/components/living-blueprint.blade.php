@@ -289,21 +289,21 @@
     }
 
     function openPlotDossier(plot) {
-        document.getElementById('dossierPlotCode').innerText = 'Plot ' + plot.code;
+        document.getElementById('dossierPlotCode').innerText = t('Plot') + ' ' + plot.code;
         document.getElementById('dossierPlotType').innerText = (plot.type || 'Villa Plot') + ' · JDA Approved Township';
         document.getElementById('dossierPlotSize').innerText = plot.size || '120 SQ.YD';
         document.getElementById('dossierPlotDimensions').innerText = plot.dimensions || '25 x 45 ft';
         document.getElementById('dossierPlotFacing').innerText = (plot.facing || 'East') + ' Facing';
         document.getElementById('dossierPlotPrice').innerText = plot.price || '₹ 35.00 Lakh';
-        document.getElementById('dossierStatusBadge').innerText = plot.status || 'available';
+        document.getElementById('dossierStatusBadge').innerText = t({available: 'Available', on_hold: 'On Hold', sold: 'Sold'}[plot.status] || 'Available');
 
         const bookBtn = document.getElementById('dossierBookBtn');
         if (plot.status === 'sold') {
             bookBtn.classList.add('opacity-50', 'pointer-events-none');
-            bookBtn.innerText = 'Unit Reserved / Sold';
+            bookBtn.innerText = t('Unit Reserved / Sold');
         } else {
             bookBtn.classList.remove('opacity-50', 'pointer-events-none');
-            bookBtn.innerText = 'View Available Units →';
+            bookBtn.innerText = t('View Available Units →');
         }
 
         const modal = document.getElementById('plotDossierModal');

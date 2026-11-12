@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Admin Command Center | Kedia Builders E-Commerce')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
 
@@ -121,7 +122,7 @@
                                     <span class="font-bold text-[#0E1520]">{{ $b->unit->unit_code ?? 'N/A' }}</span>
                                     <span class="text-[#0E1520]/50 block text-[10px]">{{ $b->project->title ?? 'N/A' }}</span>
                                 </td>
-                                <td class="py-3 px-4 font-bold text-emerald-700">₹ {{ number_format($b->token_amount) }}</td>
+                                <td class="py-3 px-4 font-bold text-emerald-700">₹ {{ \App\Support\Format::inr($b->token_amount) }}</td>
                                 <td class="py-3 px-4">
                                     <form action="{{ route('admin.bookings.status', $b->id) }}" method="POST">
                                         @csrf
@@ -133,7 +134,7 @@
                                     </form>
                                 </td>
                                 <td class="py-3 px-4">
-                                    <a href="{{ route('booking.confirmation', $b->booking_id) }}" target="_blank" class="text-blue-700 hover:underline">
+                                    <a href="{{ $b->voucherUrl() }}" target="_blank" class="text-blue-700 hover:underline">
                                         View Voucher &rarr;
                                     </a>
                                 </td>

@@ -88,6 +88,15 @@ class Booking extends Model
         return in_array($this->status, self::RECEIVED_STATUSES, true) ? 'paid' : 'pending';
     }
 
+    /**
+     * The voucher shows the buyer's personal details, so it is only reachable
+     * through a signed link (handed to the buyer, the dashboard lookup and admin).
+     */
+    public function voucherUrl(): string
+    {
+        return \Illuminate\Support\Facades\URL::signedRoute('booking.confirmation', ['bookingId' => $this->booking_id]);
+    }
+
     public function getStatusLabelAttribute(): string
     {
         return self::STATUSES[$this->status] ?? ucwords(str_replace('_', ' ', (string) $this->status));

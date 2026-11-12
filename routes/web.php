@@ -36,7 +36,7 @@ Route::get('/unit/{unitCode}', [UnitController::class, 'legacy'])->name('units.l
 // E-Commerce Booking & Checkout Flow
 Route::get('/booking/{unit}', [BookingController::class, 'checkout'])->whereNumber('unit')->name('booking.checkout');
 Route::post('/booking/store', [BookingController::class, 'store'])->middleware('throttle:10,1')->name('booking.store');
-Route::get('/booking/confirmation/{bookingId}', [BookingController::class, 'confirmation'])->name('booking.confirmation');
+Route::get('/booking/confirmation/{bookingId}', [BookingController::class, 'confirmation'])->middleware('signed')->name('booking.confirmation');
 
 // Customer Dashboard & Holding Tracker
 Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->middleware('throttle:20,1')->name('customer.dashboard');
@@ -64,3 +64,7 @@ Route::get('/nri', [PageController::class, 'nri'])->name('nri');
 Route::get('/careers', [PageController::class, 'careers'])->name('careers');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/legal', [PageController::class, 'legal'])->name('legal');
+
+// SEO
+Route::get('/robots.txt', [\App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
+Route::get('/sitemap.xml', [\App\Http\Controllers\SeoController::class, 'sitemap'])->name('sitemap');

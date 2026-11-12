@@ -14,7 +14,7 @@
                 <div class="relative w-full max-w-sm sm:max-w-md lg:max-w-none group flex justify-center">
                     <!-- Architectural Arch Shape -->
                     <div class="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl border-4 border-white aspect-[4/5] max-h-[min(500px,calc(100vh-10rem))] w-auto bg-[#0E1520]">
-                        <img src="/media/img/2021/04/Kedia-Nikunj-1-1920.webp" 
+                        <img fetchpriority="high" src="/media/img/2021/04/Kedia-Nikunj-1-1920.webp" 
                              alt="Kedia Luxury Architecture Jaipur" 
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                              onerror="this.src='/assets/og-default.jpg';">
@@ -161,7 +161,7 @@
                 </div>
                 <div class="pt-6">
                     <div class="rounded-2xl overflow-hidden aspect-[16/9] shadow-inner bg-white/40">
-                        <img src="/media/img/2021/04/Kedia-Nikunj-4-900.webp" alt="Kedia Impact" class="w-full h-full object-cover">
+                        <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-4-900.webp" alt="Kedia Impact" class="w-full h-full object-cover">
                     </div>
                 </div>
             </div>
@@ -180,7 +180,7 @@
                 </div>
                 <div class="pt-6">
                     <div class="rounded-2xl overflow-hidden aspect-[16/9] shadow-inner bg-black/40">
-                        <img src="/media/img/2021/04/Kedia-Nikunj-5-900.webp" alt="Kedia Core Values" class="w-full h-full object-cover">
+                        <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-5-900.webp" alt="Kedia Core Values" class="w-full h-full object-cover">
                     </div>
                 </div>
             </div>
@@ -198,42 +198,42 @@
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
                 <span class="font-bold tracking-tight">{{ __('Master Planned Townships') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
-                    <img src="/media/img/2021/04/Kedia-Nikunj-6-600.webp" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-6-600.webp" class="w-full h-full object-cover" alt="" aria-hidden="true">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
                 <span class="font-bold tracking-tight">{{ __('Comprehensive Amenities') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
-                    <img src="/media/img/2021/04/Kedia-Nikunj-7-600.webp" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-7-600.webp" class="w-full h-full object-cover" alt="" aria-hidden="true">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
                 <span class="font-bold tracking-tight">{{ __('100% JDA Approved') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
-                    <img src="/media/img/2021/04/Kedia-Nikunj-8-600.webp" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-8-600.webp" class="w-full h-full object-cover" alt="" aria-hidden="true">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
                 <span class="font-bold tracking-tight">{{ __('Vastu & Eco Harmony') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
-                    <img src="/media/img/2021/04/Kedia-Nikunj-9-600.webp" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-9-600.webp" class="w-full h-full object-cover" alt="" aria-hidden="true">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
                 <span class="font-bold tracking-tight">{{ __('4+ Decades of Trust (Est. 1980)') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
-                    <img src="/media/img/2021/04/Kedia-Nikunj-2-600.webp" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-2-600.webp" class="w-full h-full object-cover" alt="" aria-hidden="true">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
                 <span class="font-bold tracking-tight">{{ __('Prompt RERA Handover') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
-                    <img src="/media/img/2021/04/Kedia-Nikunj-3-600.webp" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-3-600.webp" class="w-full h-full object-cover" alt="" aria-hidden="true">
                 </span>
             </div>
 
@@ -241,21 +241,21 @@
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
                 <span class="font-bold tracking-tight">{{ __('Master Planned Townships') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
-                    <img src="/media/img/2021/04/Kedia-Nikunj-6-600.webp" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-6-600.webp" class="w-full h-full object-cover" alt="" aria-hidden="true">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
                 <span class="font-bold tracking-tight">{{ __('Comprehensive Amenities') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
-                    <img src="/media/img/2021/04/Kedia-Nikunj-7-600.webp" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-7-600.webp" class="w-full h-full object-cover" alt="" aria-hidden="true">
                 </span>
             </div>
 
             <div class="flex-shrink-0 flex items-center gap-3 whitespace-nowrap">
                 <span class="font-bold tracking-tight">{{ __('100% JDA Approved') }}</span>
                 <span class="w-10 h-6 rounded-full overflow-hidden inline-block border border-[#0E1520]/20 flex-shrink-0">
-                    <img src="/media/img/2021/04/Kedia-Nikunj-8-600.webp" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Kedia-Nikunj-8-600.webp" class="w-full h-full object-cover" alt="" aria-hidden="true">
                 </span>
             </div>
 
@@ -529,7 +529,7 @@
                     <div>
                         <!-- Project Image with Arch Framing -->
                         <div class="relative aspect-[16/10] overflow-hidden bg-[#0E1520]">
-                            <img src="{{ $project->hero_image }}" alt="{{ $project->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='/media/img/2021/04/Kedia-Nikunj-1-1920.webp'">
+                            <img loading="lazy" decoding="async" src="{{ $project->hero_image }}" alt="{{ $project->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='/media/img/2021/04/Kedia-Nikunj-1-1920.webp'">
                             
                             <!-- Status Pill -->
                             <div class="absolute top-4 left-4">
@@ -595,7 +595,7 @@
             <!-- Chairman Mr. Rajendra Kedia -->
             <div class="rounded-3xl bg-white/5 border border-white/10 p-6 flex flex-col items-center text-center space-y-4 hover:border-[#D4E845]/50 transition-all">
                 <div class="w-36 h-36 rounded-full overflow-hidden border-2 border-[#D4E845] shadow-xl">
-                    <img src="/media/img/2021/04/Mr-Rajendra-kedia-600.webp" alt="Mr Rajendra Kedia" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Mr-Rajendra-kedia-600.webp" alt="Mr Rajendra Kedia" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h3 class="font-serif text-xl font-bold text-white">{{ __('Mr Rajendra Kedia') }}</h3>
@@ -610,7 +610,7 @@
             <!-- Director Mr. Saurabh Kedia -->
             <div class="rounded-3xl bg-white/5 border border-white/10 p-6 flex flex-col items-center text-center space-y-4 hover:border-[#D4E845]/50 transition-all">
                 <div class="w-36 h-36 rounded-full overflow-hidden border-2 border-[#D4E845] shadow-xl">
-                    <img src="/media/img/2021/04/Mr-Saurabh-Kedia-600.webp" alt="Mr Saurabh Kedia" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Mr-Saurabh-Kedia-600.webp" alt="Mr Saurabh Kedia" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h3 class="font-serif text-xl font-bold text-white">{{ __('Mr Saurabh Kedia') }}</h3>
@@ -625,7 +625,7 @@
             <!-- CEO Mr. Gaurav Kedia -->
             <div class="rounded-3xl bg-white/5 border border-white/10 p-6 flex flex-col items-center text-center space-y-4 hover:border-[#D4E845]/50 transition-all">
                 <div class="w-36 h-36 rounded-full overflow-hidden border-2 border-[#D4E845] shadow-xl">
-                    <img src="/media/img/2021/04/Mr-Gaurav-Kedia-600.webp" alt="Mr Gaurav Kedia" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/media/img/2021/04/Mr-Gaurav-Kedia-600.webp" alt="Mr Gaurav Kedia" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h3 class="font-serif text-xl font-bold text-white">{{ __('Mr Gaurav Kedia') }}</h3>
