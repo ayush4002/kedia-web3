@@ -68,13 +68,26 @@ Upload the entire repository directly inside `public_html/`. The included root `
 ---
 
 ### Step 4: Upload the Project Files
-1. Create a `.zip` file of this repository (excluding `node_modules` and `.git`).
-2. In cPanel **File Manager**, upload the zip file to your server.
-3. Right-click and **Extract** the zip file.
+
+#### Option 1: File Manager Upload (No SSH or Composer required)
+1. On your local machine, create a `.zip` archive of the project folder:
+   - **Include**: all code files, assets, and the `vendor/` folder.
+   - **Exclude**: `node_modules/` and `.git/`.
+2. In cPanel **File Manager**, upload the zip file to your target directory (e.g. `public_html/` or `~/kedia/`).
+3. Right-click the uploaded `.zip` and click **Extract**.
 4. Set folder permissions (standard cPanel permissions):
    - Directories: `755`
    - Files: `644`
    - `storage/` and `bootstrap/cache/`: `775` (writable)
+
+#### Option 2: cPanel Git Version Control (For hosts with SSH / Composer)
+1. In cPanel, navigate to **Git™ Version Control** > **Create**.
+2. Clone URL: `https://github.com/ayush4002/kedia-web3.git`
+3. Repository Path: `repositories/kedia`
+4. In cPanel **Terminal** or SSH, navigate to the folder and run:
+   ```bash
+   composer install --no-dev --optimize-autoloader
+   ```
 
 ---
 
