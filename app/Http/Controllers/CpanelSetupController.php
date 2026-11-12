@@ -115,3 +115,4 @@ class CpanelSetupController extends Controller
         }
     }
 }
+
