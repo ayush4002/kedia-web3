@@ -1,3 +1,143 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ------------------------------------------------------------------
+   The Jaipur Blueprint — base
+   ------------------------------------------------------------------ */
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body { @apply bg-paper text-ink font-sans antialiased; }
+  ::selection { background: rgba(200, 162, 75, 0.35); }
+  h1, h2, h3, .font-display { font-family: theme('fontFamily.serif'); font-optical-sizing: auto; }
+  :focus-visible { outline: 2px solid theme('colors.brass.DEFAULT'); outline-offset: 3px; }
+  [x-cloak], [hidden] { display: none !important; }
+  /* Lenis */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-stopped { overflow: hidden; }
+}
+
+@layer components {
+  .container-site { @apply mx-auto w-full max-w-site px-4 sm:px-8 lg:px-12; }
+
+  /* Small monospace labels: plot sizes, statuses, RERA numbers */
+  .label { @apply font-mono text-[11px] uppercase tracking-label; }
+
+  /* Buttons */
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition duration-300 disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-brass { @apply btn bg-brass text-navy hover:bg-brass-400 hover:shadow-[0_8px_24px_-8px_rgba(200,162,75,0.7)]; }
+  .btn-navy { @apply btn bg-navy text-paper hover:bg-navy-700; }
+  .btn-ghost { @apply btn border border-navy/25 text-navy hover:border-terracotta hover:text-terracotta; }
+  .btn-ghost-light { @apply btn border border-paper/30 text-paper hover:border-brass hover:text-brass; }
+  .btn-sm { @apply px-4 py-2 text-[11px]; }
+
+  /* Form fields */
+  .field { @apply w-full rounded-xl border border-navy/15 bg-paper-50 px-4 py-3 text-sm text-ink placeholder:text-ink/40 transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/30; }
+  .field-dark { @apply w-full rounded-xl border border-paper/15 bg-white/5 px-4 py-3 text-sm text-paper placeholder:text-paper/40 focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/30; }
+  .field-label { @apply label mb-1.5 block text-ink/60; }
+
+  /* Chips & status pills */
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-navy/15 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-ink/70; }
+  .pill-available { @apply inline-flex items-center gap-1.5 rounded-full bg-status-available/10 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-status-available; }
+  .pill-hold { @apply inline-flex items-center gap-1.5 rounded-full bg-brass/15 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-brass-700; }
+  .pill-sold { @apply inline-flex items-center gap-1.5 rounded-full bg-status-sold/15 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-status-sold; }
+
+  /* Arch-shaped image frame (haveli doorway) */
+  .arch { border-radius: 999px 999px 1.25rem 1.25rem; overflow: hidden; }
+  .arch-soft { border-radius: 12rem 12rem 1.25rem 1.25rem; overflow: hidden; }
+
+  /* Jaali (lattice) divider */
+  .jaali {
+    height: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg fill='none' stroke='%23C8A24B' stroke-width='1' opacity='.55'%3E%3Cpath d='M14 1l13 13-13 13L1 14z'/%3E%3Ccircle cx='14' cy='14' r='4'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-position: center;
+  }
+  .jaali-panel {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%23C8A24B' stroke-width='.8' opacity='.18'%3E%3Cpath d='M20 0l20 20-20 20L0 20z'/%3E%3Ccircle cx='20' cy='20' r='6'/%3E%3Cpath d='M20 8v24M8 20h24'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  /* Faint blueprint grid for navy sections */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(rgba(200, 162, 75, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200, 162, 75, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* "Architectural plate" project card */
+  .plate { @apply relative block overflow-hidden rounded-[1.5rem] border border-navy/10 bg-paper-50 transition duration-500; }
+  .plate:hover { @apply -translate-y-1 border-brass/60 shadow-[0_30px_60px_-30px_rgba(14,21,32,0.45)]; }
+  .plate .plate-sketch { @apply pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500; }
+  .plate:hover .plate-sketch, .plate:focus-visible .plate-sketch { @apply opacity-100; }
+  .plate:hover .plate-photo { @apply opacity-25 grayscale; }
+
+  /* Section helpers */
+  .section-navy { @apply relative bg-navy text-paper; }
+  .section-paper { @apply relative bg-paper text-ink; }
+  .eyebrow { @apply label text-brass; }
+  .display-xl { @apply font-serif text-5xl font-medium leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl xl:text-[5.5rem]; }
+  .display-lg { @apply font-serif text-4xl font-medium leading-[1.02] tracking-tight sm:text-5xl lg:text-6xl; }
+  .display-md { @apply font-serif text-3xl font-medium leading-tight tracking-tight sm:text-4xl; }
+
+  .card { @apply rounded-2xl border border-navy/10 bg-paper-50 p-6; }
+  .card-dark { @apply rounded-2xl border border-paper/10 bg-white/[0.03] p-6; }
+
+  .table-clean { @apply w-full text-left text-sm; }
+  .table-clean th { @apply label border-b border-navy/10 px-3 py-3 font-medium text-ink/50; }
+  .table-clean td { @apply border-b border-navy/5 px-3 py-3 align-middle; }
+}
+
+/* ------------------------------------------------------------------
+   Motion (progressively enhanced by site.js; off for reduced motion)
+   ------------------------------------------------------------------ */
+.js [data-reveal] { opacity: 0; transform: translateY(28px); }
+.js [data-reveal].is-in { opacity: 1; transform: none; transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+
+/* Blueprint line drawings that draw themselves */
+.js [data-draw] path, .js [data-draw] line, .js [data-draw] rect, .js [data-draw] circle, .js [data-draw] polyline {
+  stroke-dasharray: var(--len, 1200);
+  stroke-dashoffset: var(--len, 1200);
+}
+.js [data-draw].is-drawn path, .js [data-draw].is-drawn line, .js [data-draw].is-drawn rect, .js [data-draw].is-drawn circle, .js [data-draw].is-drawn polyline {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 2.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* Haveli doorway hero: the arch doors part to reveal the headline */
+.haveli-door { transition: transform 1.6s cubic-bezier(.7,0,.2,1); }
+.is-open .haveli-door-left { transform: translateX(-101%); }
+.is-open .haveli-door-right { transform: translateX(101%); }
+
+/* Brass ring cursor (fine pointers only) */
+.cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 9999; width: 34px; height: 34px;
+  margin: -17px 0 0 -17px; border: 1.5px solid #C8A24B; border-radius: 999px;
+  pointer-events: none; opacity: 0; transition: width .25s, height .25s, margin .25s, opacity .3s, background-color .25s;
+}
+.cursor-ring.is-active { opacity: .9; }
+.cursor-ring.is-hover { width: 58px; height: 58px; margin: -29px 0 0 -29px; background-color: rgba(200,162,75,.12); }
+
+/* Horizontal heritage timeline */
+.timeline-track { scroll-snap-type: x mandatory; scrollbar-width: thin; }
+.timeline-track > * { scroll-snap-align: start; }
+
+/* Masonry gallery */
+.masonry { columns: 1; column-gap: 1rem; }
+@media (min-width: 640px) { .masonry { columns: 2; } }
+@media (min-width: 1024px) { .masonry { columns: 3; } }
+.masonry > * { break-inside: avoid; margin-bottom: 1rem; }
+
+/* Print: cost sheets and vouchers */
+@media print {
+  header, footer, .no-print, .cursor-ring, #floatingDock, #compareTray { display: none !important; }
+  body { background: #fff !important; }
+  .print-sheet { box-shadow: none !important; border: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .js [data-reveal] { opacity: 1; transform: none; }
+  .js [data-draw] * { stroke-dashoffset: 0 !important; }
+  .cursor-ring { display: none; }
+}

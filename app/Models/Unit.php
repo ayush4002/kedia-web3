@@ -73,6 +73,31 @@ class Unit extends Model
         return \App\Support\Format::lakhCrore($price);
     }
 
+    public function getUrlAttribute(): string
+    {
+        return route('units.show', [$this->project_slug, $this->unit_code]);
+    }
+
+    /** Payload for the wishlist/compare store in site.js. */
+    public function shopItem(): array
+    {
+        return [
+            'id' => 'unit-' . $this->id,
+            'unit' => $this->id,
+            'type' => 'unit',
+            'title' => $this->title . ' · ' . $this->unit_code,
+            'url' => $this->url,
+            'price' => $this->price_formatted,
+            'location' => $this->project_name,
+            'img' => $this->relationLoaded('project') && $this->project ? Project::media($this->project->cover_image, 600) : null,
+        ];
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return ['available' => __('Available'), 'on_hold' => __('On Hold'), 'sold' => __('Sold')][$this->status] ?? ucfirst((string) $this->status);
+    }
+
     public function getPriceNumAttribute(): int
     {
         return (int) ($this->total_price ?: $this->base_price);

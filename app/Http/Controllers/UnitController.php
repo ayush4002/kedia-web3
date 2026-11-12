@@ -7,7 +7,7 @@ use App\Models\Unit;
 class UnitController extends Controller
 {
     /**
-     * Display a specific unit product page with real-time price sheet, specs, and booking CTA.
+     * Unit "product" page: gallery, floor plan, specifications, price breakup, booking.
      */
     public function show(string $slug, string $unitCode)
     {
@@ -18,13 +18,26 @@ class UnitController extends Controller
 
         $pricing = $unit->computePricing();
 
-        $similarUnits = Unit::where('project_slug', $unit->project_slug)
+        $similarUnits = Unit::with('project')
+            ->where('project_slug', $unit->project_slug)
             ->where('id', '!=', $unit->id)
             ->where('status', 'available')
-            ->take(4)
+            ->orderByRaw('ABS(total_price - ?)', [$unit->total_price])
+            ->take(3)
             ->get();
 
         return view('pages.units.show', compact('unit', 'pricing', 'similarUnits'));
+    }
+
+    /**
+     * Printable cost sheet (the browser's "Save as PDF" produces the PDF).
+     */
+    public function costSheet(int $unit)
+    {
+        $unit = Unit::with('project')->findOrFail($unit);
+        $pricing = $unit->computePricing();
+
+        return view('pages.units.cost-sheet', compact('unit', 'pricing'));
     }
 
     /**

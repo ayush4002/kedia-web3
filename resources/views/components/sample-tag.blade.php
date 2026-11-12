@@ -1,0 +1,1 @@
+<span {{ $attributes->merge(['class' => 'inline-flex items-center rounded-full border border-dashed border-terracotta/60 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-terracotta']) }} title="{{ __('Placeholder content for the demo — replace before launch') }}">{{ __('Sample') }}</span>

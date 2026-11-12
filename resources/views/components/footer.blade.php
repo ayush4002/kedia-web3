@@ -1,91 +1,79 @@
-<footer class="bg-[#0E1520] text-white pt-20 pb-12 border-t border-[#D4E845]/15 relative overflow-hidden">
-    <!-- Faint jaali / blueprint grid overlay -->
-    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#D4E845 1px, transparent 1px); background-size: 28px 28px;"></div>
-
-    <div class="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 pb-16 border-b border-white/10">
-            
-            <!-- Column 1 & 2: Brand & Corporate Statement -->
-            <div class="lg:col-span-2 space-y-6">
-                <a href="{{ route('home') }}" class="inline-block">
-                    <img loading="lazy" decoding="async" src="/assets/logo-white.png" alt="Kedia Builders & Colonizers" class="h-12 w-auto object-contain" onerror="this.src='/assets/logo-navy.png'; this.classList.add('brightness-0', 'invert');">
+@php
+    $company = config('kedia.company');
+    $latest = \App\Models\Project::where('status', 'ongoing')->orderBy('sort_order')->take(5)->get(['slug', 'name', 'location', 'rera_number']);
+@endphp
+<footer class="section-navy overflow-hidden pt-20">
+    <div class="blueprint-grid pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="container-site relative">
+        <div class="grid gap-12 pb-14 md:grid-cols-2 lg:grid-cols-12">
+            <div class="lg:col-span-4">
+                <a href="{{ route('home') }}" class="inline-block" aria-label="{{ __('Home') }}">
+                    <img src="/assets/logo-white.png" alt="Kedia Builders & Colonizers" class="h-12 w-auto" loading="lazy">
                 </a>
-                <p class="text-sm text-white/70 max-w-md leading-relaxed">
-                    {{ __('messages.footer_about') }}
-                </p>
-                <div class="flex flex-wrap gap-3 font-mono text-[11px] text-[#D4E845]">
-                    <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10">{{ __('EST. 1980') }}</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10">{{ __('200+ LAND DEVELOPMENTS') }}</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10">{{ __('100% JDA APPROVED') }}</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10">{{ __('RAJ-RERA SANCTIONED') }}</span>
+                <p class="mt-6 max-w-sm font-serif text-xl italic leading-snug text-paper/80">“{{ __($company['tagline']) }}”</p>
+                <div class="mt-6 flex flex-wrap gap-2">
+                    <span class="chip border-paper/15 text-paper/70">{{ __('Est.') }} {{ $company['founded'] }}</span>
+                    <span class="chip border-paper/15 text-paper/70">{{ __('200+ projects') }}</span>
+                    <span class="chip border-paper/15 text-paper/70">{{ __('JDA approved') }}</span>
+                </div>
+                <div class="mt-6 flex gap-2">
+                    @foreach(config('kedia.socials') as $social)
+                        <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="rounded-full border border-paper/15 px-3.5 py-2 text-xs text-paper/70 transition hover:border-brass hover:text-brass" aria-label="{{ $social['label'] }} {{ $social['handle'] }}">{{ $social['label'] }}</a>
+                    @endforeach
                 </div>
             </div>
 
-            <!-- Column 3: Featured Projects -->
-            <div class="space-y-4">
-                <div class="text-xs font-mono uppercase tracking-widest text-[#D4E845] font-semibold">{{ __('Townships & Enclaves') }}</div>
-                <ul class="space-y-2.5 text-sm text-white/70">
-                    <li><a href="{{ route('projects.show', 'kedias-landmark') }}" class="hover:text-white transition-colors">{{ __('Kedia\'s Landmark') }}</a></li>
-                    <li><a href="{{ route('projects.show', 'kedias-atulyam') }}" class="hover:text-white transition-colors">{{ __('Kedia\'s Atulyam') }}</a></li>
-                    <li><a href="{{ route('projects.show', 'kedias-tulsi') }}" class="hover:text-white transition-colors">{{ __('Kedia\'s Tulsi (Bani Park)') }}</a></li>
-                    <li><a href="{{ route('projects.show', 'ganpati-greens') }}" class="hover:text-white transition-colors">{{ __('Ganpati Greens') }}</a></li>
-                    <li><a href="{{ route('projects.show', 'nikunj-villas') }}" class="hover:text-white transition-colors">{{ __('Nikunj Villas') }}</a></li>
-                    <li><a href="{{ route('projects.show', 'kedia-aravali') }}" class="hover:text-white transition-colors">{{ __('Kedia Aravali Plots') }}</a></li>
-                    <li><a href="{{ route('projects.index') }}" class="text-[#D4E845] font-semibold hover:underline block pt-1">{{ __('All 16 Projects →') }}</a></li>
+            <div class="lg:col-span-2">
+                <h2 class="eyebrow">{{ __('Explore') }}</h2>
+                <ul class="mt-5 space-y-2.5 text-sm text-paper/70">
+                    @foreach([['projects.index', __('All projects')], ['about', __('Our story')], ['about.why', __('Why invest')], ['gallery', __('Gallery')], ['tools', __('EMI & price tools')], ['nri', __('NRI corner')], ['careers', __('Careers')], ['account', __('My account')]] as [$r, $label])
+                        <li><a href="{{ route($r) }}" class="transition hover:text-brass">{{ $label }}</a></li>
+                    @endforeach
                 </ul>
             </div>
 
-            <!-- Column 4: Architectural Navigation -->
-            <div class="space-y-4">
-                <div class="text-xs font-mono uppercase tracking-widest text-[#D4E845] font-semibold">{{ __('Exploration') }}</div>
-                <ul class="space-y-2.5 text-sm text-white/70">
-                    <li><a href="{{ route('about') }}" class="hover:text-white transition-colors">{{ __('messages.nav_about') }}</a></li>
-                    <li><a href="{{ route('gallery') }}" class="hover:text-white transition-colors">{{ __('messages.nav_gallery') }}</a></li>
-                    <li><a href="{{ route('tools') }}" class="hover:text-white transition-colors">{{ __('messages.nav_calculator') }}</a></li>
-                    <li><a href="{{ route('nri') }}" class="hover:text-white transition-colors">{{ __('messages.nav_nri') }}</a></li>
-                    <li><a href="{{ route('careers') }}" class="hover:text-white transition-colors">{{ __('Careers & Internships') }}</a></li>
-                    <li><a href="{{ route('customer.dashboard') }}" class="hover:text-white transition-colors">{{ __('Customer Portal') }}</a></li>                </ul>
+            <div class="lg:col-span-3">
+                <h2 class="eyebrow">{{ __('Latest projects') }}</h2>
+                <ul class="mt-5 space-y-3 text-sm">
+                    @foreach($latest as $p)
+                        <li>
+                            <a href="{{ route('projects.show', $p->slug) }}" class="group block">
+                                <span class="text-paper/85 transition group-hover:text-brass">{{ $p->name }}</span>
+                                <span class="label block text-paper/35">RERA {{ $p->rera_number }}</span>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
 
-            <!-- Column 5: Headquarters & Direct Line -->
-            <div class="space-y-4">
-                <div class="text-xs font-mono uppercase tracking-widest text-[#D4E845] font-semibold">{{ __('Jaipur Headquarters') }}</div>
-                <div class="text-sm text-white/70 space-y-3">
-                    <p class="leading-relaxed">
-                        {{ __('Kedia Builders & Colonizers') }}<br>
-                        {{ __('Corporate Office: Sikar Road, Bani Park & Vaishali Nagar, Jaipur, Rajasthan 302016') }}
-                    </p>
-                    <div class="pt-2">
-                        <div class="text-[11px] font-mono text-white/40 uppercase">{{ __('Direct Booking Desk:') }}</div>
-                        <a href="tel:+918302500500" class="text-base font-bold text-white hover:text-[#D4E845] block">+91 8302 500 500</a>
-                    </div>
-                    <div>
-                        <div class="text-[11px] font-mono text-white/40 uppercase">{{ __('WhatsApp Inquiry:') }}</div>
-                        <a href="https://wa.me/919829184872" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-[#D4E845] hover:underline flex items-center gap-1.5">
-                            <span>+91 98291 84872</span>
-                        </a>
-                    </div>
-                    <div>
-                        <div class="text-[11px] font-mono text-white/40 uppercase">{{ __('Corporate Email:') }}</div>
-                        <a href="mailto:kediabuildersandcolonizers@gmail.com" class="text-xs text-white/70 hover:text-white break-all">kediabuildersandcolonizers@gmail.com</a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Bottom Certification & Copyright -->
-        <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/50">
-            <div class="text-center md:text-left">
-                &copy; {{ date('Y') }} Kedia Builders & Colonizers. {{ __('messages.all_rights_reserved') }}
-            </div>
-            <div class="flex items-center gap-6">
-                <a href="{{ route('legal') }}" class="hover:text-white transition-colors">{{ __('RERA Compliance') }}</a>
-                <a href="{{ route('legal') }}" class="hover:text-white transition-colors">{{ __('Privacy Policy') }}</a>
-                <a href="{{ route('legal') }}" class="hover:text-white transition-colors">{{ __('Terms of Booking') }}</a>
-                <a href="{{ route('contact') }}" class="hover:text-white transition-colors">{{ __('Site Map') }}</a>
+            <div class="lg:col-span-3">
+                <h2 class="eyebrow">{{ __('Contact') }}</h2>
+                <address class="mt-5 space-y-3 text-sm not-italic text-paper/70">
+                    <p>{{ __($company['address']) }}</p>
+                    <p><a href="tel:{{ $company['phone_href'] }}" class="font-serif text-2xl text-paper transition hover:text-brass">{{ $company['phone'] }}</a></p>
+                    <p><a href="https://wa.me/{{ $company['whatsapp_href'] }}" target="_blank" rel="noopener" class="hover:text-brass">WhatsApp {{ $company['whatsapp'] }}</a></p>
+                    <p><a href="mailto:{{ $company['email'] }}" class="break-all hover:text-brass">{{ $company['email'] }}</a></p>
+                    <p class="label text-paper/40">{{ __($company['hours']) }}</p>
+                </address>
             </div>
         </div>
 
+        <div class="jaali opacity-40" aria-hidden="true"></div>
+
+        <div class="grid gap-6 py-8 text-xs text-paper/50 lg:grid-cols-2">
+            <p class="max-w-xl leading-relaxed">
+                {{ __('All Kedia townships are JDA approved. RAJ-RERA registration numbers are shown on every project page; verify them at rera.rajasthan.gov.in. Prices, offers and availability are indicative and subject to change.') }}
+            </p>
+            <div class="flex flex-wrap items-start gap-x-6 gap-y-2 lg:justify-end">
+                <a href="{{ route('legal.privacy') }}" class="hover:text-paper">{{ __('Privacy Policy') }}</a>
+                <a href="{{ route('legal.terms') }}" class="hover:text-paper">{{ __('Terms of Use') }}</a>
+                <a href="{{ route('legal.refund') }}" class="hover:text-paper">{{ __('Refund & Booking Policy') }}</a>
+                <a href="{{ route('legal') }}" class="hover:text-paper">{{ __('RERA disclosures') }}</a>
+                <a href="{{ route('sitemap') }}" class="hover:text-paper">{{ __('Sitemap') }}</a>
+            </div>
+        </div>
+        <div class="border-t border-white/5 py-6 text-xs text-paper/40">
+            &copy; {{ date('Y') }} {{ $company['name'] }}. {{ __('All rights reserved.') }}
+        </div>
     </div>
 </footer>

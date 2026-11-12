@@ -9,23 +9,22 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Featured Developments
-        $featuredProjects = Project::whereIn('slug', [
-            'kedias-landmark',
-            'nikunj-villas',
-            'kedias-atulyam',
-            'kedias-tulsi',
-            'jagannathpuri',
-            'kedia-aravali'
-        ])->get();
+        $withAvailable = ['units as available_units_count' => fn ($q) => $q->where('status', 'available')];
 
-        if ($featuredProjects->isEmpty()) {
-            $featuredProjects = Project::take(6)->get();
-        }
+        $ongoing = Project::where('status', 'ongoing')->withCount($withAvailable)->orderBy('sort_order')->get();
+        $completed = Project::where('status', 'completed')->orderBy('sort_order')->get();
+        $featured = $ongoing->take(6);
 
-        // The homepage inventory strip shows six units.
-        $units = Unit::orderBy('id')->take(6)->get();
+        $search = [
+            'locations' => Project::query()->distinct()->orderBy('location')->pluck('location'),
+            'max_area' => (int) Unit::max('area_sqft'),
+        ];
 
-        return view('pages.home', compact('featuredProjects', 'units'));
+        $inventory = [
+            'total' => Unit::count(),
+            'available' => Unit::where('status', 'available')->count(),
+        ];
+
+        return view('pages.home', compact('ongoing', 'completed', 'featured', 'search', 'inventory'));
     }
 }
