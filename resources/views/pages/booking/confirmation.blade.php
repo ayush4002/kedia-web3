@@ -58,7 +58,7 @@
         <article class="print-sheet rounded-[1.5rem] border border-navy/10 bg-white p-6 shadow-xl sm:p-10">
             <header class="flex flex-wrap items-start justify-between gap-6 border-b border-navy/10 pb-6">
                 <div>
-                    <img src="/assets/logo-navy.png" alt="Kedia Builders & Colonizers" class="h-11 w-auto">
+                    <img src="{{ asset('assets/logo-navy.png') }}" alt="Kedia Builders & Colonizers" class="h-11 w-auto">
                     <p class="mt-3 text-xs text-ink/60">{{ $company['address'] }} · {{ $company['phone'] }}</p>
                 </div>
                 <div class="text-right">

@@ -15,7 +15,7 @@
     <div class="container-site grid items-center gap-14 lg:grid-cols-12">
         <div class="lg:col-span-5">
             <div class="arch aspect-[4/5] border border-brass/40 bg-navy" data-reveal>
-                <img src="{{ $chairman['photo'] }}" alt="{{ $chairman['name'] }}" loading="lazy" decoding="async" class="h-full w-full object-cover">
+                <img src="{{ str_starts_with($chairman['photo'], 'http') ? $chairman['photo'] : asset(ltrim($chairman['photo'], '/')) }}" alt="{{ $chairman['name'] }}" loading="lazy" decoding="async" class="h-full w-full object-cover">
             </div>
         </div>
         <div class="lg:col-span-6 lg:col-start-7" data-reveal>
@@ -37,7 +37,7 @@
             @foreach([$director, $ceo] as $i => $leader)
                 <article class="grid gap-8 sm:grid-cols-[12rem_minmax(0,1fr)]" data-reveal data-reveal-delay="{{ $i * 120 }}">
                     <div class="arch aspect-[4/5] w-48 border border-brass/30 bg-navy-700">
-                        <img src="{{ $leader['photo'] }}" alt="{{ $leader['name'] }}" loading="lazy" decoding="async" class="h-full w-full object-cover">
+                        <img src="{{ str_starts_with($leader['photo'], 'http') ? $leader['photo'] : asset(ltrim($leader['photo'], '/')) }}" alt="{{ $leader['name'] }}" loading="lazy" decoding="async" class="h-full w-full object-cover">
                     </div>
                     <div>
                         <div class="label text-brass">{{ __($leader['role']) }}</div>

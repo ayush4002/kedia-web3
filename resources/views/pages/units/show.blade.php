@@ -3,7 +3,7 @@
 @php
     $project = $unit->project;
     $gallery = $project ? array_slice($project->galleryImages(), 0, 6) : [];
-    $cover = $project?->hero_image ?? '/media/img/2021/04/Kedia-Nikunj-1-1920.webp';
+    $cover = $project?->hero_image ?? asset('media/img/2021/04/Kedia-Nikunj-1-1920.webp');
     $facing = stripos((string) $unit->facing, 'facing') !== false ? $unit->facing : $unit->facing . ' facing';
     $isPlot = $unit->unit_type === 'Plot';
     $specs = array_filter([

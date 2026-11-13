@@ -14,7 +14,7 @@
         @if($image)
             <div class="lg:col-span-5">
                 <div class="arch aspect-[4/5] max-h-[28rem] border border-brass/40 bg-navy-900" data-reveal>
-                    <img fetchpriority="high" src="{{ $image }}" alt="" class="h-full w-full object-cover">
+                    <img fetchpriority="high" src="{{ str_starts_with($image, 'http') ? $image : asset(ltrim($image, '/')) }}" alt="" class="h-full w-full object-cover">
                 </div>
             </div>
         @endif

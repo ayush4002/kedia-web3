@@ -34,9 +34,9 @@
 
         <div class="relative mx-auto w-full max-w-md lg:col-span-6 lg:max-w-lg">
             <div class="arch relative aspect-[4/5] border border-brass/40 bg-navy-900 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)]">
-                <video class="h-full w-full object-cover" autoplay muted loop playsinline preload="metadata" poster="/media/video/jaipur-poster.webp" aria-label="{{ __('Drone film of Kedia townships in Jaipur') }}">
-                    <source src="/media/video/jaipur.webm" type="video/webm">
-                    <source src="/media/video/jaipur.mp4" type="video/mp4">
+                <video class="h-full w-full object-cover" autoplay muted loop playsinline preload="metadata" poster="{{ asset('media/video/jaipur-poster.webp') }}" aria-label="{{ __('Drone film of Kedia townships in Jaipur') }}">
+                    <source src="{{ asset('media/video/jaipur.webm') }}" type="video/webm">
+                    <source src="{{ asset('media/video/jaipur.mp4') }}" type="video/mp4">
                 </video>
                 <div class="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-transparent" aria-hidden="true"></div>
                 {{-- the two doors --}}

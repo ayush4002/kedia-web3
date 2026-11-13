@@ -23,10 +23,14 @@
 
         <div class="masonry mt-10">
             @foreach($items as $item)
-                @php $isVideo = ($item['type'] ?? 'image') === 'video'; @endphp
-                <a href="{{ $item['src'] }}" data-lightbox data-type="{{ $isVideo ? 'video' : 'image' }}" data-src="{{ $item['src'] }}" data-caption="{{ $item['caption'] }}" data-category="{{ $item['category'] }}"
+                @php
+                    $isVideo = ($item['type'] ?? 'image') === 'video';
+                    $srcUrl = str_starts_with($item['src'], 'http') ? $item['src'] : asset(ltrim($item['src'], '/'));
+                    $thumbUrl = str_starts_with($item['thumb'] ?? $item['src'], 'http') ? ($item['thumb'] ?? $item['src']) : asset(ltrim($item['thumb'] ?? $item['src'], '/'));
+                @endphp
+                <a href="{{ $srcUrl }}" data-lightbox data-type="{{ $isVideo ? 'video' : 'image' }}" data-src="{{ $srcUrl }}" data-caption="{{ $item['caption'] }}" data-category="{{ $item['category'] }}"
                    class="group relative block overflow-hidden rounded-2xl bg-navy">
-                    <img src="{{ $item['thumb'] }}" alt="{{ $item['caption'] }}" loading="lazy" decoding="async" class="w-full transition duration-700 group-hover:scale-105 group-hover:opacity-75">
+                    <img src="{{ $thumbUrl }}" alt="{{ $item['caption'] }}" loading="lazy" decoding="async" class="w-full transition duration-700 group-hover:scale-105 group-hover:opacity-75">
                     @if($isVideo)
                         <span class="absolute left-1/2 top-1/2 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-paper/90 text-navy shadow-lg" aria-hidden="true">▶</span>
                     @endif

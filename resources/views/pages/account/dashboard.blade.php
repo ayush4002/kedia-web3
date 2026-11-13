@@ -47,7 +47,7 @@
         <div id="p-bookings" role="tabpanel" aria-labelledby="t-bookings" class="mt-8 space-y-5">
             @forelse($bookings as $booking)
                 <article class="grid gap-6 rounded-[1.5rem] border border-navy/10 bg-paper-50 p-6 md:grid-cols-[8rem_minmax(0,1fr)_auto]">
-                    <img src="{{ $booking->project ? \App\Models\Project::media($booking->project->cover_image, 600) : '/media/img/2021/04/Kedia-Nikunj-1-1920.webp' }}" alt="" loading="lazy" class="arch-soft hidden h-36 w-32 object-cover md:block">
+                    <img src="{{ $booking->project ? \App\Models\Project::media($booking->project->cover_image, 600) : asset('media/img/2021/04/Kedia-Nikunj-1-1920.webp') }}" alt="" loading="lazy" class="arch-soft hidden h-36 w-32 object-cover md:block">
                     <div class="min-w-0">
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="{{ $statusClass($booking->status) }}">{{ __($booking->status_label) }}</span>

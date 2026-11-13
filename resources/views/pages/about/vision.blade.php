@@ -14,7 +14,7 @@
             <article class="grid items-center gap-12 lg:grid-cols-12">
                 <div class="{{ $i % 2 ? 'lg:order-2 lg:col-span-5 lg:col-start-8' : 'lg:col-span-5' }}">
                     <div class="arch-soft aspect-[4/5] overflow-hidden bg-navy" data-reveal>
-                        <img src="{{ $img }}" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" data-parallax="0.06">
+                        <img src="{{ str_starts_with($img, 'http') ? $img : asset(ltrim($img, '/')) }}" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" data-parallax="0.06">
                     </div>
                 </div>
                 <div class="{{ $i % 2 ? 'lg:order-1 lg:col-span-6' : 'lg:col-span-6 lg:col-start-7' }}" data-reveal>

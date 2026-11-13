@@ -8,7 +8,7 @@
         <div class="grid gap-12 pb-14 md:grid-cols-2 lg:grid-cols-12">
             <div class="lg:col-span-4">
                 <a href="{{ route('home') }}" class="inline-block" aria-label="{{ __('Home') }}">
-                    <img src="/assets/logo-white.png" alt="Kedia Builders & Colonizers" class="h-12 w-auto" loading="lazy">
+                    <img src="{{ asset('assets/logo-white.png') }}" alt="Kedia Builders & Colonizers" class="h-12 w-auto" loading="lazy">
                 </a>
                 <p class="mt-6 max-w-sm font-serif text-xl italic leading-snug text-paper/80">“{{ __($company['tagline']) }}”</p>
                 <div class="mt-6 flex flex-wrap gap-2">

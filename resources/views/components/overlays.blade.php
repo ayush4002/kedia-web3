@@ -9,7 +9,7 @@
 <div id="mobileNav" data-panel hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ __('Menu') }}" class="{{ $panel }}">
     <div class="ml-auto flex h-full w-full max-w-sm flex-col overflow-y-auto bg-navy p-6 text-paper">
         <div class="flex items-center justify-between">
-            <img src="/assets/logo-white.png" alt="Kedia Builders & Colonizers" class="h-9 w-auto">
+            <img src="{{ asset('assets/logo-white.png') }}" alt="Kedia Builders & Colonizers" class="h-9 w-auto">
             <button type="button" data-close class="{{ $closeBtn }} text-paper" aria-label="{{ __('Close') }}">&times;</button>
         </div>
         <nav class="mt-8 space-y-1 font-serif text-2xl" aria-label="{{ __('Mobile') }}">

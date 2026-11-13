@@ -328,7 +328,7 @@
 @endsection
 
 @push('scripts')
-<script src="/assets/vendor/qrcode.js"></script>
+<script src="{{ asset('assets/vendor/qrcode.js') }}"></script>
 <script>
 (function () {
     const box = document.getElementById('reraQr');

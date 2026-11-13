@@ -63,12 +63,15 @@ class Project extends Model
     public function getHeroImageAttribute(): string
     {
         if (!empty($this->cover_image)) {
-            if (str_starts_with($this->cover_image, '/') || str_starts_with($this->cover_image, 'http')) {
+            if (str_starts_with($this->cover_image, 'http://') || str_starts_with($this->cover_image, 'https://')) {
                 return $this->cover_image;
             }
-            return '/media/' . ltrim($this->cover_image, '/') . '-1920.webp';
+            if (str_starts_with($this->cover_image, '/')) {
+                return asset(ltrim($this->cover_image, '/'));
+            }
+            return asset('media/' . ltrim($this->cover_image, '/') . '-1920.webp');
         }
-        return '/media/img/2021/04/Kedia-Nikunj-1-1920.webp';
+        return asset('media/img/2021/04/Kedia-Nikunj-1-1920.webp');
     }
 
     /**
@@ -81,17 +84,20 @@ class Project extends Model
         if ($path === '') {
             return null;
         }
-        if (str_starts_with($path, '/') || str_starts_with($path, 'http')) {
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
             return $path;
         }
+        if (str_starts_with($path, '/')) {
+            return asset(ltrim($path, '/'));
+        }
         $width = in_array($width, [600, 900, 1920], true) ? $width : 900;
-        return '/media/' . ltrim($path, '/') . '-' . $width . '.webp';
+        return asset('media/' . ltrim($path, '/') . '-' . $width . '.webp');
     }
 
     /** Card-sized cover image. */
     public function getCardImageAttribute(): string
     {
-        return self::media($this->cover_image, 900) ?? '/media/img/2021/04/Kedia-Nikunj-1-1920.webp';
+        return self::media($this->cover_image, 900) ?? asset('media/img/2021/04/Kedia-Nikunj-1-1920.webp');
     }
 
     /** Logo URL when one exists on disk. */
@@ -103,7 +109,7 @@ class Project extends Model
         foreach (['480', '600', '900'] as $w) {
             $rel = 'media/' . ltrim($this->logo_image, '/') . '-' . $w . '.webp';
             if (is_file(public_path($rel))) {
-                return '/' . $rel;
+                return asset($rel);
             }
         }
         return null;
@@ -125,7 +131,7 @@ class Project extends Model
     public function getVideoUrlAttribute(): ?string
     {
         $file = 'media/video/' . $this->slug . '-flyover.mp4';
-        return is_file(public_path($file)) ? '/' . $file : null;
+        return is_file(public_path($file)) ? asset($file) : null;
     }
 
     /** Payload for the wishlist/compare store in site.js. */
@@ -163,7 +169,7 @@ class Project extends Model
         if ($path === '' || !is_file(public_path('media/' . $path))) {
             return null;
         }
-        return '/media/' . $path;
+        return asset('media/' . $path);
     }
 
     public function getPriceStartNumAttribute(): int

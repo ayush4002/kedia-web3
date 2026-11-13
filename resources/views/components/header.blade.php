@@ -19,7 +19,7 @@
 <header id="siteHeader" class="group/header sticky top-0 z-50 border-b border-white/5 bg-navy/95 text-paper backdrop-blur-md transition-shadow [&.is-scrolled]:shadow-[0_10px_40px_-20px_rgba(0,0,0,0.6)]">
     <div class="container-site flex h-[76px] items-center justify-between gap-4">
         <a href="{{ route('home') }}" class="flex flex-none items-center" aria-label="{{ __('Kedia Builders & Colonizers — home') }}">
-            <img src="/assets/logo-white.png" alt="Kedia Builders & Colonizers" class="h-10 w-auto sm:h-11" width="160" height="44">
+            <img src="{{ asset('assets/logo-white.png') }}" alt="Kedia Builders & Colonizers" class="h-10 w-auto sm:h-11" width="160" height="44">
         </a>
 
         <nav class="hidden items-center gap-6 xl:flex" aria-label="{{ __('Main') }}">

@@ -2,7 +2,7 @@
     $company = config('kedia.company');
     $pageTitle = html_entity_decode(trim($__env->yieldContent('title', 'Kedia Builders & Colonizers | Jaipur Real Estate since 1980')), ENT_QUOTES);
     $pageDescription = html_entity_decode(trim($__env->yieldContent('meta_description', 'Browse, compare and book JDA-approved plots, villas and apartments by Kedia Builders & Colonizers, Jaipur — building since 1980.')), ENT_QUOTES);
-    $pageImage = url(trim($__env->yieldContent('og_image', '/assets/og-default.jpg')));
+    $pageImage = asset(ltrim(trim($__env->yieldContent('og_image', 'assets/og-default.jpg')), '/'));
     $navProjects = \App\Models\Project::whereIn('slug', config('kedia.nav_projects'))->get(['slug', 'name', 'location', 'status', 'rera_number'])->sortBy(fn ($p) => array_search($p->slug, config('kedia.nav_projects')));
     $locale = app()->getLocale();
 
@@ -45,8 +45,8 @@
         'name' => $company['name'],
         'slogan' => $company['tagline'],
         'url' => url('/'),
-        'logo' => url('/assets/logo-navy.png'),
-        'image' => url('/assets/og-default.jpg'),
+        'logo' => asset('assets/logo-navy.png'),
+        'image' => asset('assets/og-default.jpg'),
         'telephone' => $company['phone_href'],
         'email' => $company['email'],
         'foundingDate' => (string) $company['founded'],
@@ -56,14 +56,14 @@
     </script>
     @stack('structured_data')
 
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
-    <link rel="icon" type="image/png" href="/assets/favicon.png">
-    <link rel="apple-touch-icon" href="/assets/favicon-512.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon-32.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/favicon-512.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/site.css?v={{ @filemtime(public_path('assets/site.css')) }}">
+    <link rel="stylesheet" href="{{ asset('assets/site.css') }}?v={{ @filemtime(public_path('assets/site.css')) }}">
     @stack('head')
 </head>
 <body class="min-h-screen @yield('body_class')">
@@ -109,10 +109,10 @@
     <script>
         window.KEDIA_I18N = @json(collect($jsI18nKeys)->mapWithKeys(fn ($k) => [$k => __($k)]));
     </script>
-    <script src="/assets/vendor/gsap.min.js" defer></script>
-    <script src="/assets/vendor/ScrollTrigger.min.js" defer></script>
-    <script src="/assets/vendor/lenis.min.js" defer></script>
-    <script src="/assets/site.js?v={{ @filemtime(public_path('assets/site.js')) }}" defer></script>
+    <script src="{{ asset('assets/vendor/gsap.min.js') }}" defer></script>
+    <script src="{{ asset('assets/vendor/ScrollTrigger.min.js') }}" defer></script>
+    <script src="{{ asset('assets/vendor/lenis.min.js') }}" defer></script>
+    <script src="{{ asset('assets/site.js') }}?v={{ @filemtime(public_path('assets/site.js')) }}" defer></script>
     @stack('scripts')
 </body>
 </html>
