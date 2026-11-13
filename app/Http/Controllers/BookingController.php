@@ -75,8 +75,9 @@ class BookingController extends Controller
             return back()->withInput()->with('error', $message);
         }
 
-        // Remember the buyer so their account opens without another OTP in this session.
-        $request->session()->put('customer_phone', Booking::normalisePhone($booking->customer_phone));
+        // Pre-fill the account sign-in with this number. (Never sign in without an OTP:
+        // the number typed at checkout is not verified.)
+        $request->session()->put('account_phone_hint', Booking::normalisePhone($booking->customer_phone));
 
         $payUrl = URL::signedRoute('booking.pay', ['bookingId' => $booking->booking_id]);
 

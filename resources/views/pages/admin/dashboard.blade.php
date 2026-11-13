@@ -1,363 +1,168 @@
-@extends('layouts.app')
+@extends('pages.admin.shell')
 
-@section('title', 'Admin Command Center | Kedia Builders E-Commerce')
-@section('robots', 'noindex, nofollow')
+@section('title', 'Admin · Overview | Kedia Builders')
+@section('admin_title', __('Overview'))
+@section('admin_actions')
+    <a href="{{ route('admin.export.orders') }}" class="btn-ghost-light btn-sm">{{ __('Export orders (CSV)') }}</a>
+    <a href="{{ route('admin.export.catalog') }}" class="btn-ghost-light btn-sm">{{ __('Export catalogue (JSON)') }}</a>
+@endsection
 
-@section('content')
+@php
+    // Chart status palette, validated for the light paper surface (see dataviz validator):
+    $statusColors = ['available' => '#2E9A68', 'on_hold' => '#C8A24B', 'sold' => '#4A6FB0'];
+    $statusLabels = ['available' => __('Available'), 'on_hold' => __('On Hold'), 'sold' => __('Sold')];
+    $maxBookings = max(1, $monthly->max('bookings'));
+    $maxUnits = max(1, $byProject->map(fn ($p) => $p->available + $p->on_hold + $p->sold)->max());
+    $maxSource = max(1, $leadsBySource->max('total'));
+    $kpiTile = 'rounded-2xl border border-navy/10 bg-paper-50 p-5';
+@endphp
 
-<section class="py-10 bg-[#FAF8F5]">
-    <div class="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24 space-y-10">
-        
-        <!-- Header & Quick Export Controls -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-[#0E1520]/10">
-            <div>
-                <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-amber-600 font-bold mb-1">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Kedia E-Commerce Command Center</span>
-                </div>
-                <h1 class="font-serif text-3xl sm:text-4xl font-bold text-[#0E1520]">
-                    Real Estate Inventory &amp; Order Operations
-                </h1>
-                <p class="text-xs text-[#0E1520]/60 font-mono mt-1">Live administration of 16 signature projects, inventory status, and online token reservations.</p>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-3">
-                <a href="{{ route('admin.export.orders') }}" class="px-4 py-2.5 rounded-full bg-white border border-[#0E1520]/15 hover:border-[#0E1520] text-xs font-mono font-bold text-[#0E1520] shadow-sm transition-all flex items-center gap-2">
-                    <span>📥</span>
-                    <span>Export Orders (CSV)</span>
-                </a>
-                <a href="{{ route('admin.export.catalog') }}" class="px-4 py-2.5 rounded-full bg-white border border-[#0E1520]/15 hover:border-[#0E1520] text-xs font-mono font-bold text-[#0E1520] shadow-sm transition-all flex items-center gap-2">
-                    <span>📊</span>
-                    <span>Export Catalog (JSON)</span>
-                </a>
-                <button type="button" onclick="document.getElementById('addUnitModal').classList.remove('hidden')" class="px-5 py-2.5 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-xs font-bold text-[#0E1520] uppercase tracking-wider shadow transition-all">
-                    + Add New Unit
-                </button>
-            </div>
-        </div>
-
-        <!-- 6 KPI Revenue & Inventory Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 font-mono">
-            
-            <div class="p-5 rounded-2xl bg-[#0E1520] text-white shadow">
-                <div class="text-[10px] text-white/50 uppercase">Total Inventory GMV</div>
-                <div class="font-serif text-xl sm:text-2xl font-bold text-[#D4E845] mt-1">
-                    ₹ {{ number_format($totalGMV / 10000000, 2) }} Cr
-                </div>
-                <div class="text-[9px] text-white/40 mt-1">Contract value in pipeline</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-white border border-[#0E1520]/10 shadow-sm">
-                <div class="text-[10px] text-[#0E1520]/50 uppercase">Token Collections</div>
-                <div class="font-serif text-xl sm:text-2xl font-bold text-emerald-600 mt-1">
-                    ₹ {{ number_format($tokenRevenue / 100000, 2) }} L
-                </div>
-                <div class="text-[9px] text-[#0E1520]/40 mt-1">{{ $totalBookingsCount }} Online tokens received</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-white border border-[#0E1520]/10 shadow-sm">
-                <div class="text-[10px] text-[#0E1520]/50 uppercase">Total Units</div>
-                <div class="font-serif text-xl sm:text-2xl font-bold text-[#0E1520] mt-1">
-                    {{ $totalUnits }}
-                </div>
-                <div class="text-[9px] text-[#0E1520]/40 mt-1">Across 16 townships</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-white border border-emerald-500/20 shadow-sm">
-                <div class="text-[10px] text-emerald-700 uppercase">Available Units</div>
-                <div class="font-serif text-xl sm:text-2xl font-bold text-emerald-600 mt-1">
-                    {{ $availableUnits }}
-                </div>
-                <div class="text-[9px] text-emerald-700/60 mt-1">Ready for instant booking</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-white border border-amber-500/20 shadow-sm">
-                <div class="text-[10px] text-amber-700 uppercase">On Hold</div>
-                <div class="font-serif text-xl sm:text-2xl font-bold text-amber-600 mt-1">
-                    {{ $onHoldUnits }}
-                </div>
-                <div class="text-[9px] text-amber-700/60 mt-1">Token reserved / Agreement</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-white border border-[#0E1520]/10 shadow-sm">
-                <div class="text-[10px] text-slate-500 uppercase">Sold Out</div>
-                <div class="font-serif text-xl sm:text-2xl font-bold text-slate-700 mt-1">
-                    {{ $soldUnits }}
-                </div>
-                <div class="text-[9px] text-slate-400 mt-1">Registry completed</div>
-            </div>
-
-        </div>
-
-        <!-- Section 1: Recent Online Bookings -->
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#0E1520]/10 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-[#0E1520]/10">
-                <div>
-                    <h2 class="font-serif text-2xl font-bold text-[#0E1520]">Recent Online Reservations</h2>
-                    <p class="text-xs text-[#0E1520]/60 font-mono">Live customer orders with token payments &amp; contact dossiers.</p>
-                </div>
-                <span class="text-xs font-mono font-bold text-[#0E1520]">{{ count($recentBookings) }} Orders</span>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs font-mono">
-                    <thead>
-                        <tr class="bg-[#FAF8F5] border-b border-[#0E1520]/10 text-[10px] text-[#0E1520]/60 uppercase">
-                            <th class="py-3 px-4">Booking ID</th>
-                            <th class="py-3 px-4">Customer Name</th>
-                            <th class="py-3 px-4">Contact</th>
-                            <th class="py-3 px-4">Project &amp; Unit</th>
-                            <th class="py-3 px-4">Token Paid</th>
-                            <th class="py-3 px-4">Status</th>
-                            <th class="py-3 px-4">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-[#0E1520]/5">
-                        @forelse($recentBookings as $b)
-                            <tr class="hover:bg-[#FAF8F5]">
-                                <td class="py-3 px-4 font-bold text-[#0E1520]">{{ $b->booking_id }}</td>
-                                <td class="py-3 px-4">{{ $b->customer_name }}</td>
-                                <td class="py-3 px-4 text-[#0E1520]/70">{{ $b->customer_phone }}</td>
-                                <td class="py-3 px-4">
-                                    <span class="font-bold text-[#0E1520]">{{ $b->unit->unit_code ?? 'N/A' }}</span>
-                                    <span class="text-[#0E1520]/50 block text-[10px]">{{ $b->project->title ?? 'N/A' }}</span>
-                                </td>
-                                <td class="py-3 px-4 font-bold text-emerald-700">₹ {{ \App\Support\Format::inr($b->token_amount) }}</td>
-                                <td class="py-3 px-4">
-                                    <form action="{{ route('admin.bookings.status', $b->id) }}" method="POST">
-                                        @csrf
-                                        <select name="booking_status" onchange="this.form.submit()" class="px-2 py-1 rounded bg-[#FAF8F5] border border-[#0E1520]/20 text-[10px] font-bold">
-                                            @foreach(\App\Models\Booking::STATUSES as $value => $label)
-                                                <option value="{{ $value }}" {{ $b->booking_status === $value ? 'selected' : '' }}>{{ $label }}</option>
-                                            @endforeach
-                                        </select>
-                                    </form>
-                                </td>
-                                <td class="py-3 px-4">
-                                    <a href="{{ $b->voucherUrl() }}" target="_blank" class="text-blue-700 hover:underline">
-                                        View Voucher &rarr;
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center py-8 text-[#0E1520]/50">No reservations placed yet.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Section 2: Full Inventory Unit Manager (Live Status & Price Editing) -->
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#0E1520]/10 shadow-sm space-y-6">
-            
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#0E1520]/10">
-                <div>
-                    <h2 class="font-serif text-2xl font-bold text-[#0E1520]">Inventory Unit Manager</h2>
-                    <p class="text-xs text-[#0E1520]/60 font-mono">Toggle unit availability (Available / On Hold / Sold) or edit pricing in real-time.</p>
-                </div>
-
-                <!-- Project Filter Dropdown -->
-                <form method="GET" action="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
-                    <select name="project" onchange="this.form.submit()" class="px-3.5 py-2 rounded-xl bg-[#FAF8F5] border border-[#0E1520]/20 text-xs font-mono font-bold text-[#0E1520] cursor-pointer">
-                        <option value="all">All 16 Townships</option>
-                        @foreach($projects as $p)
-                            <option value="{{ $p->slug }}" {{ request('project') === $p->slug ? 'selected' : '' }}>
-                                {{ $p->title }} ({{ $p->units_count }} units)
-                            </option>
-                        @endforeach
-                    </select>
-
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search unit code..." class="px-3 py-2 rounded-xl bg-[#FAF8F5] border border-[#0E1520]/20 text-xs font-mono text-[#0E1520]">
-                </form>
-            </div>
-
-            <!-- Units Table -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs font-mono">
-                    <thead>
-                        <tr class="bg-[#FAF8F5] border-b border-[#0E1520]/10 text-[10px] text-[#0E1520]/60 uppercase">
-                            <th class="py-3 px-4">Unit Code</th>
-                            <th class="py-3 px-4">Township</th>
-                            <th class="py-3 px-4">Type &amp; Area</th>
-                            <th class="py-3 px-4">Base Price</th>
-                            <th class="py-3 px-4">Status Toggle</th>
-                            <th class="py-3 px-4 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-[#0E1520]/5">
-                        @foreach($units as $u)
-                            <tr class="hover:bg-[#FAF8F5]">
-                                <td class="py-3 px-4 font-bold text-sm text-[#0E1520]">
-                                    <a href="{{ route('units.show', [$u->project_slug, $u->unit_code]) }}" target="_blank" class="hover:text-blue-700 underline">
-                                        {{ $u->unit_code }}
-                                    </a>
-                                </td>
-                                <td class="py-3 px-4">{{ $u->project->title ?? 'N/A' }}</td>
-                                <td class="py-3 px-4">
-                                    <div class="font-semibold">{{ $u->title }}</div>
-                                    <div class="text-[10px] text-[#0E1520]/50">{{ $u->area_sqft }} SQ.FT · {{ $u->facing ?? 'East' }}</div>
-                                </td>
-                                <td class="py-3 px-4 font-bold text-[#0E1520]">
-                                    {{ $u->price_formatted }}
-                                </td>
-                                <td class="py-3 px-4">
-                                    <!-- Direct Status Toggle Form -->
-                                    <form action="{{ route('admin.units.status', $u->id) }}" method="POST">
-                                        @csrf
-                                        <select name="status" onchange="this.form.submit()" class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase cursor-pointer
-                                            {{ $u->status === 'available' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : '' }}
-                                            {{ $u->status === 'on_hold' ? 'bg-amber-100 text-amber-800 border border-amber-300' : '' }}
-                                            {{ $u->status === 'sold' ? 'bg-slate-200 text-slate-700 border border-slate-300' : '' }}">
-                                            <option value="available" {{ $u->status === 'available' ? 'selected' : '' }}>Available</option>
-                                            <option value="on_hold" {{ $u->status === 'on_hold' ? 'selected' : '' }}>On Hold</option>
-                                            <option value="sold" {{ $u->status === 'sold' ? 'selected' : '' }}>Sold</option>
-                                        </select>
-                                    </form>
-                                </td>
-                                <td class="py-3 px-4 text-right">
-                                    <form action="{{ route('admin.units.destroy', $u->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to remove unit {{ $u->unit_code }}?');" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 text-xs font-bold">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="pt-4">
-                {{ $units->appends(request()->query())->links() }}
-            </div>
-
-        </div>
-
-        <!-- Section 3: Inbound Site Visit Leads -->
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#0E1520]/10 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-[#0E1520]/10">
-                <div>
-                    <h2 class="font-serif text-2xl font-bold text-[#0E1520]">Inbound Site Visit &amp; Callback Leads</h2>
-                    <p class="text-xs text-[#0E1520]/60 font-mono">Real-time requests received via website and VIP schedule forms.</p>
-                </div>
-                <span class="text-xs font-mono font-bold text-[#0E1520]">{{ count($recentLeads) }} Leads</span>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs font-mono">
-                    <thead>
-                        <tr class="bg-[#FAF8F5] border-b border-[#0E1520]/10 text-[10px] text-[#0E1520]/60 uppercase">
-                            <th class="py-3 px-4">Date</th>
-                            <th class="py-3 px-4">Visitor Name</th>
-                            <th class="py-3 px-4">Phone</th>
-                            <th class="py-3 px-4">Project</th>
-                            <th class="py-3 px-4">Visit Date &amp; Slot</th>
-                            <th class="py-3 px-4">Pickup</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-[#0E1520]/5">
-                        @forelse($recentLeads as $l)
-                            <tr class="hover:bg-[#FAF8F5]">
-                                <td class="py-3 px-4 text-[#0E1520]/60">{{ $l->created_at->format('M d, H:i') }}</td>
-                                <td class="py-3 px-4 font-bold text-[#0E1520]">{{ $l->name }}</td>
-                                <td class="py-3 px-4"><a href="tel:{{ $l->phone }}" class="text-blue-700 hover:underline">{{ $l->phone }}</a></td>
-                                <td class="py-3 px-4">{{ $l->project_name }}</td>
-                                <td class="py-3 px-4">{{ $l->preferred_date }} · {{ $l->time_slot }}</td>
-                                <td class="py-3 px-4">
-                                    @if($l->pickup_requested)
-                                        <span class="text-emerald-700 font-bold">Yes (Chauffeur)</span>
-                                    @else
-                                        <span class="text-[#0E1520]/40">Self</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-8 text-[#0E1520]/50">No site visit leads logged yet.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+@section('admin')
+{{-- KPI tiles --}}
+<div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
+    <div class="{{ $kpiTile }} xl:col-span-2">
+        <div class="label text-ink/50">{{ __('Verified token revenue') }}</div>
+        <div class="mt-2 font-serif text-4xl text-navy">₹ {{ \App\Support\Format::inr($kpis['revenue']) }}</div>
+        <div class="mt-1 text-xs text-ink/50">₹ {{ \App\Support\Format::inr($kpis['pending_tokens']) }} {{ __('awaiting verification') }}</div>
     </div>
-</section>
-
-<!-- Add Unit Modal -->
-<div id="addUnitModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative border border-[#0E1520]/10">
-        <button type="button" onclick="document.getElementById('addUnitModal').classList.add('hidden')" class="absolute top-5 right-5 text-gray-500 hover:text-black p-2">
-            &times;
-        </button>
-
-        <h3 class="font-serif text-2xl font-bold text-[#0E1520] mb-4">+ Add New Property Unit</h3>
-
-        <form action="{{ route('admin.units.store') }}" method="POST" class="space-y-4 text-xs font-mono">
-            @csrf
-            <div>
-                <label class="block text-[#0E1520]/70 uppercase mb-1">Township *</label>
-                <select name="project_slug" required class="w-full px-3 py-2 rounded-xl border border-gray-300">
-                    @foreach($projects as $p)
-                        <option value="{{ $p->slug }}">{{ $p->title }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-[#0E1520]/70 uppercase mb-1">Unit Code *</label>
-                    <input type="text" name="unit_code" required placeholder="e.g. P-25" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-                </div>
-                <div>
-                    <label class="block text-[#0E1520]/70 uppercase mb-1">Property Type</label>
-                    <select name="unit_type" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-                        <option value="Villa">Villa</option>
-                        <option value="Plot">Plot</option>
-                        <option value="Apartment">Apartment</option>
-                    </select>
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-[#0E1520]/70 uppercase mb-1">Title / Designation *</label>
-                <input type="text" name="configuration" required placeholder="e.g. 3 BHK Duplex Villa" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-[#0E1520]/70 uppercase mb-1">Super Area (Sq.Ft) *</label>
-                    <input type="number" name="area_sqft" required value="1600" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-                </div>
-                <div>
-                    <label class="block text-[#0E1520]/70 uppercase mb-1">Total Price (INR) *</label>
-                    <input type="number" name="total_price" required min="100000" value="4500000" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-[#0E1520]/70 uppercase mb-1">Status</label>
-                    <select name="status" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-                        <option value="available">Available</option>
-                        <option value="on_hold">On Hold</option>
-                        <option value="sold">Sold</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-[#0E1520]/70 uppercase mb-1">Facing</label>
-                    <input type="text" name="facing" value="East Facing" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-                </div>
-            </div>
-
-            <button type="submit" class="w-full py-3 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold uppercase tracking-wider text-xs shadow mt-2">
-                Save Unit to Live Catalog
-            </button>
-        </form>
+    <div class="{{ $kpiTile }} xl:col-span-2">
+        <div class="label text-ink/50">{{ __('Booked value (on hold + sold)') }}</div>
+        <div class="mt-2 font-serif text-4xl text-navy">{{ \App\Support\Format::lakhCrore($kpis['gmv']) }}</div>
     </div>
+    <div class="{{ $kpiTile }}">
+        <div class="label text-ink/50">{{ __('Active bookings') }}</div>
+        <div class="mt-2 font-serif text-4xl text-navy">{{ $kpis['bookings'] }}</div>
+    </div>
+    <a href="{{ route('admin.leads', ['due' => 1]) }}" class="{{ $kpiTile }} transition hover:border-brass">
+        <div class="label text-ink/50">{{ __('Follow-ups due') }}</div>
+        <div class="mt-2 font-serif text-4xl {{ $kpis['follow_ups_due'] ? 'text-terracotta' : 'text-navy' }}">{{ $kpis['follow_ups_due'] }}</div>
+        <div class="mt-1 text-xs text-ink/50">{{ $kpis['leads_new'] }} {{ __('new leads') }}</div>
+    </a>
 </div>
 
+<div class="mt-6 grid gap-6 xl:grid-cols-12">
+    {{-- Bookings per month: single series, so no legend --}}
+    <figure class="rounded-2xl border border-navy/10 bg-paper-50 p-6 xl:col-span-5">
+        <figcaption class="font-serif text-xl text-navy">{{ __('Bookings per month') }}</figcaption>
+        <p class="text-xs text-ink/50">{{ __('Last 6 months, excluding unpaid checkouts') }}</p>
+        <svg viewBox="0 0 360 200" class="mt-4 w-full" role="img" aria-label="{{ __('Bookings per month') }}: {{ $monthly->map(fn ($m) => $m['label'] . ' ' . $m['bookings'])->implode(', ') }}">
+            @foreach([0, 0.5, 1] as $g)
+                <line x1="30" x2="355" y1="{{ 170 - $g * 150 }}" y2="{{ 170 - $g * 150 }}" stroke="#0E1520" stroke-opacity=".08"/>
+                <text x="24" y="{{ 174 - $g * 150 }}" text-anchor="end" font-size="9" font-family="JetBrains Mono, monospace" fill="#0E1520" fill-opacity=".5">{{ round($maxBookings * $g) }}</text>
+            @endforeach
+            @foreach($monthly as $i => $m)
+                @php $h = $m['bookings'] / $maxBookings * 150; $x = 42 + $i * 52; @endphp
+                <g>
+                    <title>{{ $m['label'] }}: {{ $m['bookings'] }} {{ __('bookings') }}, ₹ {{ \App\Support\Format::inr($m['revenue']) }} {{ __('verified') }}</title>
+                    <rect x="{{ $x - 6 }}" y="18" width="40" height="152" fill="transparent"/>
+                    @if($h > 0)<path d="M{{ $x }} 170 V{{ 170 - $h + 4 }} q0 -4 4 -4 h20 q4 0 4 4 V170 Z" fill="#0E1520"/>@endif
+                    <text x="{{ $x + 14 }}" y="{{ 166 - $h }}" text-anchor="middle" font-size="10" font-family="JetBrains Mono, monospace" fill="#0E1520">{{ $m['bookings'] ?: '' }}</text>
+                    <text x="{{ $x + 14 }}" y="188" text-anchor="middle" font-size="10" font-family="JetBrains Mono, monospace" fill="#0E1520" fill-opacity=".6">{{ $m['label'] }}</text>
+                </g>
+            @endforeach
+            <line x1="30" x2="355" y1="170" y2="170" stroke="#0E1520" stroke-opacity=".3"/>
+        </svg>
+    </figure>
+
+    {{-- Inventory by project: stacked bars, status colours + legend + table view --}}
+    <figure class="rounded-2xl border border-navy/10 bg-paper-50 p-6 xl:col-span-7">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+                <figcaption class="font-serif text-xl text-navy">{{ __('Inventory by project') }}</figcaption>
+                <p class="text-xs text-ink/50">{{ $inventory['total'] }} {{ __('units') }} · {{ $inventory['available'] }} {{ __('available') }}</p>
+            </div>
+            <ul class="flex flex-wrap gap-4 text-xs text-ink/70" aria-label="{{ __('Legend') }}">
+                @foreach($statusColors as $key => $color)
+                    <li class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm" style="background: {{ $color }}" aria-hidden="true"></span>{{ $statusLabels[$key] }} ({{ $inventory[$key] }})</li>
+                @endforeach
+            </ul>
+        </div>
+        <div class="mt-5 space-y-2.5">
+            @foreach($byProject as $p)
+                @php $total = $p->available + $p->on_hold + $p->sold; @endphp
+                <div class="grid grid-cols-[9rem_minmax(0,1fr)_2.5rem] items-center gap-3 text-xs">
+                    <span class="truncate text-ink/70" title="{{ $p->project_name }}">{{ $p->project_name }}</span>
+                    <div class="flex h-4 gap-[2px]" style="width: {{ $total / $maxUnits * 100 }}%">
+                        @foreach(['available', 'on_hold', 'sold'] as $k)
+                            @if($p->$k > 0)
+                                <span class="h-full first:rounded-l last:rounded-r" style="flex: {{ $p->$k }}; background: {{ $statusColors[$k] }}" title="{{ $p->project_name }} · {{ $statusLabels[$k] }}: {{ $p->$k }}"></span>
+                            @endif
+                        @endforeach
+                    </div>
+                    <span class="text-right font-mono text-ink/60">{{ $total }}</span>
+                </div>
+            @endforeach
+        </div>
+        <details class="mt-5 text-sm">
+            <summary class="label cursor-pointer text-ink/50">{{ __('Show as table') }}</summary>
+            <table class="table-clean mt-3">
+                <thead><tr><th scope="col">{{ __('Project') }}</th>@foreach($statusLabels as $l)<th scope="col" class="text-right">{{ $l }}</th>@endforeach</tr></thead>
+                <tbody>
+                    @foreach($byProject as $p)
+                        <tr><td>{{ $p->project_name }}</td><td class="text-right font-mono">{{ $p->available }}</td><td class="text-right font-mono">{{ $p->on_hold }}</td><td class="text-right font-mono">{{ $p->sold }}</td></tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </details>
+    </figure>
+</div>
+
+<div class="mt-6 grid gap-6 xl:grid-cols-12">
+    <section class="rounded-2xl border border-navy/10 bg-paper-50 p-6 xl:col-span-7">
+        <div class="flex items-center justify-between">
+            <h2 class="font-serif text-xl text-navy">{{ __('Recent bookings') }}</h2>
+            <a href="{{ route('admin.bookings') }}" class="label text-ink/50 underline hover:text-terracotta">{{ __('All bookings') }}</a>
+        </div>
+        <div class="mt-4 overflow-x-auto">
+            <table class="table-clean min-w-[32rem]">
+                <thead><tr><th>{{ __('Booking') }}</th><th>{{ __('Buyer') }}</th><th>{{ __('Unit') }}</th><th>{{ __('Status') }}</th><th class="text-right">{{ __('Token') }}</th></tr></thead>
+                <tbody>
+                    @forelse($recentBookings as $b)
+                        <tr>
+                            <td><a href="{{ $b->voucherUrl() }}" target="_blank" class="font-mono text-xs underline">{{ $b->booking_id }}</a></td>
+                            <td>{{ $b->customer_name }}</td>
+                            <td class="text-xs">{{ $b->unit_code }} · {{ $b->project_name }}</td>
+                            <td class="text-xs">{{ $b->status_label }}</td>
+                            <td class="text-right font-mono text-xs">₹ {{ \App\Support\Format::inr($b->token_amount) }}</td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="5" class="text-ink/50">{{ __('No bookings yet.') }}</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-navy/10 bg-paper-50 p-6 xl:col-span-5">
+        <div class="flex items-center justify-between">
+            <h2 class="font-serif text-xl text-navy">{{ __('Leads to follow up') }}</h2>
+            <a href="{{ route('admin.leads') }}" class="label text-ink/50 underline hover:text-terracotta">{{ __('Lead tracker') }}</a>
+        </div>
+        <ul class="mt-4 divide-y divide-navy/10 text-sm">
+            @forelse($dueLeads as $lead)
+                <li class="flex items-start justify-between gap-3 py-3">
+                    <div class="min-w-0">
+                        <div class="truncate text-navy">{{ $lead->name }} <span class="text-ink/40">· {{ $lead->project }}</span></div>
+                        <div class="label text-ink/40">{{ $lead->status_label }} · {{ $lead->assigned_advisor }}</div>
+                    </div>
+                    <span class="flex-none font-mono text-xs {{ $lead->is_overdue ? 'text-terracotta' : 'text-ink/60' }}">{{ $lead->follow_up_at ? ($lead->is_overdue ? '⚠ ' : '') . $lead->follow_up_at->format('d M') : __('No date') }}</span>
+                </li>
+            @empty
+                <li class="py-3 text-ink/50">{{ __('No open leads.') }}</li>
+            @endforelse
+        </ul>
+        @if($leadsBySource->isNotEmpty())
+            <h3 class="label mt-6 text-ink/50">{{ __('Leads by source') }}</h3>
+            <div class="mt-3 space-y-2">
+                @foreach($leadsBySource as $s)
+                    <div class="grid grid-cols-[8rem_minmax(0,1fr)_2rem] items-center gap-3 text-xs" title="{{ $s->source }}: {{ $s->total }}">
+                        <span class="truncate text-ink/70">{{ str_replace('_', ' ', $s->source) }}</span>
+                        <span class="h-3 rounded-r bg-navy" style="width: {{ $s->total / $maxSource * 100 }}%"></span>
+                        <span class="text-right font-mono text-ink/60">{{ $s->total }}</span>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </section>
+</div>
 @endsection

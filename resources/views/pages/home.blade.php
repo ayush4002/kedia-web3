@@ -11,7 +11,7 @@
 @section('content')
 
 {{-- 1. HERO — the haveli doorway opens onto the drone film --}}
-<section class="section-navy overflow-hidden" data-haveli>
+<section class="section-navy z-10 overflow-x-clip" data-haveli>
     <div class="blueprint-grid pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <x-blueprint class="absolute -left-24 bottom-0 hidden h-[26rem] w-[38rem] text-brass/20 lg:block" />
 
@@ -55,7 +55,7 @@
     </div>
 
     {{-- product-style search bar --}}
-    <div class="container-site absolute inset-x-0 bottom-0 translate-y-1/2">
+    <div class="container-site absolute inset-x-0 bottom-0 z-20 translate-y-1/2">
         <form action="{{ route('projects.index') }}" method="GET" role="search" aria-label="{{ __('Find a home') }}"
               class="grid gap-px overflow-hidden rounded-[1.75rem] border border-navy/10 bg-navy/10 shadow-[0_30px_60px_-30px_rgba(14,21,32,0.55)] sm:grid-cols-2 lg:grid-cols-[repeat(6,minmax(0,1fr))_auto]" data-reveal data-reveal-delay="500">
             <input type="hidden" name="view" value="units">

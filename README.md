@@ -11,7 +11,7 @@ A high-performance, architectural real estate e-commerce platform for **Kedia Bu
 - **The Living Blueprint (Interactive CAD & Drone Aerial Master Plan)**: Dual-mode SVG/CSS cadastral layout with interactive plot inspection, live availability indicators, and instant cost sheet dossiers.
 - **E-Commerce Real Estate Booking**: Treat every villa and plot like a live inventory product. 4-step e-commerce checkout with 5% online token advance, test payment simulation (UPI, Cards, NetBanking), 72-hour guaranteed unit holding, and instant allotment vouchers.
 - **Admin E-Commerce Command Center (`/admin`)**: Real-time GMV tracking, token revenue collections, live inventory toggle (`available`, `on_hold`, `sold`), inline price editing, order management, and CSV/JSON catalog exports.
-- **Patron Dashboard (`/dashboard`)**: Tracking of provisional holding vouchers, 5-stage construction-linked milestone payments, and JDA/RERA legal repositories.
+- **Customer Account (`/account`)**: Mobile OTP sign-in (code shown on screen outside production until an SMS provider is connected); bookings, payment schedule and reminders, receipts, documents and construction updates.
 - **Bilingual Localization (`EN` / `हिन्दी`)**: Instant session-based language switcher (`lang/en/messages.php` and `lang/hi/messages.php`).
 - **16 Authentic Kedia Townships**: Seeders and SQL database dump for Kedia's Landmark, Kedia's Atulyam, Kedia's Tulsi, Ganpati Greens, Nikunj Villas, Kedia Aravali, etc.
 - **Executive Leadership**: Authentically represents Founder & Chairman Mr. Rajendra Kedia, Director Mr. Saurabh Kedia, and CEO Mr. Gaurav Kedia.
@@ -190,7 +190,10 @@ php vendor/bin/phpunit
 | `/projects/{slug}/units/{code}` | `units.show` | Unit product page, 2D floorplan blueprint, live price breakup (unit codes are unique only within a project) |
 | `/booking/{unitId}` | `booking.checkout` | 4-step checkout & 5% test token reservation (held as *Pending Verification* until confirmed in admin) |
 | `/booking/confirmation/{id}`| `booking.confirmation` | Official allotment voucher & printable payment receipt |
-| `/dashboard` | `customer.dashboard`| Patron holding tracker & milestone payment schedules |
+| `/account` | `account` | OTP sign-in, bookings, payments, receipts, documents, construction updates |
+| `/compare?units=…` | `compare` | Side-by-side comparison of up to 3 units |
+| `/booking/pay/{id}` | `booking.pay` | Test-mode payment gateway (signed link) |
+| `/units/{id}/cost-sheet` | `units.cost-sheet` | Printable cost sheet (save as PDF) |
 | `/admin` | `admin.dashboard` | E-Commerce Command Center (GMV, unit status toggle, price updater, CSV exports) |
 | `/language/{locale}` | `language.switch` | Toggle between English (`en`) and Hindi (`hi`) |
 | `/about` | `about` | 4+ decades legacy, leadership bios, vision & mission |

@@ -1,176 +1,174 @@
 @extends('layouts.app')
 
-@section('title', 'Financial Tools & EMI Calculator | Kedia Builders & Colonizers')
+@section('title', 'EMI, Price & Home Loan Tools | Kedia Builders & Colonizers')
+@section('meta_description', 'Home loan EMI calculator, property price calculator for Kedia projects in Jaipur, stamp duty estimate and home loan enquiry.')
+
+@php $range = 'w-full accent-[#C8A24B]'; @endphp
 
 @section('content')
+<x-page-hero :eyebrow="__('Tools')" :title="__('Plan the numbers')" :crumb="__('Tools')">
+    {{ __('Estimate your EMI, price a unit by size, and ask us to arrange a pre-approved home loan.') }}
+</x-page-hero>
 
-<section class="py-16 bg-[#FAF8F5] border-b border-[#0E1520]/10">
-    <div class="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24">
-        <div class="max-w-3xl space-y-4">
-            <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Financial Engineering Suite') }}</span>
-            <h1 class="font-serif text-4xl sm:text-6xl font-bold text-[#0E1520] tracking-tight">
-                {{ __('Home Loan EMI & Stamp Duty Calculator') }}
-            </h1>
-            <p class="text-base text-[#0E1520]/70 leading-relaxed">
-                {{ __('Plan your property investment with precision. Compute monthly installments, total interest, and statutory Rajasthan government stamp duty with live sliders.') }}
-            </p>
+<section class="section-paper py-16" data-tabs>
+    <div class="container-site">
+        <div class="inline-flex flex-wrap rounded-full border border-navy/15 p-1" role="tablist" aria-label="{{ __('Tools') }}">
+            @foreach(['emi' => __('EMI calculator'), 'price' => __('Price calculator'), 'loan' => __('Home loan enquiry')] as $key => $label)
+                <button type="button" role="tab" id="tt-{{ $key }}" aria-controls="tp-{{ $key }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}" class="{{ $loop->first ? 'is-active' : '' }} rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-ink/60 [&.is-active]:bg-navy [&.is-active]:text-paper">{{ $label }}</button>
+            @endforeach
         </div>
-    </div>
-</section>
 
-<section class="py-16 bg-white">
-    <div class="max-w-5xl mx-auto px-6 sm:px-10 lg:px-12">
-        
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            
-            <!-- Left 7 Cols: Sliders & Controls -->
-            <div class="lg:col-span-7 bg-[#FAF8F5] p-6 sm:p-8 rounded-3xl border border-[#0E1520]/10 shadow-sm space-y-6">
-                <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ __('Mortgage Parameters') }}</h3>
-
-                <!-- Property Value (basis for stamp duty & registration) -->
-                <div class="space-y-2">
-                    <div class="flex justify-between font-mono text-xs">
-                        <label for="inputProperty" class="text-[#0E1520]/70 uppercase">{{ __('Property Value (INR)') }}</label>
-                        <span class="font-bold text-sm text-[#0E1520]" id="displayProperty">₹ 50,00,000</span>
+        {{-- EMI --}}
+        <div id="tp-emi" role="tabpanel" aria-labelledby="tt-emi" class="mt-10 grid gap-8 lg:grid-cols-12">
+            <div class="space-y-7 rounded-[1.5rem] border border-navy/10 bg-paper-50 p-6 sm:p-8 lg:col-span-7">
+                @foreach([
+                    ['inputProperty', __('Property value'), 1000000, 30000000, 100000, 5000000, 'inr'],
+                    ['inputLoan', __('Loan amount'), 500000, 25000000, 100000, 4000000, 'inr'],
+                    ['inputRate', __('Interest rate (% p.a.)'), 6.5, 14, 0.05, 8.5, 'pct'],
+                    ['inputTenure', __('Tenure (years)'), 5, 30, 1, 20, 'yrs'],
+                ] as [$id, $label, $min, $max, $step, $value, $fmt])
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <label for="{{ $id }}" class="field-label !mb-0">{{ $label }}</label>
+                            <output for="{{ $id }}" data-display="{{ $id }}" data-fmt="{{ $fmt }}" class="font-mono text-sm text-navy"></output>
+                        </div>
+                        <input type="range" id="{{ $id }}" min="{{ $min }}" max="{{ $max }}" step="{{ $step }}" value="{{ $value }}" class="{{ $range }} mt-3">
                     </div>
-                    <input type="range" id="inputProperty" min="1000000" max="30000000" step="100000" value="5000000" oninput="calculateEmi()" class="w-full accent-[#0E1520]">
-                    <div class="flex justify-between font-mono text-[10px] text-[#0E1520]/40">
-                        <span>₹ 10 L</span>
-                        <span>{{ __('₹ 1.5 Cr') }}</span>
-                        <span>{{ __('₹ 3 Cr') }}</span>
-                    </div>
-                </div>
-
-                <!-- Loan Amount -->
-                <div class="space-y-2">
-                    <div class="flex justify-between font-mono text-xs">
-                        <span class="text-[#0E1520]/70 uppercase">{{ __('Loan Amount (INR)') }}</span>
-                        <span class="font-bold text-sm text-[#0E1520]" id="displayLoan">₹ 40,00,000</span>
-                    </div>
-                    <input type="range" id="inputLoan" min="1000000" max="20000000" step="100000" value="4000000" oninput="calculateEmi()" class="w-full accent-[#0E1520]">
-                    <div class="flex justify-between font-mono text-[10px] text-[#0E1520]/40">
-                        <span>₹ 10 L</span>
-                        <span>{{ __('₹ 1 Cr') }}</span>
-                        <span>{{ __('₹ 2 Cr') }}</span>
-                    </div>
-                </div>
-
-                <!-- Interest Rate -->
-                <div class="space-y-2">
-                    <div class="flex justify-between font-mono text-xs">
-                        <span class="text-[#0E1520]/70 uppercase">{{ __('Interest Rate (% p.a.)') }}</span>
-                        <span class="font-bold text-sm text-[#0E1520]" id="displayRate">8.5 %</span>
-                    </div>
-                    <input type="range" id="inputRate" min="6.5" max="14.0" step="0.1" value="8.5" oninput="calculateEmi()" class="w-full accent-[#0E1520]">
-                    <div class="flex justify-between font-mono text-[10px] text-[#0E1520]/40">
-                        <span>6.5 %</span>
-                        <span>9.0 %</span>
-                        <span>14.0 %</span>
-                    </div>
-                </div>
-
-                <!-- Tenure Years -->
-                <div class="space-y-2">
-                    <div class="flex justify-between font-mono text-xs">
-                        <span class="text-[#0E1520]/70 uppercase">{{ __('Tenure (Years)') }}</span>
-                        <span class="font-bold text-sm text-[#0E1520]" id="displayTenure">{{ __('20 Years') }}</span>
-                    </div>
-                    <input type="range" id="inputTenure" min="5" max="30" step="1" value="20" oninput="calculateEmi()" class="w-full accent-[#0E1520]">
-                    <div class="flex justify-between font-mono text-[10px] text-[#0E1520]/40">
-                        <span>{{ __('5 Years') }}</span>
-                        <span>{{ __('15 Years') }}</span>
-                        <span>{{ __('30 Years') }}</span>
-                    </div>
-                </div>
-
-                <!-- Rajasthan Bank Partners -->
-                <div class="pt-4 border-t border-[#0E1520]/10">
-                    <div class="text-[10px] font-mono text-[#0E1520]/60 uppercase mb-2">{{ __('Approved Banking Partners') }}</div>
-                    <div class="flex flex-wrap gap-2 font-mono text-xs font-semibold">
-                        <span class="px-3 py-1 rounded-lg bg-white border border-[#0E1520]/10">{{ __('SBI') }}</span>
-                        <span class="px-3 py-1 rounded-lg bg-white border border-[#0E1520]/10">{{ __('HDFC Bank') }}</span>
-                        <span class="px-3 py-1 rounded-lg bg-white border border-[#0E1520]/10">{{ __('ICICI Bank') }}</span>
-                        <span class="px-3 py-1 rounded-lg bg-white border border-[#0E1520]/10">{{ __('Axis Bank') }}</span>
-                        <span class="px-3 py-1 rounded-lg bg-white border border-[#0E1520]/10">{{ __('PNB Housing') }}</span>
-                    </div>
-                </div>
+                @endforeach
             </div>
+            <div class="rounded-[1.5rem] bg-navy p-6 text-paper sm:p-8 lg:col-span-5" aria-live="polite">
+                <div class="label text-brass">{{ __('Monthly EMI') }}</div>
+                <div class="mt-2 font-serif text-6xl" id="resultEmi">—</div>
+                <dl class="mt-8 space-y-3 border-t border-paper/10 pt-6 text-sm">
+                    <div class="flex justify-between"><dt class="text-paper/60">{{ __('Principal') }}</dt><dd class="font-mono" id="resultPrincipal">—</dd></div>
+                    <div class="flex justify-between"><dt class="text-paper/60">{{ __('Total interest') }}</dt><dd class="font-mono text-brass" id="resultInterest">—</dd></div>
+                    <div class="flex justify-between"><dt class="text-paper/60">{{ __('Total payable') }}</dt><dd class="font-mono" id="resultTotal">—</dd></div>
+                    <div class="flex justify-between border-t border-paper/10 pt-3"><dt class="text-paper/60">{{ __('Stamp duty (est. 5% of property value)') }}</dt><dd class="font-mono" id="resultStamp">—</dd></div>
+                    <div class="flex justify-between"><dt class="text-paper/60">{{ __('Registration (est. 1%)') }}</dt><dd class="font-mono" id="resultReg">—</dd></div>
+                </dl>
+                <p class="mt-4 text-xs text-paper/40">{{ __('Indicative only — rates vary by buyer category and DLC rate; confirm with the sub-registrar.') }}</p>
+                <button type="button" class="btn-brass mt-6 w-full" onclick="document.getElementById('tt-loan').click()">{{ __('Get a pre-approved loan') }}</button>
+            </div>
+        </div>
 
-            <!-- Right 5 Cols: Computed Output Box -->
-            <div class="lg:col-span-5 bg-[#0E1520] text-white p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl flex flex-col justify-between space-y-6">
+        {{-- PRICE --}}
+        <div id="tp-price" role="tabpanel" aria-labelledby="tt-price" class="mt-10 grid gap-8 lg:grid-cols-12" hidden data-price data-rates="{{ json_encode($rates) }}">
+            <div class="space-y-6 rounded-[1.5rem] border border-navy/10 bg-paper-50 p-6 sm:p-8 lg:col-span-7">
                 <div>
-                    <span class="text-[10px] font-mono uppercase tracking-widest text-[#D4E845]">{{ __('Estimated Repayment') }}</span>
-                    
-                    <div class="mt-4 pb-6 border-b border-white/10">
-                        <div class="text-xs font-mono text-white/50 uppercase">{{ __('Monthly EMI Payment') }}</div>
-                        <div class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1" id="resultEmi">₹ 34,713</div>
-                    </div>
-
-                    <div class="py-4 space-y-3 font-mono text-xs border-b border-white/10">
-                        <div class="flex justify-between text-white/70">
-                            <span>{{ __('Principal Loan:') }}</span>
-                            <span class="font-bold text-white" id="resultPrincipal">₹ 40,00,000</span>
-                        </div>
-                        <div class="flex justify-between text-white/70">
-                            <span>{{ __('Total Interest:') }}</span>
-                            <span class="font-bold text-[#D4E845]" id="resultInterest">₹ 43,31,117</span>
-                        </div>
-                        <div class="flex justify-between text-white/70">
-                            <span>{{ __('Total Amount Payable:') }}</span>
-                            <span class="font-bold text-white" id="resultTotal">₹ 83,31,117</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-4 font-mono text-[11px] text-white/60 space-y-1">
-                        <div>{{ __('Rajasthan Stamp Duty (Est. 5% of property value):') }} <span class="font-bold text-white" id="resultStamp">₹ 2,50,000</span></div>
-                        <div>{{ __('Registration Fee (Est. 1% of property value):') }} <span class="font-bold text-white" id="resultReg">₹ 50,000</span></div>
-                        <div class="text-white/40 pt-1">{{ __('Indicative only — rates vary by buyer category and DLC rate; confirm with the sub-registrar.') }}</div>
-                    </div>
+                    <label for="pc_project" class="field-label">{{ __('Project & unit type') }}</label>
+                    <select id="pc_project" class="field">
+                        @foreach($rates as $r)<option value="{{ $r['key'] }}">{{ $r['label'] }}</option>@endforeach
+                    </select>
                 </div>
-
-                <button type="button" onclick="openSiteVisitModal()" class="w-full py-3.5 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-xs uppercase tracking-wider transition-all shadow-lg text-center">
-                    {{ __('Apply For Pre-Approved Bank Loan →') }}
-                </button>
+                <div>
+                    <div class="flex items-center justify-between"><label for="pc_area" class="field-label !mb-0">{{ __('Area (sq ft)') }}</label><output for="pc_area" id="pc_area_out" class="font-mono text-sm text-navy"></output></div>
+                    <input type="range" id="pc_area" step="10" class="{{ $range }} mt-3">
+                    <div class="mt-1 flex justify-between font-mono text-[11px] text-ink/40"><span id="pc_min"></span><span id="pc_max"></span></div>
+                </div>
             </div>
-
+            <div class="rounded-[1.5rem] bg-navy p-6 text-paper sm:p-8 lg:col-span-5" aria-live="polite">
+                <div class="label text-brass">{{ __('Estimated all-inclusive price') }}</div>
+                <div class="mt-2 font-serif text-6xl" id="pc_total">—</div>
+                <dl class="mt-8 space-y-3 border-t border-paper/10 pt-6 text-sm">
+                    <div class="flex justify-between"><dt class="text-paper/60">{{ __('Average rate') }}</dt><dd class="font-mono" id="pc_rate">—</dd></div>
+                    <div class="flex justify-between"><dt class="text-paper/60">{{ __('Online token (5%)') }}</dt><dd class="font-mono" id="pc_token">—</dd></div>
+                </dl>
+                <p class="mt-4 text-xs text-paper/40">{{ __('Based on the average rate of listed units. See exact prices on each unit page.') }}</p>
+                <a href="{{ route('projects.index', ['view' => 'units']) }}" class="btn-brass mt-6 w-full" id="pc_link">{{ __('See matching units') }}</a>
+            </div>
         </div>
 
+        {{-- LOAN ENQUIRY --}}
+        <div id="tp-loan" role="tabpanel" aria-labelledby="tt-loan" class="mt-10 grid gap-8 lg:grid-cols-12" hidden>
+            <form action="{{ route('leads.store') }}" method="POST" class="space-y-5 rounded-[1.5rem] border border-navy/10 bg-paper-50 p-6 sm:p-8 lg:col-span-7">
+                @csrf
+                <input type="hidden" name="source" value="home_loan">
+                <h2 class="font-serif text-3xl text-navy">{{ __('Home loan enquiry') }}</h2>
+                <div class="grid gap-5 sm:grid-cols-2">
+                    <div><label for="ln_name" class="field-label">{{ __('Full name') }} *</label><input id="ln_name" name="name" required autocomplete="name" class="field"></div>
+                    <div><label for="ln_phone" class="field-label">{{ __('Mobile') }} *</label><input id="ln_phone" name="phone" type="tel" required autocomplete="tel" class="field"></div>
+                    <div><label for="ln_email" class="field-label">{{ __('Email') }}</label><input id="ln_email" name="email" type="email" autocomplete="email" class="field"></div>
+                    <div>
+                        <label for="ln_emp" class="field-label">{{ __('Employment') }}</label>
+                        <select id="ln_emp" name="project_name" class="field">
+                            <option value="Home loan · Salaried">{{ __('Salaried') }}</option>
+                            <option value="Home loan · Self-employed">{{ __('Self-employed') }}</option>
+                            <option value="Home loan · NRI">{{ __('NRI') }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div><label for="ln_msg" class="field-label">{{ __('Loan amount and the unit you like') }}</label><textarea id="ln_msg" name="message" rows="3" maxlength="500" class="field"></textarea></div>
+                <button type="submit" class="btn-navy">{{ __('Request loan assistance') }}</button>
+            </form>
+            <div class="lg:col-span-5">
+                <h3 class="label text-ink/50">{{ __('Partner banks') }}</h3>
+                <ul class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                    @foreach(['SBI', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'PNB Housing', 'LIC Housing'] as $bank)
+                        <li class="rounded-xl border border-navy/10 bg-paper-50 px-4 py-3 text-navy">{{ $bank }}</li>
+                    @endforeach
+                </ul>
+                <p class="mt-3 flex items-center gap-2 text-xs text-ink/50"><x-sample-tag /> {{ __('Bank tie-ups to be confirmed.') }}</p>
+            </div>
+        </div>
     </div>
 </section>
-
-<script>
-    function calculateEmi() {
-        const propertyValue = parseFloat(document.getElementById('inputProperty').value);
-        const loanInput = document.getElementById('inputLoan');
-        // A loan can't exceed the property's value.
-        if (parseFloat(loanInput.value) > propertyValue) loanInput.value = propertyValue;
-        const P = parseFloat(loanInput.value);
-        document.getElementById('displayProperty').innerText = '₹ ' + propertyValue.toLocaleString('en-IN');
-        const annualRate = parseFloat(document.getElementById('inputRate').value);
-        const tenureYears = parseInt(document.getElementById('inputTenure').value);
-
-        document.getElementById('displayLoan').innerText = '₹ ' + P.toLocaleString('en-IN');
-        document.getElementById('displayRate').innerText = annualRate.toFixed(1) + ' %';
-        document.getElementById('displayTenure').innerText = tenureYears + ' Years';
-
-        const r = (annualRate / 12) / 100;
-        const n = tenureYears * 12;
-
-        const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-        const totalAmount = emi * n;
-        const totalInterest = totalAmount - P;
-
-        document.getElementById('resultEmi').innerText = '₹ ' + Math.round(emi).toLocaleString('en-IN');
-        document.getElementById('resultPrincipal').innerText = '₹ ' + P.toLocaleString('en-IN');
-        document.getElementById('resultInterest').innerText = '₹ ' + Math.round(totalInterest).toLocaleString('en-IN');
-        document.getElementById('resultTotal').innerText = '₹ ' + Math.round(totalAmount).toLocaleString('en-IN');
-
-        // Stamp duty and registration are charged on the property value, not the loan.
-        document.getElementById('resultStamp').innerText = '₹ ' + Math.round(propertyValue * 0.05).toLocaleString('en-IN');
-        document.getElementById('resultReg').innerText = '₹ ' + Math.round(propertyValue * 0.01).toLocaleString('en-IN');
-    }
-
-    document.addEventListener('DOMContentLoaded', calculateEmi);
-</script>
-
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    const inr = (n) => '₹ ' + Math.round(n).toLocaleString('en-IN');
+    const $ = (id) => document.getElementById(id);
+
+    // EMI
+    const show = (id) => {
+        const el = document.querySelector('[data-display="' + id + '"]');
+        const v = parseFloat($(id).value);
+        el.textContent = el.dataset.fmt === 'inr' ? inr(v) : el.dataset.fmt === 'pct' ? v.toFixed(2) + ' %' : v + ' yrs';
+    };
+    const emi = () => {
+        const property = parseFloat($('inputProperty').value);
+        const loan = $('inputLoan');
+        if (parseFloat(loan.value) > property) loan.value = property; // can't borrow more than the price
+        const P = parseFloat(loan.value), r = parseFloat($('inputRate').value) / 1200, n = parseInt($('inputTenure').value, 10) * 12;
+        const m = r ? P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1) : P / n;
+        ['inputProperty', 'inputLoan', 'inputRate', 'inputTenure'].forEach(show);
+        $('resultEmi').textContent = inr(m);
+        $('resultPrincipal').textContent = inr(P);
+        $('resultInterest').textContent = inr(m * n - P);
+        $('resultTotal').textContent = inr(m * n);
+        $('resultStamp').textContent = inr(property * 0.05);
+        $('resultReg').textContent = inr(property * 0.01);
+    };
+    ['inputProperty', 'inputLoan', 'inputRate', 'inputTenure'].forEach((id) => $(id).addEventListener('input', emi));
+    emi();
+
+    // Price calculator
+    const box = document.querySelector('[data-price]');
+    const rates = JSON.parse(box.dataset.rates);
+    const sel = $('pc_project'), area = $('pc_area');
+    const setRange = () => {
+        const r = rates.find((x) => x.key === sel.value);
+        if (!r) return;
+        area.min = r.min; area.max = Math.max(r.max, r.min + 10);
+        if (+area.value < r.min || +area.value > r.max) area.value = Math.round((r.min + r.max) / 2);
+        $('pc_min').textContent = r.min.toLocaleString('en-IN'); $('pc_max').textContent = r.max.toLocaleString('en-IN');
+        price();
+    };
+    const price = () => {
+        const r = rates.find((x) => x.key === sel.value);
+        if (!r) return;
+        const total = r.rate * +area.value;
+        $('pc_area_out').textContent = (+area.value).toLocaleString('en-IN') + ' sq ft';
+        $('pc_total').textContent = inr(total);
+        $('pc_rate').textContent = inr(r.rate) + ' / sq ft';
+        $('pc_token').textContent = inr(total * 0.05);
+        const [slug, type] = r.key.split('|');
+        $('pc_link').href = '/projects?view=units&type=' + type.toLowerCase() + '&q=' + encodeURIComponent(r.label.split(' · ')[0]);
+    };
+    sel.addEventListener('change', setRange);
+    area.addEventListener('input', price);
+    setRange();
+})();
+</script>
+@endpush

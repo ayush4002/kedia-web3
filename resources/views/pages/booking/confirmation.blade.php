@@ -3,147 +3,148 @@
 @section('title', 'Booking ' . $booking->booking_id . ' | Kedia Builders & Colonizers')
 @section('robots', 'noindex, nofollow')
 
-@section('content')
+@php
+    $company = config('kedia.company');
+    $paid = $booking->payment_status === 'paid';
+    $cancelled = in_array($booking->status, ['cancelled', 'refunded'], true);
+    $holdUntil = ($booking->booking_date ?? $booking->created_at)->copy()->addHours(config('kedia.hold_hours'));
+    $breakdown = $booking->cost_breakdown;
+@endphp
 
-<section class="py-16 bg-[#FAF8F5]">
-    <div class="max-w-3xl mx-auto px-6 sm:px-10 lg:px-12">
-        
-        <!-- Success Banner -->
-        <div class="text-center mb-8 space-y-3">
-            <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center text-3xl mx-auto shadow-lg shadow-emerald-500/20">
-                ✓
-            </div>
-            <span class="text-xs font-mono uppercase tracking-widest text-emerald-700 font-bold">{{ $booking->payment_status === 'paid' ? 'Provisional Allotment Confirmed' : 'Unit On Hold · Payment Verification Pending' }}</span>
-            <h1 class="font-serif text-3xl sm:text-4xl font-bold text-[#0E1520]">
-                Congratulations, {{ $booking->customer_name }}!
+@section('content')
+<section class="section-navy overflow-hidden py-14">
+    <div class="blueprint-grid pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="container-site relative grid items-center gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+            <div class="eyebrow">{{ $booking->booking_id }}</div>
+            <h1 class="display-lg mt-3 text-paper">
+                @if($cancelled){{ __('Booking cancelled') }}
+                @elseif($paid){{ __('Provisional Allotment Confirmed') }}
+                @else{{ __('Unit On Hold · Payment Verification Pending') }}
+                @endif
             </h1>
-            <p class="text-xs sm:text-sm text-[#0E1520]/70 max-w-md mx-auto">
-                @if($booking->payment_status === 'paid')
-                    Your token payment has been verified and your unit is reserved in our inventory.
+            <p class="mt-4 max-w-xl text-paper/70">
+                @if($cancelled)
+                    {{ __('This booking is no longer active. Contact us if you have questions about a refund.') }}
+                @elseif($paid)
+                    {{ __('Your token payment has been verified and your unit is reserved in our inventory.') }}
                 @else
-                    Your unit is on hold while our sales team verifies your token payment. We'll contact you at <strong>{{ $booking->customer_email }}</strong> or your registered mobile to confirm.
+                    {{ __('Your unit is on hold while our sales team verifies your token payment. We\'ll contact you on your registered email or mobile to confirm.') }}
                 @endif
             </p>
+            <div class="no-print mt-8 flex flex-wrap gap-3">
+                <a href="{{ route('account') }}" class="btn-brass">{{ __('Go to my account') }}</a>
+                <button type="button" onclick="window.print()" class="btn-ghost-light">{{ __('Print / save receipt') }}</button>
+            </div>
         </div>
-
-        <!-- Official Allotment Receipt Card (Printable) -->
-        <div class="bg-white rounded-3xl p-6 sm:p-10 border border-[#0E1520]/10 shadow-2xl space-y-8 relative overflow-hidden" id="printableReceipt">
-            
-            <!-- Watermark / Header -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#0E1520]/10">
-                <div>
-                    <img fetchpriority="high" src="/assets/logo-navy.png" alt="Kedia Builders" class="h-10 w-auto mb-2" onerror="this.src='/assets/logo-white.png'; this.classList.add('invert');">
-                    <div class="text-[11px] font-mono text-[#0E1520]/60">{{ __('Kedia Builders & Colonizers · Jaipur, Rajasthan') }}</div>
-                </div>
-                <div class="text-left sm:text-right font-mono text-xs">
-                    <div class="text-[#0E1520]/50 uppercase text-[10px]">{{ __('Booking Reference') }}</div>
-                    <div class="text-base font-bold text-[#0E1520] tracking-wider">{{ $booking->booking_id }}</div>
-                    @if($booking->payment_status === 'paid')
-                        <div class="text-[10px] text-emerald-700 font-semibold mt-0.5">{{ __('● Payment Status: VERIFIED') }}</div>
-                    @else
-                        <div class="text-[10px] text-amber-700 font-semibold mt-0.5">● Payment Status: {{ strtoupper($booking->status_label) }} (TEST PAYMENT)</div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Booking & Unit Summary Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 font-mono text-xs">
-                <div>
-                    <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Property Unit') }}</div>
-                    <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $booking->unit->title ?? 'Luxury Residence' }} ({{ $booking->unit->unit_code ?? 'P-11' }})</div>
-                </div>
-                <div>
-                    <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Township') }}</div>
-                    <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $booking->project->title ?? 'Kedia Landmark' }}</div>
-                </div>
-                <div>
-                    <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('RERA Number') }}</div>
-                    <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $booking->project->rera_number ?? 'RAJ/P/2021/1480' }}</div>
-                </div>
-                <div>
-                    <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Allottee Name') }}</div>
-                    <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $booking->customer_name }}</div>
-                </div>
-                <div>
-                    <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Contact Phone') }}</div>
-                    <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $booking->customer_phone }}</div>
-                </div>
-                <div>
-                    <div class="text-[#0E1520]/50 text-[10px] uppercase">{{ __('Transaction Ref') }}</div>
-                    <div class="font-bold text-sm text-[#0E1520] mt-0.5">{{ $booking->transaction_ref }}</div>
-                </div>
-            </div>
-
-            <!-- Payment Breakdown Table -->
-            <div class="border border-[#0E1520]/10 rounded-2xl overflow-hidden font-mono text-xs">
-                <div class="bg-[#FAF8F5] p-3 font-bold text-[#0E1520] border-b border-[#0E1520]/10 flex items-center justify-between">
-                    <span>{{ __('Payment Summary') }}</span>
-                    <span>{{ __('Amount (INR)') }}</span>
-                </div>
-                <div class="p-4 space-y-2.5">
-                    <div class="flex justify-between text-[#0E1520]/70">
-                        <span>{{ __('Total Property Agreement Value:') }}</span>
-                        <span class="font-semibold text-[#0E1520]">₹ {{ \App\Support\Format::inr($booking->total_amount) }}</span>
-                    </div>
-                    <div class="flex justify-between text-emerald-700 font-bold pt-2 border-t border-[#0E1520]/10">
-                        <span>Advance Booking Token (5%){{ $booking->payment_status === 'paid' ? ' — Paid' : ' — Awaiting Verification' }}:</span>
-                        <span class="text-sm">₹ {{ \App\Support\Format::inr($booking->token_amount) }}</span>
-                    </div>
-                    <div class="flex justify-between text-[#0E1520]/60 text-[11px]">
-                        <span>{{ __('Remaining Balance in Construction Milestones:') }}</span>
-                        <span>₹ {{ \App\Support\Format::inr($booking->total_amount - $booking->token_amount) }}</span>
+        @if(!$cancelled && !$paid)
+            <div class="lg:col-span-5">
+                <div class="rounded-[1.5rem] border border-brass/40 bg-white/[0.03] p-6 text-paper" data-countdown="{{ $holdUntil->toIso8601String() }}">
+                    <div class="label text-brass">{{ __('Unit held for you until') }}</div>
+                    <div class="mt-1 text-sm text-paper/70">{{ $holdUntil->timezone(config('app.timezone'))->format('d M Y, h:i A') }}</div>
+                    <div class="mt-4 grid grid-cols-3 gap-3 text-center font-serif text-4xl" aria-live="off">
+                        <div><span data-cd="h">--</span><div class="label mt-1 text-paper/40">{{ __('hours') }}</div></div>
+                        <div><span data-cd="m">--</span><div class="label mt-1 text-paper/40">{{ __('min') }}</div></div>
+                        <div><span data-cd="s">--</span><div class="label mt-1 text-paper/40">{{ __('sec') }}</div></div>
                     </div>
                 </div>
             </div>
-
-            <!-- 5-Stage Construction Milestone Schedule -->
-            @if(!empty($booking->payment_schedule))
-                <div class="space-y-3 font-mono text-xs">
-                    <h4 class="font-serif text-lg font-bold text-[#0E1520]">{{ __('Construction Linked Payment Schedule') }}</h4>
-                    <div class="divide-y divide-[#0E1520]/5 border border-[#0E1520]/10 rounded-2xl overflow-hidden">
-                        @foreach($booking->payment_schedule as $stage)
-                            <div class="p-3 flex items-center justify-between bg-white hover:bg-[#FAF8F5]">
-                                <div>
-                                    <div class="font-semibold text-[#0E1520]">{{ $stage['milestone'] }} ({{ $stage['percentage'] }}%)</div>
-                                    <div class="text-[10px] text-[#0E1520]/50">Due Target: {{ $stage['due_date'] }}</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="font-bold text-[#0E1520]">₹ {{ \App\Support\Format::inr($stage['amount']) }}</div>
-                                    <span class="inline-block text-[10px] uppercase font-bold {{ $stage['status'] === 'Paid' ? 'text-emerald-600' : 'text-amber-600' }}">
-                                        ● {{ $stage['status'] }}
-                                    </span>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
-            <!-- 72-Hour Holding Notice -->
-            <div class="bg-[#FAF8F5] p-4 rounded-2xl border border-[#D4E845] text-xs font-mono text-[#0E1520]/80 space-y-1">
-                <div class="font-bold text-[#0E1520] flex items-center gap-1.5">
-                    <span>⏱</span> {{ __('72-Hour Guaranteed Unit Hold') }}
-                </div>
-                <p class="leading-relaxed">
-                    {{ __('This unit has been set to') }} <strong>{{ __('ON HOLD') }}</strong> {{ __('in our live inventory. Our executive relationship manager will contact you within 24 hours to schedule document verification and agreement signing.') }}
-                </p>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#0E1520]/10">
-                <button type="button" onclick="window.print()" class="px-6 py-3 rounded-full bg-[#FAF8F5] hover:bg-[#0E1520] text-[#0E1520] hover:text-white border border-[#0E1520]/20 font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-2">
-                    <span>🖨</span>
-                    <span>{{ __('Print Allotment Voucher') }}</span>
-                </button>
-
-                <a href="{{ route('customer.dashboard') }}" class="px-6 py-3 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-xs uppercase tracking-wider transition-colors shadow">
-                    {{ __('View Patron Dashboard →') }}
-                </a>
-            </div>
-
-        </div>
-
+        @endif
     </div>
 </section>
 
+<section class="section-paper py-12">
+    <div class="container-site max-w-4xl">
+        <article class="print-sheet rounded-[1.5rem] border border-navy/10 bg-white p-6 shadow-xl sm:p-10">
+            <header class="flex flex-wrap items-start justify-between gap-6 border-b border-navy/10 pb-6">
+                <div>
+                    <img src="/assets/logo-navy.png" alt="Kedia Builders & Colonizers" class="h-11 w-auto">
+                    <p class="mt-3 text-xs text-ink/60">{{ $company['address'] }} · {{ $company['phone'] }}</p>
+                </div>
+                <div class="text-right">
+                    <h2 class="font-serif text-2xl text-navy">{{ __('Booking receipt') }}</h2>
+                    <div class="font-mono text-sm text-navy">{{ $booking->booking_id }}</div>
+                    @if($paid)
+                        <div class="label mt-1 text-status-available">● {{ __('Payment Status: VERIFIED') }}</div>
+                    @else
+                        <div class="label mt-1 text-brass-700">● {{ __('Payment Status:') }} {{ strtoupper($booking->status_label) }} ({{ __('TEST PAYMENT') }})</div>
+                    @endif
+                </div>
+            </header>
+
+            <dl class="grid gap-x-10 gap-y-3 border-b border-navy/10 py-6 text-sm sm:grid-cols-2">
+                @foreach([
+                    __('Allottee') => $booking->customer_name,
+                    __('Mobile') => $booking->customer_phone,
+                    __('Project') => $booking->project->title ?? $booking->project_name,
+                    __('Unit') => ($booking->unit->title ?? $booking->unit_number) . ' · ' . $booking->unit_code,
+                    __('Booked on') => optional($booking->booking_date)->format('d M Y, h:i A'),
+                    __('Payment method') => strtoupper((string) $booking->payment_method),
+                    __('Transaction ref') => $booking->transaction_ref ?: '—',
+                    'RERA' => $booking->project->rera_number ?? '—',
+                ] as $label => $value)
+                    <div class="flex justify-between gap-4"><dt class="label text-ink/50">{{ $label }}</dt><dd class="text-right text-navy">{{ $value }}</dd></div>
+                @endforeach
+            </dl>
+
+            <div class="grid gap-8 py-6 md:grid-cols-2">
+                <div>
+                    <h3 class="label text-ink/50">{{ __('Payment summary') }}</h3>
+                    <dl class="mt-3 space-y-2 text-sm">
+                        <div class="flex justify-between"><dt>{{ __('Total property value') }}</dt><dd class="font-mono">₹ {{ \App\Support\Format::inr($booking->total_amount) }}</dd></div>
+                        <div class="flex justify-between {{ $paid ? 'text-status-available' : '' }}"><dt>{{ __('Advance Booking Token (5%)') }}{{ $paid ? ' — ' . __('Paid') : ' — ' . __('Awaiting Verification') }}</dt><dd class="font-mono">₹ {{ \App\Support\Format::inr($booking->token_amount) }}</dd></div>
+                        <div class="flex justify-between border-t border-navy/10 pt-2 text-ink/60"><dt>{{ __('Balance in construction milestones') }}</dt><dd class="font-mono">₹ {{ \App\Support\Format::inr($booking->total_amount - $booking->token_amount) }}</dd></div>
+                    </dl>
+                </div>
+                <div>
+                    <h3 class="label text-ink/50">{{ __('Payment schedule') }}</h3>
+                    <ol class="mt-3 space-y-2 text-sm">
+                        @foreach($booking->payment_schedule ?? [] as $stage)
+                            <li class="flex items-start justify-between gap-4 border-b border-navy/5 pb-2">
+                                <div>
+                                    <div class="text-navy">{{ __($stage['milestone']) }}</div>
+                                    <div class="label text-ink/40">{{ \Illuminate\Support\Carbon::parse($stage['due_date'])->format('d M Y') }} · {{ __($stage['status']) }}</div>
+                                </div>
+                                <div class="font-mono text-xs">₹ {{ \App\Support\Format::inr($stage['amount']) }}</div>
+                            </li>
+                        @endforeach
+                    </ol>
+                </div>
+            </div>
+
+            <footer class="border-t border-navy/10 pt-5 text-[11px] leading-relaxed text-ink/50">
+                {{ __('This is a provisional booking receipt. The allotment is final after document verification and signing of the agreement to sale. Demo build: payments are simulated in test mode.') }}
+            </footer>
+        </article>
+
+        <div class="no-print mt-10 grid gap-4 md:grid-cols-3">
+            @foreach([[__('Verification'), __('Our team verifies your token and calls you within one working day.')], [__('Documents'), __('Share PAN, Aadhaar and photographs to prepare the agreement to sale.')], [__('Agreement'), __('Sign the agreement and pay the next milestone as per the schedule.')]] as $i => [$title, $text])
+                <div class="card">
+                    <div class="font-mono text-xs text-brass">0{{ $i + 1 }}</div>
+                    <div class="mt-2 font-serif text-xl text-navy">{{ $title }}</div>
+                    <p class="mt-1 text-sm text-ink/60">{{ $text }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    const box = document.querySelector('[data-countdown]');
+    if (!box) return;
+    const end = new Date(box.dataset.countdown).getTime();
+    const pad = (n) => String(n).padStart(2, '0');
+    const tick = () => {
+        const left = Math.max(0, end - Date.now());
+        box.querySelector('[data-cd="h"]').textContent = pad(Math.floor(left / 3600000));
+        box.querySelector('[data-cd="m"]').textContent = pad(Math.floor(left / 60000) % 60);
+        box.querySelector('[data-cd="s"]').textContent = pad(Math.floor(left / 1000) % 60);
+    };
+    tick();
+    setInterval(tick, 1000);
+})();
+</script>
+@endpush

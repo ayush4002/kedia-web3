@@ -3,56 +3,86 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    /**
-     * About Kedia Builders & Colonizers (Founders, Vision, Mission, Why Invest).
-     */
+    /** Our story: editorial page with the heritage timeline. */
     public function about()
     {
-        return view('pages.about');
+        $projects = Project::orderBy('sort_order')->get(['slug', 'name', 'location', 'status', 'cover_image']);
+
+        return view('pages.about.story', compact('projects'));
     }
 
-    /**
-     * Visual Archives & Project Gallery.
-     */
+    public function chairman()
+    {
+        return view('pages.about.chairman');
+    }
+
+    public function vision()
+    {
+        return view('pages.about.vision');
+    }
+
+    public function why()
+    {
+        return view('pages.about.why');
+    }
+
     public function gallery()
     {
-        $projects = Project::all();
-        return view('pages.gallery', compact('projects'));
+        // Project photos come from the projects themselves; events, press and CSR from config.
+        $items = collect(config('kedia.gallery'));
+        foreach (Project::orderBy('sort_order')->get() as $project) {
+            foreach (array_slice($project->galleryImages(), 0, 3) as $img) {
+                $items->push(['category' => 'Project', 'src' => $img['src'], 'thumb' => $img['thumb'], 'caption' => $img['caption'], 'project' => $project->name]);
+            }
+        }
+        $items = $items->unique('src')->values();
+        $categories = ['Project', 'Event', 'Press Release', 'CSR'];
+
+        return view('pages.gallery', compact('items', 'categories'));
     }
 
-    /**
-     * Dedicated NRI Investment Desk.
-     */
     public function nri()
     {
-        return view('pages.nri');
+        $projects = Project::where('status', 'ongoing')->orderBy('sort_order')->get(['slug', 'name', 'location']);
+
+        return view('pages.nri', compact('projects'));
     }
 
-    /**
-     * Careers at Kedia Builders.
-     */
     public function careers()
     {
         return view('pages.careers');
     }
 
-    /**
-     * Contact Headquarters & Site Offices.
-     */
     public function contact()
     {
-        return view('pages.contact');
+        $projects = Project::where('status', 'ongoing')->orderBy('sort_order')->get(['slug', 'name']);
+
+        return view('pages.contact', compact('projects'));
     }
 
-    /**
-     * Legal, RERA & Privacy Disclosures.
-     */
+    /** RERA disclosures: every project with its registration number. */
     public function legal()
     {
-        return view('pages.legal');
+        $projects = Project::orderBy('sort_order')->get(['slug', 'name', 'location', 'status', 'rera_number']);
+
+        return view('pages.legal.rera', compact('projects'));
+    }
+
+    public function privacy()
+    {
+        return view('pages.legal.privacy');
+    }
+
+    public function terms()
+    {
+        return view('pages.legal.terms');
+    }
+
+    public function refund()
+    {
+        return view('pages.legal.refund');
     }
 }

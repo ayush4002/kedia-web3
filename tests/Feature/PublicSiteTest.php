@@ -16,7 +16,9 @@ class PublicSiteTest extends TestCase
     {
         $unit = Unit::first();
         foreach (['/', '/projects', '/projects/kedias-landmark', "/projects/{$unit->project_slug}/units/{$unit->unit_code}",
-                  '/about', '/gallery', '/tools', '/nri', '/careers', '/contact', '/legal', '/dashboard'] as $url) {
+                  '/about', '/about/chairman', '/about/vision-mission', '/why-invest', '/gallery', '/tools', '/nri', '/careers', '/contact',
+                  '/legal', '/privacy-policy', '/terms', '/refund-booking-policy', '/account', '/compare', '/projects?view=units',
+                  '/projects?view=units&type=villa&bedrooms=3&sort=price-low', '/projects?layout=list&status=completed', "/units/{$unit->id}/cost-sheet"] as $url) {
             $this->get($url)->assertOk();
         }
     }
@@ -61,7 +63,8 @@ class PublicSiteTest extends TestCase
             ->assertSee('"@type":"Residence"', false)
             ->assertSee('content="index, follow"', false);
 
-        $this->get('/dashboard')->assertSee('content="noindex, nofollow"', false);
+        $this->get('/account')->assertSee('content="noindex, nofollow"', false);
+        $this->get('/dashboard')->assertRedirect('/account');
     }
 
     public function test_security_headers_are_sent(): void

@@ -1,163 +1,138 @@
 @extends('layouts.app')
 
-@section('title', 'Reserve Unit ' . $unit->unit_code . ' | Kedia Builders Booking Checkout')
+@section('title', 'Checkout · ' . $unit->unit_code . ' | Kedia Builders & Colonizers')
 @section('robots', 'noindex, nofollow')
 
+@php
+    $project = $unit->project;
+    $steps = [__('Unit & cost sheet'), __('Your details'), __('Test payment'), __('Confirmation')];
+@endphp
+
 @section('content')
-
-<section class="py-12 bg-[#FAF8F5]">
-    <div class="max-w-4xl mx-auto px-6 sm:px-10 lg:px-12">
-        
-        <!-- Header & Breadcrumb -->
-        <div class="text-center mb-10 space-y-2">
-            <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('E-Commerce Reservation Portal') }}</span>
-            <h1 class="font-serif text-3xl sm:text-4xl font-bold text-[#0E1520]">
-                Reserve Unit {{ $unit->unit_code }}
-            </h1>
-            <p class="text-xs sm:text-sm text-[#0E1520]/60">
-                {{ __('Lock your property allotment with a 5% test token advance. Instant holding guarantee for 72 hours.') }}
-            </p>
-        </div>
-
-        <!-- 4-Step Indicator -->
-        <div class="mb-10 bg-white p-4 rounded-2xl border border-[#0E1520]/10 shadow-sm">
-            <div class="grid grid-cols-4 gap-2 text-center font-mono text-[11px]">
-                <div class="p-2 rounded-xl bg-[#0E1520] text-white font-bold">
-                    <span class="text-[#D4E845]">1.</span> {{ __('Review Unit') }}
-                </div>
-                <div class="p-2 rounded-xl bg-[#FAF8F5] text-[#0E1520] font-semibold">
-                    <span class="text-[#C8A24B]">2.</span> {{ __('Buyer Details') }}
-                </div>
-                <div class="p-2 rounded-xl bg-[#FAF8F5] text-[#0E1520] font-semibold">
-                    <span class="text-[#C8A24B]">3.</span> {{ __('Payment Mode') }}
-                </div>
-                <div class="p-2 rounded-xl bg-[#FAF8F5] text-[#0E1520]/60">
-                    <span class="text-[#0E1520]/40">4.</span> {{ __('Voucher') }}
-                </div>
-            </div>
-        </div>
-
-        <form action="{{ route('booking.store') }}" method="POST" id="checkoutForm" class="space-y-8">
-            @csrf
-            <input type="hidden" name="unit_id" value="{{ $unit->id }}">
-
-            <!-- Step 1: Unit Summary Card -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#0E1520]/10 shadow-sm space-y-4">
-                <div class="flex items-center justify-between pb-4 border-b border-[#0E1520]/10">
-                    <div>
-                        <div class="text-xs font-mono uppercase text-[#0E1520]/50">{{ __('Township Property') }}</div>
-                        <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ $unit->title }} ({{ $unit->unit_code }})</h3>
-                        <div class="text-xs text-[#0E1520]/60 font-mono">{{ $unit->project->title ?? 'Kedia Township' }} · {{ $unit->project->location ?? 'Jaipur' }}</div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-xs font-mono uppercase text-[#0E1520]/50">{{ __('All-Inclusive Price') }}</div>
-                        <div class="font-bold text-xl text-[#0E1520] font-mono">₹ {{ \App\Support\Format::inr($pricing['grand_total']) }}</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs pt-2">
-                    <div class="bg-[#FAF8F5] p-3 rounded-xl">
-                        <span class="text-[#0E1520]/50 text-[10px] uppercase block">{{ __('Super Area') }}</span>
-                        <span class="font-bold text-[#0E1520]">{{ $unit->area_sqft }} SQ.FT</span>
-                    </div>
-                    <div class="bg-[#FAF8F5] p-3 rounded-xl">
-                        <span class="text-[#0E1520]/50 text-[10px] uppercase block">{{ __('Plot Size') }}</span>
-                        <span class="font-bold text-[#0E1520]">{{ $unit->plot_size_sqyd ?? 125 }} SQ.YD</span>
-                    </div>
-                    <div class="bg-[#FAF8F5] p-3 rounded-xl">
-                        <span class="text-[#0E1520]/50 text-[10px] uppercase block">{{ __('Vastu Facing') }}</span>
-                        <span class="font-bold text-[#0E1520]">{{ $unit->facing ?? 'East' }}</span>
-                    </div>
-                    <div class="bg-[#FAF8F5] p-3 rounded-xl">
-                        <span class="text-[#0E1520]/50 text-[10px] uppercase block">{{ __('RERA Status') }}</span>
-                        <span class="font-bold text-emerald-700">{{ __('Sanctioned') }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 2: Buyer Information -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#0E1520]/10 shadow-sm space-y-4">
-                <div class="pb-3 border-b border-[#0E1520]/10">
-                    <h3 class="font-serif text-xl font-bold text-[#0E1520]">{{ __('2. Allottee / Buyer Details') }}</h3>
-                    <p class="text-xs text-[#0E1520]/60 font-mono">{{ __('Official details as per PAN card for provisional agreement issuance.') }}</p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">{{ __('Full Legal Name *') }}</label>
-                        <input type="text" name="customer_name" required value="{{ old('customer_name') }}" placeholder="{{ __('As per PAN card') }}" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">{{ __('Phone Number (WhatsApp) *') }}</label>
-                        <input type="tel" name="customer_phone" required value="{{ old('customer_phone') }}" placeholder="+91 98290 00000" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">{{ __('Email Address *') }}</label>
-                        <input type="email" name="customer_email" required value="{{ old('customer_email') }}" placeholder="you@example.com" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">{{ __('City & State') }}</label>
-                        <input type="text" name="customer_city" value="{{ old('customer_city', 'Jaipur, Rajasthan') }}" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">{{ __('PAN Card Number') }}</label>
-                        <input type="text" name="customer_pan" placeholder="{{ __('ABCDE1234F') }}" value="{{ old('customer_pan') }}" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-mono text-[#0E1520]/70 uppercase mb-1">{{ __('Aadhaar Last 4 Digits') }}</label>
-                        <input type="text" name="customer_aadhaar" placeholder="{{ __('Last 4 digits') }}" value="{{ old('customer_aadhaar') }}" class="w-full px-4 py-2.5 rounded-xl border border-[#0E1520]/20 bg-[#FAF8F5] text-sm text-[#0E1520] focus:border-[#0E1520] focus:outline-none">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 3: Payment Method Selection -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#0E1520]/10 shadow-sm space-y-4">
-                <div class="pb-3 border-b border-[#0E1520]/10">
-                    <h3 class="font-serif text-xl font-bold text-[#0E1520]">{{ __('3. Payment Mode (Razorpay Sandbox Mode)') }}</h3>
-                    <p class="text-xs text-[#0E1520]/60 font-mono">{{ __('Select simulated payment provider. No real funds will be deducted.') }}</p>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
-                    <label class="border-2 border-[#0E1520] bg-[#FAF8F5] p-4 rounded-2xl cursor-pointer flex flex-col items-center justify-center text-center space-y-2">
-                        <input type="radio" name="payment_method" value="upi" checked class="accent-[#0E1520]">
-                        <span class="font-bold text-sm">{{ __('UPI') }}</span>
-                        <span class="text-[10px] text-[#0E1520]/60">{{ __('GPay, PhonePe, Paytm') }}</span>
-                    </label>
-                    <label class="border border-[#0E1520]/20 hover:border-[#0E1520] p-4 rounded-2xl cursor-pointer flex flex-col items-center justify-center text-center space-y-2">
-                        <input type="radio" name="payment_method" value="card" class="accent-[#0E1520]">
-                        <span class="font-bold text-sm">{{ __('Cards') }}</span>
-                        <span class="text-[10px] text-[#0E1520]/60">{{ __('Visa, Mastercard, RuPay') }}</span>
-                    </label>
-                    <label class="border border-[#0E1520]/20 hover:border-[#0E1520] p-4 rounded-2xl cursor-pointer flex flex-col items-center justify-center text-center space-y-2">
-                        <input type="radio" name="payment_method" value="netbanking" class="accent-[#0E1520]">
-                        <span class="font-bold text-sm">{{ __('NetBanking') }}</span>
-                        <span class="text-[10px] text-[#0E1520]/60">{{ __('HDFC, SBI, ICICI, Axis') }}</span>
-                    </label>
-                    <label class="border border-[#0E1520]/20 hover:border-[#0E1520] p-4 rounded-2xl cursor-pointer flex flex-col items-center justify-center text-center space-y-2">
-                        <input type="radio" name="payment_method" value="neft" class="accent-[#0E1520]">
-                        <span class="font-bold text-sm">{{ __('NEFT / RTGS') }}</span>
-                        <span class="text-[10px] text-[#0E1520]/60">{{ __('Bank Virtual Account') }}</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Final Cost Summary & Submit -->
-            <div class="bg-[#0E1520] text-white rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                <div>
-                    <div class="text-[10px] font-mono text-[#D4E845] uppercase tracking-wider">{{ __('Token Advance Payable Now') }}</div>
-                    <div class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">₹ {{ \App\Support\Format::inr($pricing['token_amount']) }}</div>
-                    <div class="text-xs text-white/50 font-mono mt-1">{{ __('5% of total project value. Balance payable in RERA milestones.') }}</div>
-                </div>
-
-                <button type="submit" class="px-8 py-4 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold text-xs uppercase tracking-wider transition-all transform hover:-translate-y-0.5 shadow-xl flex items-center justify-center gap-2">
-                    <span>{{ __('Confirm Test Payment & Reserve Unit') }}</span>
-                    <span>{{ __('→') }}</span>
-                </button>
-            </div>
-
-        </form>
-
+<section class="section-navy">
+    <div class="container-site py-10">
+        <a href="{{ $unit->url }}" class="label text-paper/50 hover:text-brass">← {{ __('Back to unit') }}</a>
+        <h1 class="display-md mt-3 text-paper">{{ __('Reserve your unit') }}</h1>
+        <ol class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="{{ __('Checkout steps') }}">
+            @foreach($steps as $i => $step)
+                <li class="flex items-center gap-3 border-t-2 pt-3 text-sm {{ $i < 2 ? 'border-brass text-paper' : 'border-paper/15 text-paper/40' }}" @if($i === 1) aria-current="step" @endif>
+                    <span class="font-mono text-xs {{ $i < 2 ? 'text-brass' : '' }}">0{{ $i + 1 }}</span>{{ $step }}
+                </li>
+            @endforeach
+        </ol>
     </div>
 </section>
 
+<section class="section-paper py-12">
+    <form action="{{ route('booking.store') }}" method="POST" class="container-site grid gap-10 lg:grid-cols-12" novalidate>
+        @csrf
+        <input type="hidden" name="unit_id" value="{{ $unit->id }}">
+
+        <div class="space-y-8 lg:col-span-7">
+            {{-- Buyer details --}}
+            <fieldset class="rounded-[1.5rem] border border-navy/10 bg-paper-50 p-6 sm:p-8">
+                <legend class="sr-only">{{ __('Your details') }}</legend>
+                <h2 class="font-serif text-2xl text-navy">{{ __('Your details') }}</h2>
+                <p class="mt-1 text-sm text-ink/60">{{ __('Use the name on your PAN card; the provisional allotment is issued in this name.') }}</p>
+                <div class="mt-6 grid gap-5 sm:grid-cols-2">
+                    <div class="sm:col-span-2">
+                        <label for="c_name" class="field-label">{{ __('Full name') }} *</label>
+                        <input id="c_name" name="customer_name" required autocomplete="name" value="{{ old('customer_name') }}" class="field" aria-invalid="{{ $errors->has('customer_name') ? 'true' : 'false' }}">
+                        @error('customer_name')<p class="mt-1 text-xs text-terracotta">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label for="c_phone" class="field-label">{{ __('Mobile number') }} *</label>
+                        <input id="c_phone" name="customer_phone" type="tel" required autocomplete="tel" inputmode="tel" value="{{ old('customer_phone') }}" placeholder="+91 98290 00000" class="field">
+                        <p class="mt-1 text-xs text-ink/50">{{ __('You will use this number to sign in to your account.') }}</p>
+                        @error('customer_phone')<p class="mt-1 text-xs text-terracotta">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label for="c_email" class="field-label">{{ __('Email') }} *</label>
+                        <input id="c_email" name="customer_email" type="email" required autocomplete="email" value="{{ old('customer_email') }}" class="field">
+                        @error('customer_email')<p class="mt-1 text-xs text-terracotta">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label for="c_pan" class="field-label">{{ __('PAN') }} <span class="normal-case tracking-normal text-ink/40">({{ __('optional now') }})</span></label>
+                        <input id="c_pan" name="customer_pan" autocomplete="off" maxlength="10" value="{{ old('customer_pan') }}" placeholder="ABCDE1234F" class="field uppercase">
+                        @error('customer_pan')<p class="mt-1 text-xs text-terracotta">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label for="c_aadhaar" class="field-label">{{ __('Aadhaar, last 4 digits') }} <span class="normal-case tracking-normal text-ink/40">({{ __('optional') }})</span></label>
+                        <input id="c_aadhaar" name="customer_aadhaar" inputmode="numeric" maxlength="4" autocomplete="off" value="{{ old('customer_aadhaar') }}" class="field">
+                        @error('customer_aadhaar')<p class="mt-1 text-xs text-terracotta">{{ $message }}</p>@enderror
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label for="c_city" class="field-label">{{ __('City & state') }}</label>
+                        <input id="c_city" name="customer_city" autocomplete="address-level2" value="{{ old('customer_city', 'Jaipur, Rajasthan') }}" class="field">
+                    </div>
+                </div>
+            </fieldset>
+
+            {{-- Payment method --}}
+            <fieldset class="rounded-[1.5rem] border border-navy/10 bg-paper-50 p-6 sm:p-8">
+                <legend class="sr-only">{{ __('Payment method') }}</legend>
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <h2 class="font-serif text-2xl text-navy">{{ __('Payment method') }}</h2>
+                    <span class="rounded-full bg-terracotta/10 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-terracotta">{{ __('Test mode — no money is charged') }}</span>
+                </div>
+                <div class="mt-5 grid gap-3 sm:grid-cols-3">
+                    @foreach(['upi' => [__('UPI'), 'GPay · PhonePe · Paytm'], 'card' => [__('Card'), 'Visa · Mastercard · RuPay'], 'netbanking' => [__('Net banking'), 'SBI · HDFC · ICICI · Axis']] as $value => [$label, $hint])
+                        <label class="cursor-pointer rounded-2xl border border-navy/15 p-4 transition hover:border-brass has-[:checked]:border-navy has-[:checked]:bg-navy has-[:checked]:text-paper">
+                            <input type="radio" name="payment_method" value="{{ $value }}" class="sr-only" @checked(old('payment_method', 'upi') === $value)>
+                            <span class="block font-serif text-xl">{{ $label }}</span>
+                            <span class="mt-1 block text-xs opacity-60">{{ $hint }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </fieldset>
+
+            <label class="flex items-start gap-3 text-sm text-ink/70">
+                <input type="checkbox" name="accept_terms" value="1" required class="mt-0.5 h-4 w-4 accent-navy" @checked(old('accept_terms'))>
+                <span>{{ __('I have read the') }} <a href="{{ route('legal.refund') }}" target="_blank" class="underline decoration-brass underline-offset-4">{{ __('refund & booking policy') }}</a> {{ __('and the') }} <a href="{{ route('legal.terms') }}" target="_blank" class="underline decoration-brass underline-offset-4">{{ __('terms of use') }}</a>.</span>
+            </label>
+            @error('accept_terms')<p class="-mt-6 text-xs text-terracotta">{{ $message }}</p>@enderror
+        </div>
+
+        {{-- Order summary --}}
+        <aside class="lg:col-span-5">
+            <div class="space-y-5 lg:sticky lg:top-28">
+                <div class="overflow-hidden rounded-[1.5rem] bg-navy text-paper">
+                    <div class="flex gap-4 border-b border-paper/10 p-6">
+                        @if($project)
+                            <img src="{{ \App\Models\Project::media($project->cover_image, 600) }}" alt="" class="arch-soft h-24 w-20 flex-none object-cover">
+                        @endif
+                        <div class="min-w-0">
+                            <div class="label text-brass">{{ $unit->project_name }}</div>
+                            <div class="mt-1 font-serif text-2xl leading-tight">{{ $unit->title }}</div>
+                            <div class="mt-1 font-mono text-xs text-paper/60">{{ $unit->unit_code }} · {{ \App\Support\Format::inr($unit->area_sqft) }} {{ __('sq ft') }} · {{ $unit->facing }}</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="eyebrow">{{ __('Cost sheet') }}</h2>
+                            <a href="{{ route('units.cost-sheet', $unit->id) }}" target="_blank" rel="noopener" class="label text-paper/60 underline hover:text-brass">{{ __('Download PDF') }}</a>
+                        </div>
+                        <x-price-breakup :pricing="$pricing" dark class="mt-3" />
+                    </div>
+                    <div class="border-t border-brass/30 bg-white/[0.03] p-6">
+                        <div class="flex items-end justify-between gap-4">
+                            <div>
+                                <div class="label text-brass">{{ __('Pay now (5% token)') }}</div>
+                                <div class="font-serif text-4xl">₹ {{ \App\Support\Format::inr($pricing['token_amount']) }}</div>
+                            </div>
+                            <div class="label text-right text-paper/50">{{ __('Balance in') }}<br>{{ __('RERA milestones') }}</div>
+                        </div>
+                        <button type="submit" class="btn-brass mt-6 w-full">{{ __('Continue to test payment') }} →</button>
+                        <p class="mt-3 text-center text-xs text-paper/50">{{ __('The unit is held for you for') }} {{ config('kedia.hold_hours') }} {{ __('hours after payment.') }}</p>
+                    </div>
+                </div>
+                <ul class="space-y-2 text-sm text-ink/70">
+                    @foreach([__('RERA registered project') . ($project?->rera_number ? ' · ' . $project->rera_number : ''), __('Clear JDA-approved title'), __('Token refundable as per policy')] as $line)
+                        <li class="flex gap-3"><span class="text-brass" aria-hidden="true">✓</span>{{ $line }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </aside>
+    </form>
+</section>
 @endsection

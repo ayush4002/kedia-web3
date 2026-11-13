@@ -1,108 +1,102 @@
 @extends('layouts.app')
 
-@section('title', 'NRI Real Estate Investment Desk | Kedia Builders & Colonizers')
+@section('title', 'NRI Corner · Invest in Jaipur from Abroad | Kedia Builders & Colonizers')
+@section('meta_description', 'NRI desk for buying plots and villas in Jaipur: FEMA-compliant NRE/NRO payments, video walkthroughs, power of attorney support and a currency converter.')
+
+@php $fx = config('kedia.fx'); @endphp
 
 @section('content')
+<x-page-hero :eyebrow="__('NRI corner')" :title="__('Your Jaipur home, from anywhere')" :crumb="__('NRI corner')" image="/media/img/2025/04/DSC07902-1920.webp">
+    {{ __('Video walkthroughs, FEMA-compliant payments and a dedicated advisor who works in your time zone.') }}
+</x-page-hero>
 
-<section class="py-16 bg-[#0E1520] text-white">
-    <div class="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24">
-        <div class="max-w-3xl space-y-4">
-            <span class="text-xs font-mono uppercase tracking-widest text-[#D4E845]">{{ __('Global Investor Services') }}</span>
-            <h1 class="font-serif text-4xl sm:text-6xl font-bold tracking-tight">
-                {{ __('Dedicated NRI Real Estate Desk') }}
-            </h1>
-            <p class="text-base sm:text-lg text-white/70 leading-relaxed font-normal">
-                {{ __('Invest in the high-growth corridor of the Pink City from anywhere in the world. Enjoy 100% transparent JDA title deeds, end-to-end FEMA compliance, virtual 3D inspections, and repatriation assistance.') }}
-            </p>
-            <div class="pt-2 flex flex-wrap gap-4 font-mono text-xs">
-                <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/20">{{ __('FEMA & RBI Compliant') }}</span>
-                <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/20">{{ __('NRE / NRO Repatriation') }}</span>
-                <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/20">{{ __('Digital PoA Sanctions') }}</span>
+<section class="section-paper py-20">
+    <div class="container-site grid gap-6 md:grid-cols-3">
+        @foreach([
+            [__('Clear title & JDA patta'), __('Freehold plots and villas with individual JDA patta and a clean title history.')],
+            [__('NRE / NRO payments'), __('Pay through your NRE or NRO account; we share the documents banks need for repatriation.')],
+            [__('Live video tours'), __('Drone progress films and private video calls from the site with your advisor.')],
+        ] as $i => [$title, $text])
+            <div class="card" data-reveal data-reveal-delay="{{ $i * 80 }}">
+                <div class="font-mono text-xs text-brass">0{{ $i + 1 }}</div>
+                <h2 class="mt-3 font-serif text-2xl text-navy">{{ $title }}</h2>
+                <p class="mt-2 text-sm text-ink/70">{{ $text }}</p>
             </div>
-        </div>
+        @endforeach
     </div>
 </section>
 
-<section class="py-20 bg-[#FAF8F5]">
-    <div class="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24 space-y-16">
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="p-8 rounded-3xl bg-white border border-[#0E1520]/10 shadow-sm space-y-4">
-                <div class="text-3xl">🏛</div>
-                <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ __('Clear Title & JDA Patta') }}</h3>
-                <p class="text-xs text-[#0E1520]/70 leading-relaxed font-mono">
-                    {{ __('Zero title risk. Every single plot and villa in Kedia townships is freehold with individual JDA patta and clear chain of non-encumbrance records spanning 40+ years.') }}
-                </p>
+<section class="section-paper pb-24">
+    <div class="container-site grid gap-10 lg:grid-cols-12">
+        {{-- Currency converter --}}
+        <div class="rounded-[1.5rem] bg-navy p-6 text-paper sm:p-8 lg:col-span-5" data-fx data-rates="{{ json_encode($fx['rates']) }}">
+            <div class="flex items-center justify-between gap-3">
+                <h2 class="font-serif text-3xl">{{ __('Currency converter') }}</h2>
+                @if(!empty($fx['placeholder']))<x-sample-tag class="!border-paper/40 !text-paper/70" />@endif
             </div>
-
-            <div class="p-8 rounded-3xl bg-white border border-[#0E1520]/10 shadow-sm space-y-4">
-                <div class="text-3xl">💱</div>
-                <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ __('NRE / NRO Seamless Payments') }}</h3>
-                <p class="text-xs text-[#0E1520]/70 leading-relaxed font-mono">
-                    {{ __('Direct wire transfers via SWIFT/IBAN into dedicated escrow accounts. Simplified documentation for outward repatriation of rental yields and capital gains.') }}
-                </p>
-            </div>
-
-            <div class="p-8 rounded-3xl bg-white border border-[#0E1520]/10 shadow-sm space-y-4">
-                <div class="text-3xl">📹</div>
-                <h3 class="font-serif text-2xl font-bold text-[#0E1520]">{{ __('Live Drone & Video Walkthroughs') }}</h3>
-                <p class="text-xs text-[#0E1520]/70 leading-relaxed font-mono">
-                    {{ __('Weekly aerial high-definition drone progress reports and private live video tours conducted by your dedicated relationship custodian.') }}
-                </p>
-            </div>
-        </div>
-
-        <!-- NRI Inquiry Desk Box -->
-        <div class="bg-white rounded-3xl p-8 sm:p-12 border border-[#0E1520]/10 shadow-xl max-w-3xl mx-auto space-y-6">
-            <div class="text-center space-y-2">
-                <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Direct Global Line') }}</span>
-                <h3 class="font-serif text-3xl font-bold text-[#0E1520]">{{ __('Connect with Our Global NRI Desk') }}</h3>
-                <p class="text-xs text-[#0E1520]/60 font-mono">{{ __('Our international advisors will coordinate via WhatsApp or scheduled Zoom conference.') }}</p>
-            </div>
-
-            <form action="{{ route('leads.store') }}" method="POST" class="space-y-4 font-mono text-xs">
-                @csrf
-                <input type="hidden" name="source" value="nri_desk">
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[#0E1520]/70 uppercase mb-1">{{ __('Full Name *') }}</label>
-                        <input type="text" name="name" required placeholder="{{ __('e.g. Anand Singhania') }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-300">
-                    </div>
-                    <div>
-                        <label class="block text-[#0E1520]/70 uppercase mb-1">{{ __('Current Country / City *') }}</label>
-                        <input type="text" name="message" required placeholder="{{ __('e.g. Dubai, UAE / London, UK') }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-300">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[#0E1520]/70 uppercase mb-1">{{ __('International WhatsApp *') }}</label>
-                        <input type="tel" name="phone" required placeholder="+971 50 000 0000" class="w-full px-4 py-2.5 rounded-xl border border-gray-300">
-                    </div>
-                    <div>
-                        <label class="block text-[#0E1520]/70 uppercase mb-1">{{ __('Email Address *') }}</label>
-                        <input type="email" name="email" required placeholder="anand@example.com" class="w-full px-4 py-2.5 rounded-xl border border-gray-300">
-                    </div>
-                </div>
-
+            <p class="mt-1 text-xs text-paper/50">{{ __($fx['as_of']) }}. {{ __('Use your bank\'s rate on the day you pay.') }}</p>
+            <div class="mt-6 grid grid-cols-[minmax(0,1fr)_7rem] gap-3">
                 <div>
-                    <label class="block text-[#0E1520]/70 uppercase mb-1">{{ __('Target Township / Investment Size') }}</label>
-                    <select name="project_name" class="w-full px-4 py-2.5 rounded-xl border border-gray-300">
-                        <option value="Kedia's Landmark">{{ __('Kedia\'s Landmark (Ajmer Road) - Plots & Villas') }}</option>
-                        <option value="Kedia's Atulyam">{{ __('Kedia\'s Atulyam (Sirsi Road) - Turnkey 3 BHK Villas') }}</option>
-                        <option value="Kedia's Tulsi">{{ __('Kedia\'s Tulsi (Bani Park) - Luxury 3 & 4 BHK') }}</option>
-                        <option value="Ganpati Greens">{{ __('Ganpati Greens (Sikar Road) - Enclave') }}</option>
+                    <label for="fx_amount" class="label mb-1.5 block text-paper/60">{{ __('Property price (INR)') }}</label>
+                    <input id="fx_amount" type="number" min="0" step="100000" value="5000000" inputmode="numeric" class="field-dark font-mono">
+                </div>
+                <div>
+                    <label for="fx_currency" class="label mb-1.5 block text-paper/60">{{ __('Currency') }}</label>
+                    <select id="fx_currency" class="field-dark [&>option]:text-ink">
+                        @foreach(array_keys($fx['rates']) as $cur)<option value="{{ $cur }}">{{ $cur }}</option>@endforeach
                     </select>
                 </div>
-
-                <button type="submit" class="w-full py-3.5 rounded-full bg-[#0E1520] hover:bg-[#162132] text-white font-bold text-xs uppercase tracking-wider transition-all shadow mt-2">
-                    {{ __('Request Priority NRI Consultation →') }}
-                </button>
-            </form>
+            </div>
+            <div class="mt-6 border-t border-paper/10 pt-5" aria-live="polite">
+                <div class="label text-paper/50">{{ __('Approximately') }}</div>
+                <div class="font-serif text-5xl text-brass" data-fx-out>—</div>
+                <div class="mt-2 text-sm text-paper/60">{{ __('5% online token') }}: <span class="font-mono" data-fx-token>—</span></div>
+            </div>
         </div>
 
+        {{-- Enquiry flow --}}
+        <form action="{{ route('leads.store') }}" method="POST" class="space-y-5 rounded-[1.5rem] border border-navy/10 bg-paper-50 p-6 sm:p-8 lg:col-span-7">
+            @csrf
+            <input type="hidden" name="source" value="nri_desk">
+            <h2 class="font-serif text-3xl text-navy">{{ __('Talk to the NRI desk') }}</h2>
+            <div class="grid gap-5 sm:grid-cols-2">
+                <div><label for="nri_name" class="field-label">{{ __('Full name') }} *</label><input id="nri_name" name="name" required autocomplete="name" class="field"></div>
+                <div><label for="nri_phone" class="field-label">{{ __('WhatsApp number (with country code)') }} *</label><input id="nri_phone" name="phone" type="tel" required autocomplete="tel" placeholder="+971 50 000 0000" class="field"></div>
+                <div><label for="nri_email" class="field-label">{{ __('Email') }}</label><input id="nri_email" name="email" type="email" autocomplete="email" class="field"></div>
+                <div>
+                    <label for="nri_project" class="field-label">{{ __('Project of interest') }}</label>
+                    <select id="nri_project" name="project_name" class="field">
+                        <option value="General Inquiry">{{ __('Not sure yet') }}</option>
+                        @foreach($projects as $p)<option value="{{ $p->name }}">{{ $p->name }} · {{ $p->location }}</option>@endforeach
+                    </select>
+                </div>
+            </div>
+            <div><label for="nri_msg" class="field-label">{{ __('Country, budget and best time to call') }}</label><textarea id="nri_msg" name="message" rows="3" maxlength="500" class="field" placeholder="{{ __('e.g. Dubai, ₹60–80 L, evenings IST') }}"></textarea></div>
+            <button type="submit" class="btn-navy">{{ __('Request a call back') }}</button>
+            <p class="text-xs text-ink/50">{{ __('Information only; not legal or tax advice. Your advisor will share the current FEMA and RBI requirements.') }}</p>
+        </form>
     </div>
 </section>
-
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    const box = document.querySelector('[data-fx]');
+    if (!box) return;
+    const rates = JSON.parse(box.dataset.rates);
+    const amount = document.getElementById('fx_amount');
+    const cur = document.getElementById('fx_currency');
+    const run = () => {
+        const inr = Math.max(0, parseFloat(amount.value) || 0);
+        const rate = rates[cur.value];
+        const fmt = (n) => new Intl.NumberFormat('en', { style: 'currency', currency: cur.value, maximumFractionDigits: 0 }).format(n);
+        box.querySelector('[data-fx-out]').textContent = fmt(inr / rate);
+        box.querySelector('[data-fx-token]').textContent = fmt(inr * 0.05 / rate);
+    };
+    amount.addEventListener('input', run);
+    cur.addEventListener('change', run);
+    run();
+})();
+</script>
+@endpush

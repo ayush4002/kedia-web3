@@ -143,6 +143,7 @@
     if (!tray) return;
     const list = compareList();
     tray.hidden = list.length === 0;
+    document.body.classList.toggle('has-compare-tray', !tray.hidden);
     const slots = $('#compareSlots');
     slots.replaceChildren();
     list.forEach((item) => {

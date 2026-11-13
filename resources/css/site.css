@@ -141,3 +141,6 @@
   .js [data-draw] * { stroke-dashoffset: 0 !important; }
   .cursor-ring { display: none; }
 }
+
+/* Keep the floating dock clear of the compare tray */
+body.has-compare-tray #floatingDock { bottom: 5.25rem; }

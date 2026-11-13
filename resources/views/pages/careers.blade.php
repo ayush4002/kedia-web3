@@ -1,113 +1,55 @@
 @extends('layouts.app')
 
-@section('title', 'Careers | Kedia Builders & Colonizers')
+@section('title', 'Careers | Kedia Builders & Colonizers, Jaipur')
+@section('meta_description', 'Join Kedia Builders & Colonizers in Jaipur: openings for site engineers, architects, sales advisors and customer relations.')
+
+@php $jobs = config('kedia.careers'); @endphp
 
 @section('content')
+<x-page-hero :eyebrow="__('Careers')" :title="__('Build Jaipur with us')" :crumb="__('Careers')">
+    {{ __('Engineers, architects, advisors and customer teams who care about doing it properly.') }}
+</x-page-hero>
 
-<section class="py-16 bg-[#FAF8F5] border-b border-[#0E1520]/10">
-    <div class="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 2xl:px-24">
-        <div class="max-w-3xl space-y-4">
-            <span class="text-xs font-mono uppercase tracking-widest text-[#0E1520]/60">{{ __('Join Our Team') }}</span>
-            <h1 class="font-serif text-4xl sm:text-6xl font-bold text-[#0E1520] tracking-tight">
-                {{ __('Build Jaipur\'s Finest Townships') }}
-            </h1>
-            <p class="text-base text-[#0E1520]/70 leading-relaxed font-normal">
-                {{ __('At Kedia Builders & Colonizers, we build more than structures—we craft enduring communities. Join our multidisciplinary team of civil engineers, architects, project managers, and property advisors.') }}
-            </p>
+<section class="section-paper py-20">
+    <div class="container-site grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+            <h2 class="eyebrow">{{ __('Current openings') }} ({{ count($jobs) }})</h2>
+            <div class="mt-6 divide-y divide-navy/10 border-y border-navy/10">
+                @foreach($jobs as $job)
+                    <article class="grid gap-3 py-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center" data-reveal>
+                        <div>
+                            <div class="label text-brass-700">{{ __($job['team']) }}</div>
+                            <h3 class="mt-1 font-serif text-2xl text-navy">{{ __($job['title']) }}</h3>
+                            <p class="mt-1 text-sm text-ink/60">{{ __($job['type']) }} · {{ __($job['location']) }} · {{ $job['experience'] }} {{ __('experience') }}</p>
+                        </div>
+                        <a href="#apply" data-role="{{ $job['title'] }}" class="btn-ghost btn-sm justify-self-start" onclick="document.getElementById('apply_role').value=this.dataset.role">{{ __('Apply') }} →</a>
+                    </article>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="lg:col-span-5">
+            <form id="apply" action="{{ route('leads.store') }}" method="POST" class="scroll-mt-28 space-y-4 rounded-[1.5rem] bg-navy p-6 text-paper sm:p-8 lg:sticky lg:top-28">
+                @csrf
+                <input type="hidden" name="source" value="career_application">
+                <h2 class="font-serif text-3xl">{{ __('Apply') }}</h2>
+                <div>
+                    <label for="apply_role" class="label mb-1.5 block text-paper/60">{{ __('Role') }}</label>
+                    <select id="apply_role" name="project_name" class="field-dark [&>option]:text-ink">
+                        @foreach($jobs as $job)<option value="{{ $job['title'] }}">{{ __($job['title']) }}</option>@endforeach
+                        <option value="General application">{{ __('General application') }}</option>
+                    </select>
+                </div>
+                <div><label for="apply_name" class="label mb-1.5 block text-paper/60">{{ __('Full name') }} *</label><input id="apply_name" name="name" required autocomplete="name" class="field-dark"></div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div><label for="apply_phone" class="label mb-1.5 block text-paper/60">{{ __('Mobile') }} *</label><input id="apply_phone" name="phone" type="tel" required autocomplete="tel" class="field-dark"></div>
+                    <div><label for="apply_email" class="label mb-1.5 block text-paper/60">{{ __('Email') }}</label><input id="apply_email" name="email" type="email" autocomplete="email" class="field-dark"></div>
+                </div>
+                <div><label for="apply_msg" class="label mb-1.5 block text-paper/60">{{ __('Portfolio / LinkedIn link and a short note') }}</label><textarea id="apply_msg" name="message" rows="4" maxlength="500" class="field-dark"></textarea></div>
+                <button type="submit" class="btn-brass w-full">{{ __('Send application') }}</button>
+                <p class="text-xs text-paper/50">{{ __('You can also email your CV to') }} <a href="mailto:{{ config('kedia.company.email') }}" class="underline">{{ config('kedia.company.email') }}</a>.</p>
+            </form>
         </div>
     </div>
 </section>
-
-<section class="py-16 bg-white">
-    <div class="max-w-4xl mx-auto px-6 sm:px-10 lg:px-12 space-y-10">
-        
-        <div class="space-y-4">
-            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-[#0E1520]">{{ __('Current Openings in Jaipur') }}</h2>
-            <p class="text-xs text-[#0E1520]/60 font-mono">{{ __('Headquarters & On-Site Construction Enclaves') }}</p>
-        </div>
-
-        <div class="space-y-4">
-            
-            <div class="p-6 rounded-2xl bg-[#FAF8F5] border border-[#0E1520]/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <span class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase bg-[#0E1520] text-white">{{ __('Engineering') }}</span>
-                    <h3 class="font-serif text-xl font-bold text-[#0E1520] mt-1">{{ __('Senior Civil Site Engineer') }}</h3>
-                    <div class="text-xs text-[#0E1520]/60 font-mono mt-0.5">{{ __('Full Time · Ajmer Road & Sirsi Road · 5-8 Yrs Exp') }}</div>
-                </div>
-                <button type="button" onclick="openCareerModal('Senior Civil Site Engineer')" class="px-5 py-2.5 rounded-full bg-[#0E1520] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#162132]">
-                    {{ __('Apply Now →') }}
-                </button>
-            </div>
-
-            <div class="p-6 rounded-2xl bg-[#FAF8F5] border border-[#0E1520]/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <span class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase bg-[#0E1520] text-white">{{ __('Design & CAD') }}</span>
-                    <h3 class="font-serif text-xl font-bold text-[#0E1520] mt-1">{{ __('Lead Residential Architect') }}</h3>
-                    <div class="text-xs text-[#0E1520]/60 font-mono mt-0.5">{{ __('Full Time · Sikar Road HQ · 4-7 Yrs Exp') }}</div>
-                </div>
-                <button type="button" onclick="openCareerModal('Lead Residential Architect')" class="px-5 py-2.5 rounded-full bg-[#0E1520] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#162132]">
-                    {{ __('Apply Now →') }}
-                </button>
-            </div>
-
-            <div class="p-6 rounded-2xl bg-[#FAF8F5] border border-[#0E1520]/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <span class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase bg-[#0E1520] text-white">{{ __('Sales & Advisory') }}</span>
-                    <h3 class="font-serif text-xl font-bold text-[#0E1520] mt-1">{{ __('Senior Property Portfolio Manager') }}</h3>
-                    <div class="text-xs text-[#0E1520]/60 font-mono mt-0.5">{{ __('Full Time · Bani Park Desk · 3-6 Yrs Exp') }}</div>
-                </div>
-                <button type="button" onclick="openCareerModal('Senior Property Portfolio Manager')" class="px-5 py-2.5 rounded-full bg-[#0E1520] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#162132]">
-                    {{ __('Apply Now →') }}
-                </button>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-<!-- Career Application Modal -->
-<div id="careerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative border border-[#0E1520]/10">
-        <button type="button" onclick="document.getElementById('careerModal').classList.add('hidden')" class="absolute top-5 right-5 text-gray-500 hover:text-black p-2">
-            {{ __('×') }}
-        </button>
-
-        <h3 class="font-serif text-2xl font-bold text-[#0E1520] mb-1">{{ __('Submit Application') }}</h3>
-        <p class="text-xs text-[#0E1520]/60 font-mono mb-4" id="careerRoleTitle">{{ __('Senior Civil Site Engineer') }}</p>
-
-        <form action="{{ route('leads.store') }}" method="POST" class="space-y-4 font-mono text-xs">
-            @csrf
-            <input type="hidden" name="source" value="career_application">
-            <div>
-                <label class="block text-[#0E1520]/70 uppercase mb-1">{{ __('Full Name *') }}</label>
-                <input type="text" name="name" required placeholder="{{ __('e.g. Ramesh Meena') }}" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-            </div>
-            <div>
-                <label class="block text-[#0E1520]/70 uppercase mb-1">{{ __('Phone *') }}</label>
-                <input type="tel" name="phone" required placeholder="+91 98290 00000" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-            </div>
-            <div>
-                <label class="block text-[#0E1520]/70 uppercase mb-1">{{ __('Email *') }}</label>
-                <input type="email" name="email" required placeholder="ramesh@example.com" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-            </div>
-            <div>
-                <label class="block text-[#0E1520]/70 uppercase mb-1">{{ __('Portfolio / LinkedIn URL') }}</label>
-                <input type="text" name="message" placeholder="{{ __('https://linkedin.com/in/...') }}" class="w-full px-3 py-2 rounded-xl border border-gray-300">
-            </div>
-
-            <button type="submit" class="w-full py-3 rounded-full bg-[#D4E845] hover:bg-[#c2d733] text-[#0E1520] font-bold uppercase tracking-wider text-xs shadow mt-2">
-                {{ __('Submit Candidacy →') }}
-            </button>
-        </form>
-    </div>
-</div>
-
-<script>
-    function openCareerModal(role) {
-        document.getElementById('careerRoleTitle').innerText = role;
-        document.getElementById('careerModal').classList.remove('hidden');
-    }
-</script>
-
 @endsection
